@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>CajeroAutomatico</RootNamespace>
+    <AssemblyName>CajeroAutomatico</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Datos\RepositorioArchivos.cs" />
+    <Compile Include="Entidades\CajeroConfig.cs" />
+    <Compile Include="Entidades\DTO.cs" />
+    <Compile Include="Entidades\Enums.cs" />
+    <Compile Include="Entidades\Transaccion.cs" />
+    <Compile Include="Entidades\Usuario.cs" />
+    <Compile Include="Negocio\FormModificarHuella.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Negocio\FormModificarHuella.Designer.cs">
+      <DependentUpon>FormModificarHuella.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Negocio\VozService.cs" />
+    <Compile Include="Presentacion\FormIngresarDinero.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormIngresarDinero.Designer.cs">
+      <DependentUpon>FormIngresarDinero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormRetireDinero.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormRetireDinero.Designer.cs">
+      <DependentUpon>FormRetireDinero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Negocio\ArduinoService.cs" />
+    <Compile Include="Negocio\CajeroService.cs" />
+    <Compile Include="Negocio\Sesion.cs" />
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
+    <Compile Include="Presentacion\DenominacionesHelper.cs" />
+    <Compile Include="Presentacion\FormFinProceso.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormFinProceso.Designer.cs">
+      <DependentUpon>FormFinProceso.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormAgregarEfectivo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormAgregarEfectivo.Designer.cs">
+      <DependentUpon>FormAgregarEfectivo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormCambiarPin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormCambiarPin.Designer.cs">
+      <DependentUpon>FormCambiarPin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormCargando.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormCargando.Designer.cs">
+      <DependentUpon>FormCargando.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormConsultaUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormConsultaUsuario.Designer.cs">
+      <DependentUpon>FormConsultaUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormControlUsuarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormControlUsuarios.Designer.cs">
+      <DependentUpon>FormControlUsuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormCrearUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormCrearUsuario.Designer.cs">
+      <DependentUpon>FormCrearUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormDeposito.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormDeposito.Designer.cs">
+      <DependentUpon>FormDeposito.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormErrorConexion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormErrorConexion.Designer.cs">
+      <DependentUpon>FormErrorConexion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormEstadoCajero.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormEstadoCajero.Designer.cs">
+      <DependentUpon>FormEstadoCajero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormHuellaDigital.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormHuellaDigital.Designer.cs">
+      <DependentUpon>FormHuellaDigital.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormInicializarCajero.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormInicializarCajero.Designer.cs">
+      <DependentUpon>FormInicializarCajero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormInsertarTarjeta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormInsertarTarjeta.Designer.cs">
+      <DependentUpon>FormInsertarTarjeta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormMenuAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormMenuAdmin.Designer.cs">
+      <DependentUpon>FormMenuAdmin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormMenuUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormMenuUsuario.Designer.cs">
+      <DependentUpon>FormMenuUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormModificarLimite.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormModificarLimite.Designer.cs">
+      <DependentUpon>FormModificarLimite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormModificarTarjeta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormModificarTarjeta.Designer.cs">
+      <DependentUpon>FormModificarTarjeta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormPIN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormPIN.Designer.cs">
+      <DependentUpon>FormPIN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormRetiro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormRetiro.Designer.cs">
+      <DependentUpon>FormRetiro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormUltimasTransacciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormUltimasTransacciones.Designer.cs">
+      <DependentUpon>FormUltimasTransacciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormVerificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormVerificacion.Designer.cs">
+      <DependentUpon>FormVerificacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormVerSaldo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormVerSaldo.Designer.cs">
+      <DependentUpon>FormVerSaldo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormVoucher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormVoucher.Designer.cs">
+      <DependentUpon>FormVoucher.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Negocio\FormModificarHuella.resx">
+      <DependentUpon>FormModificarHuella.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormFinProceso.resx">
+      <DependentUpon>FormFinProceso.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormAgregarEfectivo.resx">
+      <DependentUpon>FormAgregarEfectivo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormCambiarPin.resx">
+      <DependentUpon>FormCambiarPin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormCargando.resx">
+      <DependentUpon>FormCargando.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormConsultaUsuario.resx">
+      <DependentUpon>FormConsultaUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormControlUsuarios.resx">
+      <DependentUpon>FormControlUsuarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormCrearUsuario.resx">
+      <DependentUpon>FormCrearUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormDeposito.resx">
+      <DependentUpon>FormDeposito.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormErrorConexion.resx">
+      <DependentUpon>FormErrorConexion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormEstadoCajero.resx">
+      <DependentUpon>FormEstadoCajero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormHuellaDigital.resx">
+      <DependentUpon>FormHuellaDigital.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormInicializarCajero.resx">
+      <DependentUpon>FormInicializarCajero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormInsertarTarjeta.resx">
+      <DependentUpon>FormInsertarTarjeta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormIngresarDinero.resx">
+      <DependentUpon>FormIngresarDinero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormMenuAdmin.resx">
+      <DependentUpon>FormMenuAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormMenuUsuario.resx">
+      <DependentUpon>FormMenuUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormModificarLimite.resx">
+      <DependentUpon>FormModificarLimite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormModificarTarjeta.resx">
+      <DependentUpon>FormModificarTarjeta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormPIN.resx">
+      <DependentUpon>FormPIN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormRetireDinero.resx">
+      <DependentUpon>FormRetireDinero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormRetiro.resx">
+      <DependentUpon>FormRetiro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormUltimasTransacciones.resx">
+      <DependentUpon>FormUltimasTransacciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormVerificacion.resx">
+      <DependentUpon>FormVerificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormVerSaldo.resx">
+      <DependentUpon>FormVerSaldo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormVoucher.resx">
+      <DependentUpon>FormVoucher.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="bin\Debug\CajeroAutomatico.exe.config" />
+    <None Include="bin\Debug\Datos\config.csv" />
+    <None Include="bin\Debug\Datos\transacciones.csv" />
+    <None Include="bin\Debug\Datos\usuarios.csv" />
+    <None Include="obj\Debug\CajeroAutomatico.csproj.AssemblyReference.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+    <Folder Include="obj\Debug\TempPE\" />
+    <Folder Include="Servicios\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\CajeroAutomatico.exe" />
+    <Content Include="bin\Debug\CajeroAutomatico.pdb" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,143 @@
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.AssemblyReference.cache
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormAgregarEfectivo.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormCambiarPin.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormCargando.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormConsultaUsuario.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormControlUsuarios.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormCrearUsuario.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormDeposito.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormErrorConexion.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormEstadoCajero.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormHuellaDigital.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormInicializarCajero.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormInsertarTarjeta.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormMenuAdmin.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormMenuUsuario.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormModificarLimite.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormModificarTarjeta.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormPIN.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormRetiro.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormUltimasTransacciones.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVerificacion.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVerSaldo.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Properties.Resources.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.GenerateResource.cache
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.CoreCompileInputs.cache
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\bin\Debug\CajeroAutomatico.exe.config
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\bin\Debug\CajeroAutomatico.exe
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\bin\Debug\CajeroAutomatico.pdb
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.exe
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.pdb
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.exe.config
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormFinProceso.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormRetireDinero.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVoucher.resources
+C:\Users\Juan Tzub Jr\source\repos\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormIngresarDinero.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\bin\Debug\CajeroAutomatico.exe.config
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\bin\Debug\CajeroAutomatico.exe
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\bin\Debug\CajeroAutomatico.pdb
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.AssemblyReference.cache
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.exe.config
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormFinProceso.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormAgregarEfectivo.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormCambiarPin.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormCargando.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormConsultaUsuario.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormControlUsuarios.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormCrearUsuario.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormDeposito.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormErrorConexion.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormEstadoCajero.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormHuellaDigital.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormInicializarCajero.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormInsertarTarjeta.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormIngresarDinero.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormMenuAdmin.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormMenuUsuario.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormModificarLimite.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormModificarTarjeta.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormPIN.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormRetireDinero.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormRetiro.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormUltimasTransacciones.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVerificacion.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVerSaldo.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVoucher.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Properties.Resources.resources
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.GenerateResource.cache
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.CoreCompileInputs.cache
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.exe
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.pdb
+C:\Users\julio\Desktop\Cajero Completo\CajeroAutomatico\CajeroAutomatico\obj\Debug\CajeroAutomatico.Negocio.FormModificarHuella.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\bin\Debug\CajeroAutomatico.exe.config
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\bin\Debug\CajeroAutomatico.exe
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\bin\Debug\CajeroAutomatico.pdb
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.AssemblyReference.cache
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.exe.config
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Negocio.FormModificarHuella.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormFinProceso.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormAgregarEfectivo.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormCambiarPin.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormCargando.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormConsultaUsuario.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormControlUsuarios.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormCrearUsuario.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormDeposito.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormErrorConexion.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormEstadoCajero.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormHuellaDigital.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormInicializarCajero.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormInsertarTarjeta.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormIngresarDinero.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormMenuAdmin.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormMenuUsuario.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormModificarLimite.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormModificarTarjeta.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormPIN.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormRetireDinero.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormRetiro.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormUltimasTransacciones.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVerificacion.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVerSaldo.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVoucher.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Properties.Resources.resources
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.GenerateResource.cache
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.CoreCompileInputs.cache
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.exe
+C:\Users\stive\Downloads\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.pdb
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\bin\Debug\CajeroAutomatico.exe.config
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\bin\Debug\CajeroAutomatico.exe
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\bin\Debug\CajeroAutomatico.pdb
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.AssemblyReference.cache
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.exe.config
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Negocio.FormModificarHuella.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormFinProceso.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormAgregarEfectivo.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormCambiarPin.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormCargando.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormConsultaUsuario.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormControlUsuarios.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormCrearUsuario.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormDeposito.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormErrorConexion.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormEstadoCajero.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormHuellaDigital.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormInicializarCajero.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormInsertarTarjeta.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormIngresarDinero.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormMenuAdmin.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormMenuUsuario.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormModificarLimite.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormModificarTarjeta.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormPIN.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.FormRetireDinero.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormRetiro.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormUltimasTransacciones.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVerificacion.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVerSaldo.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Presentacion.FormVoucher.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.Properties.Resources.resources
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.GenerateResource.cache
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.csproj.CoreCompileInputs.cache
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.exe
+C:\Users\julio\Documents\JULIO USAC 2026\2DO SEMESTRE\Manejo de Archivos\PROJCAJEROFINAL\CajeroAutomaticoBackEnd\CajeroAutomaticoBackEnd\CajeroAutomatico\obj\Debug\CajeroAutomatico.pdb
