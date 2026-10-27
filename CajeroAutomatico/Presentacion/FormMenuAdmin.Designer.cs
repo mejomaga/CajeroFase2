@@ -166,7 +166,7 @@
             this.btnControlUsuarios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnControlUsuarios.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnControlUsuarios.ForeColor = System.Drawing.Color.White;
-            this.btnControlUsuarios.Location = new System.Drawing.Point(554, 490);
+            this.btnControlUsuarios.Location = new System.Drawing.Point(120, 400);
             this.btnControlUsuarios.Margin = new System.Windows.Forms.Padding(4);
             this.btnControlUsuarios.Name = "btnControlUsuarios";
             this.btnControlUsuarios.Size = new System.Drawing.Size(350, 60);
@@ -200,7 +200,7 @@
             this.btnCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrarSesion.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(554, 580);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(554, 490);
             this.btnCerrarSesion.Margin = new System.Windows.Forms.Padding(4);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(350, 60);
@@ -234,6 +234,7 @@
             this.label2.TabIndex = 11;
             this.label2.Text = "Elige una opción:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // btnModificarHuella
             // 
@@ -243,13 +244,14 @@
             this.btnModificarHuella.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnModificarHuella.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnModificarHuella.ForeColor = System.Drawing.Color.White;
-            this.btnModificarHuella.Location = new System.Drawing.Point(120, 400);
+            this.btnModificarHuella.Location = new System.Drawing.Point(554, 580);
             this.btnModificarHuella.Margin = new System.Windows.Forms.Padding(4);
             this.btnModificarHuella.Name = "btnModificarHuella";
             this.btnModificarHuella.Size = new System.Drawing.Size(350, 60);
             this.btnModificarHuella.TabIndex = 12;
-            this.btnModificarHuella.Text = "Modificar Huella";
+            this.btnModificarHuella.Text = "Modificar Huella Eliminado ya\r\n";
             this.btnModificarHuella.UseVisualStyleBackColor = false;
+            this.btnModificarHuella.Visible = false;
             this.btnModificarHuella.Click += new System.EventHandler(this.btnModificarHuella_Click);
             // 
             // FormMenuAdmin
@@ -276,6 +278,7 @@
             this.Name = "FormMenuAdmin";
             this.Text = "Cajero Automático - Julian Antonio Monterroso González_202342200";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.FormMenuAdmin_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

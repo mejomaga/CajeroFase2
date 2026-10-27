@@ -45,9 +45,9 @@ namespace CajeroAutomatico
                 TimerCarga.Stop();
 
                 bool archivosExiste = Program.Servicio.VerificarConexionArchivos();
-                bool arduinoArchivo = Program.Servicio.VerificarConexionArduino();
+               // bool arduinoArchivo = Program.Servicio.VerificarConexionArduino();
 
-                if (archivosExiste && arduinoArchivo)
+                if (archivosExiste /*&& arduinoArchivo*/)
                 {
                     lblEstado2.Text = "Conexión establecida con éxito.";
                     this.Hide();

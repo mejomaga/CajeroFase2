@@ -39,7 +39,7 @@ namespace CajeroAutomatico.Negocio
 
         public bool VerificarConexion()
         {
-            try
+            /*try
             {
                 if (_serialPort == null)
                 {
@@ -52,7 +52,7 @@ namespace CajeroAutomatico.Negocio
 
                 return true;
             }
-            catch
+            catch*/
             {
                 return false;
             }
@@ -60,12 +60,12 @@ namespace CajeroAutomatico.Negocio
 
         public void Iniciar()
         {
-            VerificarConexion();
+           //VerificarConexion();
         }
 
         public void Detener()
         {
-            if (_serialPort != null)
+            /*if (_serialPort != null)
             {
                 try
                 {
@@ -75,24 +75,24 @@ namespace CajeroAutomatico.Negocio
                 }
                 catch { }
                 _serialPort = null;  // 👈 CLAVE: destruirlo
-            }
+            }*/
         }
 
         public void RegistrarHuella()
         {
-            if (!VerificarConexion()) return;
-            _serialPort.WriteLine("REGISTRAR_HUELLA");
+            //if (!VerificarConexion()) return;
+            //_serialPort.WriteLine("REGISTRAR_HUELLA");
         }
 
         public void BorrarHuella(int slot)
         {
-            if (!VerificarConexion()) return;
-            _serialPort.WriteLine("BORRAR_HUELLA:" + slot);
+            //if (!VerificarConexion()) return;
+            //_serialPort.WriteLine("BORRAR_HUELLA:" + slot);
         }
 
         public void ModoEsperarHuella(bool esperar)
         {
-            _esperandoHuella = esperar;
+            //_esperandoHuella = esperar;
         }
 
         private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -142,7 +142,8 @@ namespace CajeroAutomatico.Negocio
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error en DataReceived: " + ex.Message);
+                // Para evitar el MessageBox peligroso si algún día se dispara, cambia solo el catch
+                System.Diagnostics.Debug.WriteLine("Error en DataReceived: " + ex.Message);
             }
 
         }

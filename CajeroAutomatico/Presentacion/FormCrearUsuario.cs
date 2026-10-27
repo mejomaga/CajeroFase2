@@ -97,7 +97,7 @@ namespace CajeroAutomatico.Presentacion
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(_uidVinculado))
+            /*if (string.IsNullOrWhiteSpace(_uidVinculado))
             {
                 lblMensaje.ForeColor = Color.Red;
                 lblMensaje.Text = "Debe vincular una tarjeta antes de guardar.";
@@ -109,7 +109,7 @@ namespace CajeroAutomatico.Presentacion
                 lblMensaje.ForeColor = Color.Red;
                 lblMensaje.Text = "Debe registrar la huella del usuario antes de guardar.";
                 return;
-            }
+            }*/
 
             var resultado = Program.Servicio.CrearUsuario(
                 txtNombre.Text,
@@ -117,9 +117,13 @@ namespace CajeroAutomatico.Presentacion
                 txtPin.Text,
                 numSaldoInicial.Value,
                 numLimiteDiario.Value,
-                txtHuella.Text,
+                /*txtHuella.Text,
                 _uidVinculado,
-                _slotHuella
+                _slotHuella*/
+                "",   // huella vacía
+                "",   // UID vacío
+                -1    // slot de huella no asignado
+
             );
 
             lblMensaje.ForeColor = resultado.Exito ? Color.Green : Color.Red;
@@ -160,11 +164,11 @@ namespace CajeroAutomatico.Presentacion
 
         private void FormCrearUsuario_Load(object sender, EventArgs e)
         {
-            Program.Servicio.TarjetaDetectada += TarjetaDetectada;
+            //Program.Servicio.TarjetaDetectada += TarjetaDetectada;
 
             lblEstadoVinculacion.Text = "";
-            btnVincularTarjeta.Enabled = true;
-            Program.Servicio.HuellaRegistrada += HuellaRegistrada;
+            btnVincularTarjeta.Enabled = false;
+            //Program.Servicio.HuellaRegistrada += HuellaRegistrada;
         }
 
         private void btnVincularTarjeta_Click(object sender, EventArgs e)
@@ -195,9 +199,9 @@ namespace CajeroAutomatico.Presentacion
 
         private void FormCrearUsuario_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Program.Servicio.TarjetaDetectada -= TarjetaDetectada;
-            Program.Servicio.HuellaRegistrada -= HuellaRegistrada;
-            Program.Servicio.DetenerLector();
+            //Program.Servicio.TarjetaDetectada -= TarjetaDetectada;
+            //Program.Servicio.HuellaRegistrada -= HuellaRegistrada;
+            //Program.Servicio.DetenerLector();
         }
 
         private void btnRegistrarHuella_Click(object sender, EventArgs e)

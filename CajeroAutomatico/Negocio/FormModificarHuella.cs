@@ -34,11 +34,11 @@ namespace CajeroAutomatico.Negocio
         private void FormModificarHuella_Load(object sender, EventArgs e)
         {
             // Suscribirse a los eventos del lector
-            Program.Servicio.HuellaRegistrada += HuellaRegistrada;
+           // Program.Servicio.HuellaRegistrada += HuellaRegistrada;
 
             // Estado inicial
             btnRegistrar.Enabled = false;
-            lblEstadoHuella.Text = "";
+            lblEstadoHuella.Text = "Función no disponible sin sensor de huella.";
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace CajeroAutomatico.Negocio
 
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
-            if (usuarioEncontrado == null)
+            /*if (usuarioEncontrado == null)
             {
                 MessageBox.Show("Primero busque un usuario.",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -77,6 +77,8 @@ namespace CajeroAutomatico.Negocio
 
             if (confirmacion != DialogResult.Yes) return;
 
+
+
             _slotRegistrado = -1;
             lblEstadoHuella.ForeColor = Color.Blue;
             lblEstadoHuella.Text = "Iniciando registro de huella...";
@@ -84,14 +86,21 @@ namespace CajeroAutomatico.Negocio
 
             Program.Servicio.IniciarLector();
 
-            // 👇 NUEVO: si el usuario ya tenía huella, borrarla antes
+            //  NUEVO: si el usuario ya tenía huella, borrarla antes
             if (usuarioEncontrado.HuellaSlot > 0)
             {
                 Program.Servicio.BorrarHuella(usuarioEncontrado.HuellaSlot);
                 System.Threading.Thread.Sleep(500); // Dar tiempo al Arduino
             }
 
-            Program.Servicio.RegistrarHuella();
+            Program.Servicio.RegistrarHuella();*/
+            MessageBox.Show(
+             "La modificación de huella no está disponible sin el sensor conectado.\n" +
+             "El acceso se realiza únicamente por PIN.",
+             "Función no disponible",
+             MessageBoxButtons.OK,
+             MessageBoxIcon.Information);
+            return;
         }
 
         // ----- EVENTO: HUELLA REGISTRADA -----

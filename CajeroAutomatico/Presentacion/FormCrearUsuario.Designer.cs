@@ -294,6 +294,7 @@
             this.btnVincularTarjeta.TabIndex = 23;
             this.btnVincularTarjeta.Text = "Vincular Tarjeta";
             this.btnVincularTarjeta.UseVisualStyleBackColor = false;
+            this.btnVincularTarjeta.Visible = false;
             this.btnVincularTarjeta.Click += new System.EventHandler(this.btnVincularTarjeta_Click);
             // 
             // lblEstadoVinculacion
@@ -307,6 +308,7 @@
             this.lblEstadoVinculacion.Size = new System.Drawing.Size(61, 23);
             this.lblEstadoVinculacion.TabIndex = 24;
             this.lblEstadoVinculacion.Text = "Estado";
+            this.lblEstadoVinculacion.Visible = false;
             // 
             // btnRegistrarHuella
             // 
@@ -322,6 +324,7 @@
             this.btnRegistrarHuella.TabIndex = 25;
             this.btnRegistrarHuella.Text = "Registrar Huella";
             this.btnRegistrarHuella.UseVisualStyleBackColor = false;
+            this.btnRegistrarHuella.Visible = false;
             this.btnRegistrarHuella.Click += new System.EventHandler(this.btnRegistrarHuella_Click);
             // 
             // lblEstadoHuella
@@ -335,6 +338,7 @@
             this.lblEstadoHuella.Size = new System.Drawing.Size(61, 23);
             this.lblEstadoHuella.TabIndex = 26;
             this.lblEstadoHuella.Text = "Estado";
+            this.lblEstadoHuella.Visible = false;
             // 
             // FormCrearUsuario
             // 

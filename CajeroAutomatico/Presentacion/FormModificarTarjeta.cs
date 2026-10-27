@@ -79,11 +79,12 @@ namespace CajeroAutomatico.Presentacion
 
         private void FormModificarTarjeta_Load(object sender, EventArgs e)
         {
-            Program.Servicio.TarjetaDetectada += TarjetaDetectada;
+            //Program.Servicio.TarjetaDetectada += TarjetaDetectada;
 
             txtTarjetaNueva.Enabled = false;
             btnGuardar.Enabled = false;
             btnVincularNueva.Enabled = false;
+            btnVincularNueva.Visible = false;
             lblEstadoVinculacion.Text = "";
         }
 
@@ -138,17 +139,18 @@ namespace CajeroAutomatico.Presentacion
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(_uidNuevo))
+            /*if (string.IsNullOrWhiteSpace(_uidNuevo))
             {
                 lblMensaje.ForeColor = Color.DarkRed;
                 lblMensaje.Text = "Debe vincular la tarjeta física nueva antes de guardar.";
                 return;
-            }
+            }*/
 
             var resultado = Program.Servicio.ModificarTarjetaCompleta(
                 usuarioEncontrado,
                 nuevaTarjeta,
-                _uidNuevo
+                usuarioEncontrado.UID ?? ""   // mantener el UID que ya tenía (o vacío)
+
             );
 
             lblMensaje.ForeColor = resultado.Exito ? Color.DarkGreen : Color.DarkRed;
@@ -183,18 +185,26 @@ namespace CajeroAutomatico.Presentacion
 
         private void FormModificarTarjeta_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Program.Servicio.TarjetaDetectada -= TarjetaDetectada;
-            Program.Servicio.DetenerLector();
+            //Program.Servicio.TarjetaDetectada -= TarjetaDetectada;
+            //Program.Servicio.DetenerLector();
         }
 
         private void btnVincularNueva_Click(object sender, EventArgs e)
         {
-            _uidNuevo = "";
+            /*_uidNuevo = "";
             lblEstadoVinculacion.ForeColor = Color.Blue;
             lblEstadoVinculacion.Text = "Acerca la tarjeta nueva al lector...";
             btnVincularNueva.Enabled = false;
 
-            Program.Servicio.IniciarLector();
+            Program.Servicio.IniciarLector();*/
+
+            MessageBox.Show(
+             "La vinculación de tarjeta física no está disponible sin el lector NFC.\n" +
+             "Puede cambiar el número de tarjeta escribiéndolo manualmente.",
+              "Función no disponible",
+             MessageBoxButtons.OK,
+             MessageBoxIcon.Information);
+            return;
         }
     }
 }

@@ -77,6 +77,14 @@ namespace CajeroAutomatico.Presentacion
             Program.Navegar(this, new FormModificarHuella());
         }
 
+        private void label2_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void FormMenuAdmin_Load(object sender, EventArgs e)
+        {
+            btnModificarHuella.Visible = false;
+        }
     }
 }

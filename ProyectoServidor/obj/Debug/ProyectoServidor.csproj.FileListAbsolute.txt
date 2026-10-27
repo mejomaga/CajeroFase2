@@ -26,3 +26,4 @@ C:\Users\melqu\Documents\GitHub\ProyectoCajeroAutomaticoFase2\ProyectoServidor\o
 C:\Users\melqu\Documents\GitHub\ProyectoCajeroAutomaticoFase2\ProyectoServidor\obj\Debug\Proyecto.57602FD3.Up2Date
 C:\Users\melqu\Documents\GitHub\ProyectoCajeroAutomaticoFase2\ProyectoServidor\obj\Debug\ProyectoServidor.exe
 C:\Users\melqu\Documents\GitHub\ProyectoCajeroAutomaticoFase2\ProyectoServidor\obj\Debug\ProyectoServidor.pdb
+C:\Users\melqu\Documents\GitHub\ProyectoCajeroAutomaticoFase2\ProyectoServidor\obj\Debug\ProyectoServidor.exe.config

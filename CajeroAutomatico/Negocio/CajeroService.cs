@@ -124,17 +124,17 @@ namespace CajeroAutomatico.Negocio
             if (_usuarios.Any(u => u != usuario && u.NumeroTarjeta == nuevoNumero))
                 return ResultadoOperacion.Error("El nuevo número de tarjeta ya está en uso.");
 
-            if (string.IsNullOrWhiteSpace(nuevoUID))
-                return ResultadoOperacion.Error("Debe vincular la tarjeta física nueva.");
+            //if (string.IsNullOrWhiteSpace(nuevoUID))
+                //return ResultadoOperacion.Error("Debe vincular la tarjeta física nueva.");
 
-            if (_usuarios.Any(u => u != usuario &&
+            /*if (_usuarios.Any(u => u != usuario &&
                 !string.IsNullOrEmpty(u.UID) &&
                 u.UID.Equals(nuevoUID, StringComparison.OrdinalIgnoreCase)))
-                return ResultadoOperacion.Error("Esa tarjeta física ya está vinculada a otro usuario.");
+                return ResultadoOperacion.Error("Esa tarjeta física ya está vinculada a otro usuario.");*/
 
             usuario.HistorialTarjetas.Add(usuario.NumeroTarjeta);
             usuario.NumeroTarjeta = nuevoNumero;
-            usuario.UID = nuevoUID;
+            //usuario.UID = nuevoUID;
 
             GuardarUsuarios();
             return ResultadoOperacion.Ok("Tarjeta y número actualizados correctamente.");
@@ -290,14 +290,14 @@ namespace CajeroAutomatico.Negocio
                 return ResultadoOperacion.Error("El número de tarjeta debe tener 16 dígitos.");
             if (pin.Length != 4 || !pin.All(char.IsDigit))
                 return ResultadoOperacion.Error("El PIN debe tener 4 dígitos.");
-            if (string.IsNullOrWhiteSpace(uid))
-                return ResultadoOperacion.Error("Debe vincular una tarjeta antes de guardar.");
+            //if (string.IsNullOrWhiteSpace(uid))
+               // return ResultadoOperacion.Error("Debe vincular una tarjeta antes de guardar.");
             if (_usuarios.Any(u => u.NumeroTarjeta == numeroTarjeta))
                 return ResultadoOperacion.Error("Ya existe un usuario con ese número de tarjeta.");
-            if (_usuarios.Any(u => u.UID == uid && !string.IsNullOrEmpty(u.UID)))
-                return ResultadoOperacion.Error("Esa tarjeta ya está vinculada a otro usuario.");
-            if (_usuarios.Any(u => u.HuellaSlot == huellaSlot))
-                return ResultadoOperacion.Error("Ese slot de huella ya está asignado a otro usuario.");
+            //if (_usuarios.Any(u => u.UID == uid && !string.IsNullOrEmpty(u.UID)))
+               // return ResultadoOperacion.Error("Esa tarjeta ya está vinculada a otro usuario.");
+            //if (_usuarios.Any(u => u.HuellaSlot == huellaSlot))
+                //return ResultadoOperacion.Error("Ese slot de huella ya está asignado a otro usuario.");
 
             _usuarios.Add(new Usuario
             {
@@ -310,7 +310,7 @@ namespace CajeroAutomatico.Negocio
                 UltimoAcceso = DateTime.MinValue,
                 FechaRetiroHoy = DateTime.MinValue,
                 HuellaDigital = huellaDigital ?? "",
-                UID = uid,
+                UID = uid ?? "",
                 HuellaSlot = huellaSlot
             });
 

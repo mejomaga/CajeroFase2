@@ -19,7 +19,7 @@ namespace CajeroAutomatico.Presentacion
         public FormInsertarTarjeta()
         {
             InitializeComponent();
-            this.Load += FormInsertarTarjeta_Load;
+            //this.Load += FormInsertarTarjeta_Load;
             this.FormClosing += FormInsertarTarjeta_FormClosing;
         }
 
@@ -40,16 +40,18 @@ namespace CajeroAutomatico.Presentacion
         private void FormInsertarTarjeta_Load(object sender, EventArgs e)
         {
             VozService.Hablar("Bienvenido. Por favor, inserte su tarjeta o acérquela al lector.");
+            
             // Mensaje visual
             lblMensaje.Text = "Inserte su tarjeta";
             lblEstado.Text = "";
             _procesando = false;
 
             // Suscribirse al evento del lector
-            Program.Servicio.TarjetaDetectada += TarjetaDetectada;
+            //Program.Servicio.TarjetaDetectada += TarjetaDetectada;
 
             // Empezar a escuchar automáticamente
-            Program.Servicio.IniciarLector();
+            //Program.Servicio.IniciarLector();
+            txtNumeroTarjeta.Focus();
         }
 
         private void TarjetaDetectada(string uid)
@@ -101,8 +103,8 @@ namespace CajeroAutomatico.Presentacion
 
         private void FormInsertarTarjeta_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Program.Servicio.TarjetaDetectada -= TarjetaDetectada;
-            Program.Servicio.DetenerLector();
+           // Program.Servicio.TarjetaDetectada -= TarjetaDetectada;
+           // Program.Servicio.DetenerLector();
         }
 
         private void btnContinue_Click(object sender, EventArgs e)

@@ -36,6 +36,8 @@ namespace CajeroAutomatico.Presentacion
         private void FormVerificacion_Load(object sender, EventArgs e)
         {
             VozService.Hablar("Elija alguna de las opciones");
+            btnHuella.Visible = false;
+            btnHuella.Enabled = false;
         }
     }
 }

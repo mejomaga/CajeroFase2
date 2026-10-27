@@ -49,7 +49,7 @@
             this.txtNumeroTarjeta.Size = new System.Drawing.Size(400, 61);
             this.txtNumeroTarjeta.TabIndex = 1;
             this.txtNumeroTarjeta.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtNumeroTarjeta.Visible = false;
+            this.txtNumeroTarjeta.Visible = true;
             // 
             // lblError
             // 
@@ -101,7 +101,7 @@
             this.btnContinue.TabIndex = 6;
             this.btnContinue.Text = "Continuar";
             this.btnContinue.UseVisualStyleBackColor = false;
-            this.btnContinue.Visible = false;
+            this.btnContinue.Visible = true;
             this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
             // 
             // FormInsertarTarjeta

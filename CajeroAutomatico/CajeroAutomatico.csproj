@@ -53,6 +53,7 @@
     <Compile Include="Entidades\Enums.cs" />
     <Compile Include="Entidades\Transaccion.cs" />
     <Compile Include="Entidades\Usuario.cs" />
+    <Compile Include="Negocio\ArduinoService.cs" />
     <Compile Include="Negocio\FormModificarHuella.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,7 +73,6 @@
     <Compile Include="Presentacion\FormRetireDinero.Designer.cs">
       <DependentUpon>FormRetireDinero.cs</DependentUpon>
     </Compile>
-    <Compile Include="Negocio\ArduinoService.cs" />
     <Compile Include="Negocio\CajeroService.cs" />
     <Compile Include="Negocio\Sesion.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
