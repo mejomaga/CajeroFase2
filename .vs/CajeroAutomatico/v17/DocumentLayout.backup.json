@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}|CajeroAutomatico\\CajeroAutomatico.csproj|c:\\users\\melqu\\documents\\github\\proyectocajeroautomaticofase2\\cajeroautomatico\\entidades\\cajeroconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}|CajeroAutomatico\\CajeroAutomatico.csproj|solutionrelative:cajeroautomatico\\entidades\\cajeroconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{66AEF570-A714-47F0-9765-29A8C3484E30}|ProyectoServidor\\ProyectoServidor.csproj|c:\\users\\melqu\\documents\\github\\proyectocajeroautomaticofase2\\proyectoservidor\\negocio\\gestortoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66AEF570-A714-47F0-9765-29A8C3484E30}|ProyectoServidor\\ProyectoServidor.csproj|solutionrelative:proyectoservidor\\negocio\\gestortoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}|CajeroAutomatico\\CajeroAutomatico.csproj|c:\\users\\melqu\\documents\\github\\proyectocajeroautomaticofase2\\cajeroautomatico\\negocio\\arduinoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}|CajeroAutomatico\\CajeroAutomatico.csproj|solutionrelative:cajeroautomatico\\negocio\\arduinoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{66AEF570-A714-47F0-9765-29A8C3484E30}|ProyectoServidor\\ProyectoServidor.csproj|c:\\users\\melqu\\documents\\github\\proyectocajeroautomaticofase2\\proyectoservidor\\servidorcentral.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{66AEF570-A714-47F0-9765-29A8C3484E30}|ProyectoServidor\\ProyectoServidor.csproj|solutionrelative:proyectoservidor\\servidorcentral.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}|CajeroAutomatico\\CajeroAutomatico.csproj|C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\cajeroautomatico\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}|CajeroAutomatico\\CajeroAutomatico.csproj|solutionrelative:cajeroautomatico\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}|CajeroAutomatico\\CajeroAutomatico.csproj|C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\cajeroautomatico\\entidades\\cajeroconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}|CajeroAutomatico\\CajeroAutomatico.csproj|solutionrelative:cajeroautomatico\\entidades\\cajeroconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}|CajeroAutomatico\\CajeroAutomatico.csproj|C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\cajeroautomatico\\negocio\\arduinoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}|CajeroAutomatico\\CajeroAutomatico.csproj|solutionrelative:cajeroautomatico\\negocio\\arduinoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,33 +30,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "ArduinoService.cs",
               "DocumentMoniker": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\CajeroAutomatico\\Negocio\\ArduinoService.cs",
               "RelativeDocumentMoniker": "CajeroAutomatico\\Negocio\\ArduinoService.cs",
               "ToolTip": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\CajeroAutomatico\\Negocio\\ArduinoService.cs",
               "RelativeToolTip": "CajeroAutomatico\\Negocio\\ArduinoService.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAgwBMAAAAXAAAAAAAAAA==",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAuwBMAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-09-21T18:36:46.313Z",
               "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CajeroConfig.cs",
-              "DocumentMoniker": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\CajeroAutomatico\\Entidades\\CajeroConfig.cs",
-              "RelativeDocumentMoniker": "CajeroAutomatico\\Entidades\\CajeroConfig.cs",
-              "ToolTip": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\CajeroAutomatico\\Entidades\\CajeroConfig.cs",
-              "RelativeToolTip": "CajeroAutomatico\\Entidades\\CajeroConfig.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-27T00:39:18.015Z",
               "EditorCaption": ""
             },
             {
@@ -68,6 +63,23 @@
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GestorToken.cs",
+              "DocumentMoniker": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\ProyectoServidor\\Negocio\\GestorToken.cs",
+              "RelativeDocumentMoniker": "ProyectoServidor\\Negocio\\GestorToken.cs",
+              "ToolTip": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\ProyectoServidor\\Negocio\\GestorToken.cs",
+              "RelativeToolTip": "ProyectoServidor\\Negocio\\GestorToken.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-27T02:14:19.789Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Program.cs",
@@ -77,7 +89,34 @@
               "RelativeToolTip": "CajeroAutomatico\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAADwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-21T18:37:38.159Z"
+              "WhenOpened": "2026-09-21T18:37:38.159Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CajeroConfig.cs",
+              "DocumentMoniker": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\CajeroAutomatico\\Entidades\\CajeroConfig.cs",
+              "RelativeDocumentMoniker": "CajeroAutomatico\\Entidades\\CajeroConfig.cs",
+              "ToolTip": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\CajeroAutomatico\\Entidades\\CajeroConfig.cs",
+              "RelativeToolTip": "CajeroAutomatico\\Entidades\\CajeroConfig.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-27T00:39:18.015Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ServidorCentral.cs",
+              "DocumentMoniker": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\ProyectoServidor\\ServidorCentral.cs",
+              "RelativeDocumentMoniker": "ProyectoServidor\\ServidorCentral.cs",
+              "ToolTip": "C:\\Users\\melqu\\Documents\\GitHub\\ProyectoCajeroAutomaticoFase2\\ProyectoServidor\\ServidorCentral.cs",
+              "RelativeToolTip": "ProyectoServidor\\ServidorCentral.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-27T01:56:49.797Z",
+              "EditorCaption": ""
             }
           ]
         }
