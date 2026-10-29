@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Security.Cryptography;
@@ -49,8 +49,20 @@ namespace ProyectoServidor.Datos
 
                         comando.Parameters.AddWithValue("@NumeroTarjeta", numeroTarjeta);
 
-                        // Calculamos el hash SHA-256 del PIN requerido por el Stored Procedure
-                        comando.Parameters.AddWithValue("@PinHash", CalcularSha256(pinPlano));
+                        // Soporte hibrido: detecta si la BD en este equipo espera @PinHash o @PinPlano
+                        bool usaPinHash = false;
+                        using (SqlCommand cmdCheck = new SqlCommand("SELECT COUNT(1) FROM sys.parameters WHERE object_id = OBJECT_ID('sp_ValidarCredenciales') AND name = '@PinHash'", conexion))
+                        {
+                            usaPinHash = Convert.ToInt32(cmdCheck.ExecuteScalar()) > 0;
+                        }
+                        if (usaPinHash)
+                        {
+                            comando.Parameters.AddWithValue("@PinHash", CalcularSha256(pinPlano));
+                        }
+                        else
+                        {
+                            comando.Parameters.AddWithValue("@PinPlano", pinPlano);
+                        }
 
                         var pIdUsuario = new SqlParameter("@IdUsuarioOut", SqlDbType.Int) { Direction = ParameterDirection.Output };
                         var pIdTarjeta = new SqlParameter("@IdTarjetaOut", SqlDbType.Int) { Direction = ParameterDirection.Output };
