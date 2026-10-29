@@ -1,4 +1,4 @@
-﻿-- 1. Creaci≤n de la base de datos
+-- 1. Creaci≤n de la base de datos
 CREATE DATABASE BD_CajeroRed;
 GO
 USE BD_CajeroRed;
@@ -543,9 +543,11 @@ END
 GO
 
 -- Procedimiento para autenticar con tarjeta y PIN hash (S-05, S-07)
+-- Procedimiento universal para autenticar con tarjeta y PIN (soporta @PinPlano y @PinHash, con y sin Salt)
 CREATE OR ALTER PROCEDURE sp_ValidarCredenciales
     @NumeroTarjeta CHAR(16),
-    @PinHash NVARCHAR(256),
+    @PinPlano NVARCHAR(50) = NULL,
+    @PinHash NVARCHAR(256) = NULL,
     @IdUsuarioOut INT OUTPUT,
     @IdTarjetaOut INT OUTPUT,
     @CodigoRespuesta NVARCHAR(5) OUTPUT
@@ -556,10 +558,11 @@ BEGIN
     DECLARE @Intentos INT;
     DECLARE @EstadoUsuario NVARCHAR(20);
     DECLARE @PinHashReal NVARCHAR(256);
+    DECLARE @PinSaltReal NVARCHAR(128);
     
     SELECT @IdUsuarioOut = t.IdUsuario, @IdTarjetaOut = t.IdTarjeta, 
            @Intentos = u.IntentosFallidos, @EstadoUsuario = u.Estado,
-           @PinHashReal = t.PinHash
+           @PinHashReal = t.PinHash, @PinSaltReal = t.PinSalt
     FROM Tarjeta t
     INNER JOIN Usuario u ON t.IdUsuario = u.IdUsuario
     WHERE t.NumeroTarjeta = @NumeroTarjeta AND t.Activa = 1;
@@ -576,15 +579,30 @@ BEGIN
         RETURN;
     END
 
-    IF @PinHashReal = @PinHash
+    DECLARE @Valido BIT = 0;
+
+    -- 1. Coincidencia directa con PinHash enviado desde C#
+    IF @PinHash IS NOT NULL AND @PinHashReal = @PinHash
+        SET @Valido = 1;
+
+    -- 2. Si vino PinPlano, validar contra hash con salt y sin salt en formato VARCHAR (UTF-8 de C#)
+    IF @PinPlano IS NOT NULL
     BEGIN
-        -- Resetea los intentos fallidos al ingresar exitosamente (RN-09)
+        -- Sin salt (como Juan Tzub)
+        IF @PinHashReal = LOWER(CONVERT(NVARCHAR(256), HASHBYTES('SHA2_256', CAST(@PinPlano AS VARCHAR(100))), 2))
+            SET @Valido = 1;
+        -- Con salt (como Dashboard: pin + salt)
+        IF @PinSaltReal IS NOT NULL AND @PinHashReal = LOWER(CONVERT(NVARCHAR(256), HASHBYTES('SHA2_256', CAST(@PinPlano + @PinSaltReal AS VARCHAR(200))), 2))
+            SET @Valido = 1;
+    END
+
+    IF @Valido = 1
+    BEGIN
         UPDATE Usuario SET IntentosFallidos = 0 WHERE IdUsuario = @IdUsuarioOut;
         SET @CodigoRespuesta = '00';
     END
     ELSE
     BEGIN
-        -- Incrementa los intentos y bloquea si llega a 3 (RN-09, S-07)
         UPDATE Usuario SET IntentosFallidos = IntentosFallidos + 1 WHERE IdUsuario = @IdUsuarioOut;
         
         IF (@Intentos + 1) >= 3
