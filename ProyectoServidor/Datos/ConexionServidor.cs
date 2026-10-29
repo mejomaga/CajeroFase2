@@ -14,7 +14,7 @@ namespace ProyectoServidor.Datos
         private readonly string _cadenaConexion =
             System.Configuration.ConfigurationManager.ConnectionStrings["BD_CajeroRed"]?.ConnectionString
             ?? System.Configuration.ConfigurationManager.AppSettings["CadenaConexion"]
-            ?? @"Server=MELQUI\SQLEXPRESS;Database=BD_CajeroRed;Trusted_Connection=True;TrustServerCertificate=True;";
+            ?? @"Server=.\SQLEXPRESS;Database=BD_CajeroRed;Trusted_Connection=True;TrustServerCertificate=True;";
 
 
 
