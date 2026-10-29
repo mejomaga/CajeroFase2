@@ -57,7 +57,24 @@ namespace ProyectoServidor.Datos
                         }
                         if (usaPinHash)
                         {
-                            comando.Parameters.AddWithValue("@PinHash", CalcularSha256(pinPlano));
+                            string hashParaEnviar = CalcularSha256(pinPlano);
+                            using (SqlCommand cmdSalt = new SqlCommand("SELECT PinSalt, PinHash FROM Tarjeta WHERE NumeroTarjeta = @Num", conexion))
+                            {
+                                cmdSalt.Parameters.AddWithValue("@Num", numeroTarjeta);
+                                using (var reader = cmdSalt.ExecuteReader())
+                                {
+                                    if (reader.Read())
+                                    {
+                                        string salt = reader["PinSalt"]?.ToString() ?? "";
+                                        string pinHashReal = reader["PinHash"]?.ToString() ?? "";
+                                        if (!string.IsNullOrEmpty(salt) && pinHashReal.Equals(CalcularSha256(pinPlano + salt), StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            hashParaEnviar = CalcularSha256(pinPlano + salt);
+                                        }
+                                    }
+                                }
+                            }
+                            comando.Parameters.AddWithValue("@PinHash", hashParaEnviar);
                         }
                         else
                         {
