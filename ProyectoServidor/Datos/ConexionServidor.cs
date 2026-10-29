@@ -49,8 +49,8 @@ namespace ProyectoServidor.Datos
 
                         comando.Parameters.AddWithValue("@NumeroTarjeta", numeroTarjeta);
 
-                        // Mandamos el PIN en texto plano tal cual viene del cajero (ej: "1234")
-                        comando.Parameters.AddWithValue("@PinPlano", pinPlano);
+                        // Calculamos el hash SHA-256 del PIN requerido por el Stored Procedure
+                        comando.Parameters.AddWithValue("@PinHash", CalcularSha256(pinPlano));
 
                         var pIdUsuario = new SqlParameter("@IdUsuarioOut", SqlDbType.Int) { Direction = ParameterDirection.Output };
                         var pIdTarjeta = new SqlParameter("@IdTarjetaOut", SqlDbType.Int) { Direction = ParameterDirection.Output };
