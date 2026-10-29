@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{89881DE0-F470-40F2-83CA-FAB2F7F3B43F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>CajeroAutomatico</RootNamespace>
+    <AssemblyName>CajeroAutomatico</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.14, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.10.0.14\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Pipelines, Version=10.0.0.14, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.10.0.14\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Text.Encodings.Web, Version=10.0.0.14, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.10.0.14\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=10.0.0.14, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.10.0.14\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <!-- JavaScriptSerializer: serializa/deserializa el protocolo JSON del
+         socket sin depender de ningún paquete NuGet externo. -->
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Comunicacion\Protocolo.cs" />
+    <Compile Include="Comunicacion\ServidorClient.cs" />
+    <Compile Include="Entidades\Enums.cs" />
+    <Compile Include="Entidades\Transaccion.cs" />
+    <Compile Include="Entidades\Usuario.cs" />
+    <Compile Include="Negocio\ArduinoService.cs" />
+    <Compile Include="Negocio\VozService.cs" />
+    <Compile Include="Presentacion\FormIngresarDinero.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormIngresarDinero.Designer.cs">
+      <DependentUpon>FormIngresarDinero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormRetireDinero.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormRetireDinero.Designer.cs">
+      <DependentUpon>FormRetireDinero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Negocio\Sesion.cs" />
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
+    <Compile Include="Presentacion\DenominacionesHelper.cs" />
+    <Compile Include="Presentacion\FormFinProceso.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormFinProceso.Designer.cs">
+      <DependentUpon>FormFinProceso.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormCambiarPin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormCambiarPin.Designer.cs">
+      <DependentUpon>FormCambiarPin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormCargando.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormCargando.Designer.cs">
+      <DependentUpon>FormCargando.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormDeposito.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormDeposito.Designer.cs">
+      <DependentUpon>FormDeposito.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormErrorConexion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormErrorConexion.Designer.cs">
+      <DependentUpon>FormErrorConexion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormEstadoCajero.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormEstadoCajero.Designer.cs">
+      <DependentUpon>FormEstadoCajero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormHuellaDigital.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormHuellaDigital.Designer.cs">
+      <DependentUpon>FormHuellaDigital.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormInsertarTarjeta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormInsertarTarjeta.Designer.cs">
+      <DependentUpon>FormInsertarTarjeta.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormMenuUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormMenuUsuario.Designer.cs">
+      <DependentUpon>FormMenuUsuario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormPIN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormPIN.Designer.cs">
+      <DependentUpon>FormPIN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormRetiro.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormRetiro.Designer.cs">
+      <DependentUpon>FormRetiro.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormUltimasTransacciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormUltimasTransacciones.Designer.cs">
+      <DependentUpon>FormUltimasTransacciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormVerificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormVerificacion.Designer.cs">
+      <DependentUpon>FormVerificacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormVerSaldo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormVerSaldo.Designer.cs">
+      <DependentUpon>FormVerSaldo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\FormVoucher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormVoucher.Designer.cs">
+      <DependentUpon>FormVoucher.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Presentacion\FormFinProceso.resx">
+      <DependentUpon>FormFinProceso.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormCambiarPin.resx">
+      <DependentUpon>FormCambiarPin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormCargando.resx">
+      <DependentUpon>FormCargando.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormDeposito.resx">
+      <DependentUpon>FormDeposito.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormErrorConexion.resx">
+      <DependentUpon>FormErrorConexion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormEstadoCajero.resx">
+      <DependentUpon>FormEstadoCajero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormHuellaDigital.resx">
+      <DependentUpon>FormHuellaDigital.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormInsertarTarjeta.resx">
+      <DependentUpon>FormInsertarTarjeta.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormIngresarDinero.resx">
+      <DependentUpon>FormIngresarDinero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormMenuUsuario.resx">
+      <DependentUpon>FormMenuUsuario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormPIN.resx">
+      <DependentUpon>FormPIN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormRetireDinero.resx">
+      <DependentUpon>FormRetireDinero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormRetiro.resx">
+      <DependentUpon>FormRetiro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormUltimasTransacciones.resx">
+      <DependentUpon>FormUltimasTransacciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormVerificacion.resx">
+      <DependentUpon>FormVerificacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormVerSaldo.resx">
+      <DependentUpon>FormVerSaldo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormVoucher.resx">
+      <DependentUpon>FormVoucher.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets'))" />
+  </Target>
+</Project>

@@ -54,7 +54,7 @@
             this.btnPin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPin.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPin.ForeColor = System.Drawing.Color.White;
-            this.btnPin.Location = new System.Drawing.Point(237, 320);
+            this.btnPin.Location = new System.Drawing.Point(407, 290);
             this.btnPin.Name = "btnPin";
             this.btnPin.Size = new System.Drawing.Size(250, 120);
             this.btnPin.TabIndex = 1;
@@ -70,7 +70,7 @@
             this.btnHuella.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHuella.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHuella.ForeColor = System.Drawing.Color.White;
-            this.btnHuella.Location = new System.Drawing.Point(537, 320);
+            this.btnHuella.Location = new System.Drawing.Point(407, 447);
             this.btnHuella.Name = "btnHuella";
             this.btnHuella.Size = new System.Drawing.Size(250, 120);
             this.btnHuella.TabIndex = 2;

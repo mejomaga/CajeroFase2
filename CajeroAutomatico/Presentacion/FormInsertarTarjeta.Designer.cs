@@ -42,14 +42,13 @@
             this.txtNumeroTarjeta.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtNumeroTarjeta.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNumeroTarjeta.ForeColor = System.Drawing.Color.White;
-            this.txtNumeroTarjeta.Location = new System.Drawing.Point(312, 350);
+            this.txtNumeroTarjeta.Location = new System.Drawing.Point(281, 349);
             this.txtNumeroTarjeta.Margin = new System.Windows.Forms.Padding(4);
             this.txtNumeroTarjeta.MaxLength = 16;
             this.txtNumeroTarjeta.Name = "txtNumeroTarjeta";
             this.txtNumeroTarjeta.Size = new System.Drawing.Size(400, 61);
             this.txtNumeroTarjeta.TabIndex = 1;
             this.txtNumeroTarjeta.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtNumeroTarjeta.Visible = true;
             // 
             // lblError
             // 
@@ -95,13 +94,12 @@
             this.btnContinue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnContinue.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnContinue.ForeColor = System.Drawing.Color.White;
-            this.btnContinue.Location = new System.Drawing.Point(750, 340);
+            this.btnContinue.Location = new System.Drawing.Point(731, 340);
             this.btnContinue.Name = "btnContinue";
             this.btnContinue.Size = new System.Drawing.Size(200, 70);
             this.btnContinue.TabIndex = 6;
             this.btnContinue.Text = "Continuar";
             this.btnContinue.UseVisualStyleBackColor = false;
-            this.btnContinue.Visible = true;
             this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
             // 
             // FormInsertarTarjeta

@@ -1,1 +1,39 @@
-.vs/CajeroAutomatico/CopilotIndices/17.14.1661.41761/CodeChunks.db
+## Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.userprefs
+*.db
+*.vsidx
+.dtbcache.v2
+
+## NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+
+## Zip archives
+*.zip
+*.7z
+*.rar
+
+## Auto-generated files
+.system_generated/

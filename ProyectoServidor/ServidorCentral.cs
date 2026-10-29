@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
-using ProyectoServidor.Modelos; // Importa las clases MensajeRed y MensajeTransaccion
+using ProyectoServidor.Datos;
+using ProyectoServidor.Negocio;
 
 namespace ProyectoServidor.Comunicaciones
 {
@@ -14,16 +18,27 @@ namespace ProyectoServidor.Comunicaciones
     {
         private TcpListener _listener;
         private CancellationTokenSource _cancellationTokenSource;
-
-        // Diccionario seguro para guardar los cajeros conectados y su estado en tiempo real
         private ConcurrentDictionary<string, TcpClient> _cajerosConectados;
+
+        // Variables necesarias para el control de sesiones y heartbeats
+        private ConcurrentDictionary<string, (int idUsuario, int idTarjeta)> _sesionesActivas;
+        private ConcurrentDictionary<string, DateTime> _ultimoHeartbeat;
+        private Timer _timerHeartbeat;
+
+        private readonly ConexionServidor _bd;
+        private readonly GestorToken _gestorToken;
+
+        public event Action<string> OnMensajeConsola;
 
         public ServidorCentral()
         {
             _cajerosConectados = new ConcurrentDictionary<string, TcpClient>();
+            _sesionesActivas = new ConcurrentDictionary<string, (int, int)>();
+            _ultimoHeartbeat = new ConcurrentDictionary<string, DateTime>();
+            _bd = new ConexionServidor();
+            _gestorToken = new GestorToken();
         }
 
-        // Inicia el servidor en el puerto 5000 por defecto
         public void Iniciar(int puerto = 5000)
         {
             try
@@ -32,24 +47,26 @@ namespace ProyectoServidor.Comunicaciones
                 _listener.Start();
                 _cancellationTokenSource = new CancellationTokenSource();
 
-                Console.WriteLine($"[SERVIDOR] Iniciado correctamente en el puerto {puerto}.");
-                Console.WriteLine("[SERVIDOR] Esperando conexiones de cajeros...");
+                // Iniciar el vigilante de Heartbeats cada 10 segundos
+                _timerHeartbeat = new Timer(RevisarCajerosInactivos, null, 10000, 10000);
 
-                // Hilo principal de escucha (No bloqueante)
+                OnMensajeConsola?.Invoke($"[SERVIDOR] Iniciado correctamente en el puerto {puerto}.");
+                OnMensajeConsola?.Invoke("[SERVIDOR] Esperando conexiones de cajeros...");
+
                 Task.Run(() => EscucharClientesAsync(_cancellationTokenSource.Token));
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] No se pudo iniciar el servidor: {ex.Message}");
+                OnMensajeConsola?.Invoke($"[ERROR] No se pudo iniciar el servidor: {ex.Message}");
             }
         }
 
-        // Detiene el servidor de forma segura liberando el puerto de red
         public void Detener()
         {
             _cancellationTokenSource?.Cancel();
             _listener?.Stop();
-            Console.WriteLine("[SERVIDOR] Apagado.");
+            _timerHeartbeat?.Dispose();
+            OnMensajeConsola?.Invoke("[SERVIDOR] Apagado.");
         }
 
         private async Task EscucharClientesAsync(CancellationToken token)
@@ -59,19 +76,11 @@ namespace ProyectoServidor.Comunicaciones
                 try
                 {
                     TcpClient cliente = await _listener.AcceptTcpClientAsync();
-                    Console.WriteLine($"[RED] Nueva conexión detectada desde: {cliente.Client.RemoteEndPoint}");
-
-                    // Crea un Task (hilo) independiente para atender exclusivamente a este cajero
+                    OnMensajeConsola?.Invoke($"[RED] Nueva conexión detectada desde: {cliente.Client.RemoteEndPoint}");
                     _ = Task.Run(() => AtenderCajeroAsync(cliente, token));
                 }
-                catch (ObjectDisposedException)
-                {
-                    break; // El servidor se apagó, salir del bucle tranquilamente
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[ERROR RED] {ex.Message}");
-                }
+                catch (ObjectDisposedException) { break; }
+                catch (Exception ex) { OnMensajeConsola?.Invoke($"[ERROR RED] {ex.Message}"); }
             }
         }
 
@@ -87,84 +96,220 @@ namespace ProyectoServidor.Comunicaciones
 
                 while (cliente.Connected && !token.IsCancellationRequested)
                 {
-                    // Lee el JSON entrante de forma asíncrona
-                    string mensajeJson = await reader.ReadLineAsync();
-                    if (string.IsNullOrEmpty(mensajeJson)) break;
+                    string jsonCompleto = await reader.ReadLineAsync();
 
-                    Console.WriteLine($"[MENSAJE RECIBIDO] {mensajeJson}");
+                    // Si el cajero cierra la conexión abruptamente, salimos
+                    if (jsonCompleto == null) break;
+
+                    // Si viene vacío, ignoramos y seguimos escuchando
+                    if (string.IsNullOrWhiteSpace(jsonCompleto)) continue;
+
+                    OnMensajeConsola?.Invoke($"[MENSAJE RECIBIDO] {jsonCompleto}");
 
                     try
                     {
-                        // 1. Convertir el texto JSON en un objeto básico
-                        var mensajeBase = JsonSerializer.Deserialize<MensajeRed>(mensajeJson);
-
-                        if (mensajeBase == null || string.IsNullOrEmpty(mensajeBase.Tipo))
-                        {
-                            await writer.WriteLineAsync("{\"tipo\": \"RESPUESTA\", \"codigo\":\"96\", \"mensaje\":\"Formato JSON inválido\"}");
-                            continue;
-                        }
-
-                        // 2. Enrutar la petición a la lógica de negocio correcta
-                        switch (mensajeBase.Tipo.ToUpper())
-                        {
-                            case "REGISTRAR_CAJERO":
-                                idCajero = mensajeBase.Cajero;
-                                _cajerosConectados.TryAdd(idCajero, cliente);
-                                Console.WriteLine($"[REGISTRO] Cajero {idCajero} registrado con éxito.");
-                                await writer.WriteLineAsync("{\"tipo\": \"RESPUESTA\", \"codigo\":\"00\", \"mensaje\":\"Cajero Registrado\"}");
-                                break;
-
-                            case "HEARTBEAT":
-                                await writer.WriteLineAsync("{\"tipo\": \"RESPUESTA\", \"codigo\":\"00\", \"mensaje\":\"Vivo\"}");
-                                break;
-
-                            case "LOGIN":
-                                // Aquí Juan validará en SQL Server si el PIN es correcto para generar el Token
-                                await writer.WriteLineAsync($"{{\"tipo\": \"RESPUESTA\", \"idSolicitud\":\"{mensajeBase.IdSolicitud}\", \"codigo\":\"00\", \"mensaje\":\"Credenciales validadas, ingrese Token\"}}");
-                                break;
-
-                            case "VALIDAR_TOKEN":
-                                // Aquí validaremos que el token tenga menos de 2 minutos
-                                await writer.WriteLineAsync($"{{\"tipo\": \"RESPUESTA\", \"idSolicitud\":\"{mensajeBase.IdSolicitud}\", \"codigo\":\"00\", \"mensaje\":\"Token válido, sesión iniciada\"}}");
-                                break;
-
-                            case "RETIRO":
-                                var mensajeRetiro = JsonSerializer.Deserialize<MensajeTransaccion>(mensajeJson);
-                                Console.WriteLine($"[TRANSACCION] El cajero {idCajero} solicita retirar Q {mensajeRetiro.Monto}");
-                                await writer.WriteLineAsync($"{{\"tipo\": \"RESPUESTA\", \"idSolicitud\":\"{mensajeBase.IdSolicitud}\", \"codigo\":\"00\", \"mensaje\":\"Retiro aprobado\"}}");
-                                break;
-
-                            case "DEPOSITO":
-                                var mensajeDeposito = JsonSerializer.Deserialize<MensajeTransaccion>(mensajeJson);
-                                Console.WriteLine($"[TRANSACCION] El cajero {idCajero} deposita Q {mensajeDeposito.Monto}");
-                                await writer.WriteLineAsync($"{{\"tipo\": \"RESPUESTA\", \"idSolicitud\":\"{mensajeBase.IdSolicitud}\", \"codigo\":\"00\", \"mensaje\":\"Depósito aprobado\"}}");
-                                break;
-
-                            default:
-                                Console.WriteLine($"[ADVERTENCIA] Tipo de mensaje desconocido: {mensajeBase.Tipo}");
-                                await writer.WriteLineAsync("{\"tipo\": \"RESPUESTA\", \"codigo\":\"96\", \"mensaje\":\"Operación no soportada\"}");
-                                break;
-                        }
+                        string respuestaJson = ProcesarMensaje(jsonCompleto, ref idCajero, cliente);
+                        await writer.WriteLineAsync(respuestaJson);
                     }
-                    catch (JsonException jsonEx)
+                    catch (Exception ex)
                     {
-                        Console.WriteLine($"[ERROR JSON] {jsonEx.Message}");
-                        await writer.WriteLineAsync("{\"tipo\": \"RESPUESTA\", \"codigo\":\"96\", \"mensaje\":\"Error de parseo JSON\"}");
+                        // Si un mensaje falla, avisamos pero NO cerramos la conexión
+                        OnMensajeConsola?.Invoke($"[ERROR MENSAJE] {ex.Message}");
+                        await writer.WriteLineAsync("{\"Exito\":false,\"Mensaje\":\"Error interno del servidor\"}");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[DESCONEXIÓN] Error con cajero {idCajero}: {ex.Message}");
+                OnMensajeConsola?.Invoke($"[DESCONEXIÓN] Error con cajero {idCajero}: {ex.Message}");
             }
             finally
             {
                 cliente.Close();
-                Console.WriteLine($"[RED] El cajero {idCajero} se ha desconectado.");
-
+                OnMensajeConsola?.Invoke($"[RED] El cajero {idCajero} se ha desconectado.");
                 if (idCajero != "Desconocido")
                 {
-                    _cajerosConectados.TryRemove(idCajero, out _);
+                    //_cajerosConectados.TryRemove(idCajero, out _);
+                    //_sesionesActivas.TryRemove(idCajero, out _);
+                }
+            }
+        }
+
+        private string ProcesarMensaje(string jsonCompleto, ref string idCajero, TcpClient cliente = null)
+        {
+            var jsonNode = JsonNode.Parse(jsonCompleto);
+            string tipo = jsonNode["Operacion"]?.ToString().ToUpper() ?? jsonNode["tipo"]?.ToString()?.ToUpper();
+            string idSol = jsonNode["idSolicitud"]?.ToString() ?? "0";
+
+            if (jsonNode["cajero"] != null && idCajero == "Desconocido")
+                idCajero = jsonNode["cajero"].ToString();
+
+            // --- 1. REGISTRAR CAJERO ---
+            if (!string.IsNullOrEmpty(idCajero) && idCajero != "Desconocido")
+            {
+                if (cliente != null) _cajerosConectados[idCajero] = cliente;
+                _ultimoHeartbeat[idCajero] = DateTime.Now;
+            }
+
+            // --- 1. REGISTRAR CAJERO ---
+            if (tipo == "REGISTRAR_CAJERO")
+            {
+                if (cliente != null) _cajerosConectados[idCajero] = cliente;
+                _bd.RegistrarCajero(idCajero, "Terminal", "127.0.0.1", out string cod, out _);
+                return $"{{\"Exito\":true,\"Mensaje\":\"Registrado\",\"codigo\":\"{cod}\"}}";
+            }
+
+            // --- 2. HEARTBEAT / ESTADO ---
+            if (tipo == "HEARTBEAT" || tipo == "ESTADO_CAJERO")
+            {
+                _ultimoHeartbeat[idCajero] = DateTime.Now;
+                _bd.ActualizarHeartbeat(idCajero);
+                return "{\"Exito\":true,\"Mensaje\":\"Vivo\",\"Datos\":{\"Estado\":\"Activo\"}}";
+            }
+
+            // --- 3. VALIDAR PIN (LOGIN) ---
+            if (tipo == "LOGIN" || tipo == "VALIDAR_PIN")
+            {
+                var datos = jsonNode["Datos"];
+                string tarjeta = datos?["NumeroTarjeta"]?.ToString() ?? jsonNode["tarjeta"]?.ToString();
+                string pin = datos?["Pin"]?.ToString() ?? jsonNode["pin"]?.ToString();
+
+                bool exito = _bd.ValidarCredenciales(tarjeta, pin, out int idUsuario, out int idTarjeta, out string cod, out string err);
+
+                if (exito)
+                {
+                    _bd.GenerarToken(idUsuario, idCajero, out string token, out _);
+                    _sesionesActivas[idCajero] = (idUsuario, idTarjeta);
+                    return $"{{\"Exito\":true,\"Mensaje\":\"Ingreso correcto\",\"Datos\":{{\"Token\":\"{token}\"}}}}";
+                }
+                return $"{{\"Exito\":false,\"Mensaje\":\"{err}\"}}";
+            }
+
+            // --- 4. RETIRAR ---
+            if (tipo == "RETIRO" || tipo == "RETIRAR")
+            {
+                var datos = jsonNode["Datos"];
+                decimal monto = datos?["Monto"] != null ? Convert.ToDecimal(datos["Monto"].ToString()) : Convert.ToDecimal(jsonNode["monto"]?.ToString());
+                var desgloseInt = ProcesarDesglose(datos?["Desglose"] ?? jsonNode["desglose"]);
+
+                if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
+                    return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
+
+                bool exito = _bd.ProcesarRetiro(ids.idUsuario, ids.idTarjeta, idCajero, monto, desgloseInt, out int idTx, out string cod, out string err);
+
+                return $"{{\"Exito\":{exito.ToString().ToLower()},\"Mensaje\":\"{(exito ? "Retiro aprobado" : err)}\"}}";
+            }
+
+            // --- 5. DEPOSITAR ---
+            if (tipo == "DEPOSITO" || tipo == "DEPOSITAR")
+            {
+                var datos = jsonNode["Datos"];
+                var desgloseInt = ProcesarDesglose(datos?["Desglose"] ?? jsonNode["desglose"]);
+                decimal monto = desgloseInt.Sum(x => x.Key * x.Value);
+
+                if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
+                    return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
+
+                bool exito = _bd.ProcesarDeposito(ids.idUsuario, ids.idTarjeta, idCajero, monto, desgloseInt, out int idTx, out string cod, out string err);
+
+                return $"{{\"Exito\":{exito.ToString().ToLower()},\"Mensaje\":\"{(exito ? "Depósito aprobado" : err)}\"}}";
+            }
+
+            // --- 6. CONSULTAR SALDO ---
+            if (tipo == "CONSULTA_SALDO" || tipo == "CONSULTAR_SALDO")
+            {
+                if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
+                    return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
+
+                bool exito = _bd.ConsultarSaldo(ids.idUsuario, out decimal saldo, out decimal limite, out decimal disponible, out string err);
+
+                if (exito)
+                    return $"{{\"Exito\":true,\"Datos\":{{\"SaldoActual\":{saldo},\"LimiteMaximo\":{limite},\"DisponibleHoy\":{disponible}}}}}";
+
+                return "{\"Exito\":false,\"Mensaje\":\"Error al consultar\"}";
+            }
+
+            // --- 7. CAMBIAR PIN ---
+            if (tipo == "CAMBIO_PIN" || tipo == "CAMBIAR_PIN")
+            {
+                var datos = jsonNode["Datos"];
+                string nuevoPin = datos?["PinNuevo"]?.ToString() ?? jsonNode["pinNuevo"]?.ToString();
+
+                if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
+                    return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
+
+                bool exito = _bd.CambiarPin(ids.idUsuario, idCajero, "Usuario", nuevoPin, out string cod, out string err);
+
+                return $"{{\"Exito\":{exito.ToString().ToLower()},\"Mensaje\":\"{(exito ? "PIN actualizado" : err)}\"}}";
+            }
+
+            // --- 8. ULTIMAS TRANSACCIONES ---
+            if (tipo == "ULTIMAS_TRANSACCIONES")
+            {
+                if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
+                    return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
+
+                var lista = _bd.ObtenerUltimasTransacciones(ids.idUsuario);
+                return $"{{\"Exito\":true,\"Datos\":{{\"Transacciones\":{JsonSerializer.Serialize(lista)}}}}}";
+            }
+
+            // --- 9. CERRAR SESION ---
+            if (tipo == "LOGOUT" || tipo == "CERRAR_SESION")
+            {
+                _sesionesActivas.TryRemove(idCajero, out _);
+                return "{\"Exito\":true,\"Mensaje\":\"Sesión cerrada\"}";
+            }
+
+            return "{\"Exito\":false,\"Mensaje\":\"Operación no soportada\"}";
+        }
+
+        private Dictionary<int, int> ProcesarDesglose(JsonNode nodoDesglose)
+        {
+            var dict = new Dictionary<int, int>();
+            if (nodoDesglose != null)
+            {
+                foreach (var kv in nodoDesglose.AsObject())
+                    dict[int.Parse(kv.Key)] = int.Parse(kv.Value.ToString());
+            }
+            return dict;
+        }
+
+        public async Task<bool> EnviarComandoACajeroAsync(string codigoCajero, string comando)
+        {
+            // Buscamos la conexión activa del cajero
+            if (_cajerosConectados.TryGetValue(codigoCajero, out TcpClient cliente) && cliente != null)
+            {
+                try
+                {
+                    using NetworkStream stream = cliente.GetStream();
+                    using StreamWriter writer = new StreamWriter(stream, new System.Text.UTF8Encoding(false)) { AutoFlush = true, NewLine = "\n" };
+
+                    // Armamos el JSON con el comando
+                    string json = $"{{\"tipo\":\"COMANDO\",\"cajero\":\"{codigoCajero}\",\"comando\":\"{comando}\"}}";
+                    await writer.WriteLineAsync(json);
+
+                    OnMensajeConsola?.Invoke($"[COMANDO ENVIADO] A {codigoCajero}: {comando}");
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    OnMensajeConsola?.Invoke($"[ERROR COMANDO] {ex.Message}");
+                }
+            }
+            return false;
+        }
+        private void RevisarCajerosInactivos(object state)
+        {
+            DateTime ahora = DateTime.Now;
+            foreach (var kvp in _ultimoHeartbeat)
+            {
+                if ((ahora - kvp.Value).TotalSeconds > 30)
+                {
+                    OnMensajeConsola?.Invoke($"[ALERTA] El cajero {kvp.Key} se ha desconectado (sin heartbeat por 30s).");
+                    _ultimoHeartbeat.TryRemove(kvp.Key, out _);
+                    _cajerosConectados.TryRemove(kvp.Key, out _);
+
+                    _bd.MarcarCajeroDesconectado(kvp.Key);
                 }
             }
         }
