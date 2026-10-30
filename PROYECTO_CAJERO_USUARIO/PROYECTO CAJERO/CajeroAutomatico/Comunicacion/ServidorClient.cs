@@ -27,7 +27,7 @@ namespace CajeroAutomatico.Comunicacion
 
         public ServidorClient()
         {
-            _host = ConfigurationManager.AppSettings["ServidorIP"] ?? "127.0.0.1";
+            _host = ConfigurationManager.AppSettings["ServidorIP"] ?? "192.168.0.5";
             _puerto = int.TryParse(ConfigurationManager.AppSettings["ServidorPuerto"], out var p) ? p : 5000;
             _timeoutMs = int.TryParse(ConfigurationManager.AppSettings["ServidorTimeoutMs"], out var t) ? t : 10000;
 

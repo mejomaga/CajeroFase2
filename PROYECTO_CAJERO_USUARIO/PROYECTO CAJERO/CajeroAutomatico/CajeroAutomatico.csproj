@@ -170,6 +170,12 @@
     <Compile Include="Presentacion\FormRetiro.Designer.cs">
       <DependentUpon>FormRetiro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Presentacion\FormToken.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\FormToken.Designer.cs">
+      <DependentUpon>FormToken.cs</DependentUpon>
+    </Compile>
     <Compile Include="Presentacion\FormUltimasTransacciones.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -235,6 +241,9 @@
     <EmbeddedResource Include="Presentacion\FormRetiro.resx">
       <DependentUpon>FormRetiro.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\FormToken.resx">
+      <DependentUpon>FormToken.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Presentacion\FormUltimasTransacciones.resx">
       <DependentUpon>FormUltimasTransacciones.cs</DependentUpon>
     </EmbeddedResource>
@@ -270,7 +279,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-    <PropertyGroup>
+  <PropertyGroup>
     <PackagesDir Condition="Exists('..\..\..\packages')">..\..\..\packages</PackagesDir>
     <PackagesDir Condition="'$(PackagesDir)' == '' and Exists('..\packages')">..\packages</PackagesDir>
     <PackagesDir Condition="'$(PackagesDir)' == ''">..\..\..\packages</PackagesDir>

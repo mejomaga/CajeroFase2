@@ -44,10 +44,9 @@
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.LightGray;
-            this.label2.Location = new System.Drawing.Point(0, 135);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(0, 110);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(1024, 30);
+            this.label2.Size = new System.Drawing.Size(768, 24);
             this.label2.TabIndex = 20;
             this.label2.Text = "Elige una opción:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -58,12 +57,11 @@
             this.lblBienvenida.AutoSize = true;
             this.lblBienvenida.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBienvenida.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.lblBienvenida.Location = new System.Drawing.Point(40, 40);
-            this.lblBienvenida.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblBienvenida.Location = new System.Drawing.Point(30, 32);
             this.lblBienvenida.Name = "lblBienvenida";
-            this.lblBienvenida.Size = new System.Drawing.Size(149, 37);
+            this.lblBienvenida.Size = new System.Drawing.Size(120, 30);
             this.lblBienvenida.TabIndex = 19;
-            this.lblBienvenida.Text = "Bienvenido";
+            this.lblBienvenida.Text = "Bienvenido:";
             // 
             // btnCerrarSesion
             // 
@@ -73,10 +71,9 @@
             this.btnCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCerrarSesion.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCerrarSesion.ForeColor = System.Drawing.Color.White;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(554, 440);
-            this.btnCerrarSesion.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(416, 358);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(350, 60);
+            this.btnCerrarSesion.Size = new System.Drawing.Size(262, 49);
             this.btnCerrarSesion.TabIndex = 18;
             this.btnCerrarSesion.Text = "Cerrar Sesión";
             this.btnCerrarSesion.UseVisualStyleBackColor = false;
@@ -90,10 +87,9 @@
             this.btnVerSaldo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnVerSaldo.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnVerSaldo.ForeColor = System.Drawing.Color.White;
-            this.btnVerSaldo.Location = new System.Drawing.Point(120, 340);
-            this.btnVerSaldo.Margin = new System.Windows.Forms.Padding(4);
+            this.btnVerSaldo.Location = new System.Drawing.Point(90, 276);
             this.btnVerSaldo.Name = "btnVerSaldo";
-            this.btnVerSaldo.Size = new System.Drawing.Size(350, 60);
+            this.btnVerSaldo.Size = new System.Drawing.Size(262, 49);
             this.btnVerSaldo.TabIndex = 17;
             this.btnVerSaldo.Text = "Ver Saldo";
             this.btnVerSaldo.UseVisualStyleBackColor = false;
@@ -107,10 +103,9 @@
             this.btnUltimastransacciones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUltimastransacciones.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUltimastransacciones.ForeColor = System.Drawing.Color.White;
-            this.btnUltimastransacciones.Location = new System.Drawing.Point(554, 340);
-            this.btnUltimastransacciones.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUltimastransacciones.Location = new System.Drawing.Point(416, 276);
             this.btnUltimastransacciones.Name = "btnUltimastransacciones";
-            this.btnUltimastransacciones.Size = new System.Drawing.Size(350, 60);
+            this.btnUltimastransacciones.Size = new System.Drawing.Size(262, 49);
             this.btnUltimastransacciones.TabIndex = 16;
             this.btnUltimastransacciones.Text = "Últimas Transacciones";
             this.btnUltimastransacciones.UseVisualStyleBackColor = false;
@@ -124,10 +119,9 @@
             this.btnDeposito.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDeposito.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDeposito.ForeColor = System.Drawing.Color.White;
-            this.btnDeposito.Location = new System.Drawing.Point(554, 240);
-            this.btnDeposito.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDeposito.Location = new System.Drawing.Point(416, 195);
             this.btnDeposito.Name = "btnDeposito";
-            this.btnDeposito.Size = new System.Drawing.Size(350, 60);
+            this.btnDeposito.Size = new System.Drawing.Size(262, 49);
             this.btnDeposito.TabIndex = 15;
             this.btnDeposito.Text = "Depósito";
             this.btnDeposito.UseVisualStyleBackColor = false;
@@ -141,10 +135,9 @@
             this.btnRetiro.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRetiro.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRetiro.ForeColor = System.Drawing.Color.White;
-            this.btnRetiro.Location = new System.Drawing.Point(120, 240);
-            this.btnRetiro.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRetiro.Location = new System.Drawing.Point(90, 195);
             this.btnRetiro.Name = "btnRetiro";
-            this.btnRetiro.Size = new System.Drawing.Size(350, 60);
+            this.btnRetiro.Size = new System.Drawing.Size(262, 49);
             this.btnRetiro.TabIndex = 14;
             this.btnRetiro.Text = "Retiro";
             this.btnRetiro.UseVisualStyleBackColor = false;
@@ -155,10 +148,9 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(0, 80);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(0, 65);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1024, 45);
+            this.label1.Size = new System.Drawing.Size(768, 37);
             this.label1.TabIndex = 13;
             this.label1.Text = "Menú Usuario";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -171,10 +163,9 @@
             this.btnCambiarPIN.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCambiarPIN.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCambiarPIN.ForeColor = System.Drawing.Color.White;
-            this.btnCambiarPIN.Location = new System.Drawing.Point(120, 440);
-            this.btnCambiarPIN.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCambiarPIN.Location = new System.Drawing.Point(90, 358);
             this.btnCambiarPIN.Name = "btnCambiarPIN";
-            this.btnCambiarPIN.Size = new System.Drawing.Size(350, 60);
+            this.btnCambiarPIN.Size = new System.Drawing.Size(262, 49);
             this.btnCambiarPIN.TabIndex = 12;
             this.btnCambiarPIN.Text = "Cambiar PIN";
             this.btnCambiarPIN.UseVisualStyleBackColor = false;
@@ -182,10 +173,10 @@
             // 
             // FormMenuUsuario
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(40)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(1024, 768);
+            this.ClientSize = new System.Drawing.Size(768, 624);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblBienvenida);
             this.Controls.Add(this.btnCerrarSesion);
@@ -196,7 +187,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCambiarPIN);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormMenuUsuario";
             this.Text = "Cajero Automático - Julian Antonio Monterroso González_202342200";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

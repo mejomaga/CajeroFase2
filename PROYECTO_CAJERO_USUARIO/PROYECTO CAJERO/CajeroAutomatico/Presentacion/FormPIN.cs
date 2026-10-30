@@ -145,10 +145,5 @@ namespace CajeroAutomatico.Presentacion
         {
             VozService.Hablar("Ingrese su pin");
         }
-
-        private void btnRegresar_Click(object sender, EventArgs e)
-        {
-            Program.Navegar(this, new FormVerificacion(usuario));
-        }
     }
 }
