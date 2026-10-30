@@ -44,8 +44,9 @@
             this.lblEstado.Name = "lblEstado";
             this.lblEstado.Size = new System.Drawing.Size(1024, 50);
             this.lblEstado.TabIndex = 0;
-            this.lblEstado.Text = "Iniciando Sistema...";
+            this.lblEstado.Text = "Iniciando Cajero...";
             this.lblEstado.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblEstado.Click += new System.EventHandler(this.lblEstado_Click);
             // 
             // BarraProceso
             // 

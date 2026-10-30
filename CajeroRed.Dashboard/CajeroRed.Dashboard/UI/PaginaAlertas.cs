@@ -46,6 +46,11 @@ public class PaginaAlertas : PaginaBase
 
         Controls.Add(raiz);
     }
+    protected override async void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+        await ActualizarAsync();
+    }
 
     private FlowLayoutPanel CrearBarraAcciones()
     {

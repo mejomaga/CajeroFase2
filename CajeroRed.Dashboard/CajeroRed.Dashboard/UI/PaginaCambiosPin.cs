@@ -74,37 +74,111 @@ public class PaginaCambiosPin : PaginaBase
 
     private async void BtnRestablecerPin_Click(object sender, EventArgs e)
     {
-        if (_grid.CurrentRow?.Tag is not int idTransaccion)
+        try
         {
-            MessageBox.Show("Seleccione un registro del historial para identificar al usuario al que desea restablecer el PIN.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return;
+            // Obtenemos el listado completo de usuarios registrados en el sistema para seleccionarlos
+            var usuarios = await Contexto.Datos.ObtenerUsuariosAsync();
+            if (usuarios == null || usuarios.Count == 0)
+            {
+                MessageBox.Show("No hay usuarios registrados en el sistema.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Creamos un diálogo emergente interactivo para seleccionar al usuario
+            using var formSeleccion = new Form
+            {
+                Text = "Seleccionar Usuario para Restablecer PIN",
+                Width = 400,
+                Height = 220,
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false
+            };
+
+            var lblInfo = new Label
+            {
+                Text = "Seleccione el usuario al que desea asignarle un PIN temporal:",
+                Left = 20,
+                Top = 20,
+                Width = 340,
+                Font = Tema.Fuente(9.5f)
+            };
+
+            var cmbUsuarios = new ComboBox
+            {
+                Left = 20,
+                Top = 60,
+                Width = 340,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                DataSource = usuarios,
+                DisplayMember = "Nombre",
+                ValueMember = "IdUsuario"
+            };
+
+            var btnAceptar = new Button
+            {
+                Text = "Generar PIN",
+                Left = 180,
+                Top = 120,
+                Width = 90,
+                Height = 30,
+                BackColor = Color.FromArgb(37, 99, 235),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat
+            };
+            btnAceptar.Click += (s, ev) => { formSeleccion.DialogResult = DialogResult.OK; formSeleccion.Close(); };
+
+            var btnCancelar = new Button
+            {
+                Text = "Cancelar",
+                Left = 280,
+                Top = 120,
+                Width = 80,
+                Height = 30,
+                FlatStyle = FlatStyle.Flat
+            };
+            btnCancelar.Click += (s, ev) => { formSeleccion.DialogResult = DialogResult.Cancel; formSeleccion.Close(); };
+
+            formSeleccion.Controls.Add(lblInfo);
+            formSeleccion.Controls.Add(cmbUsuarios);
+            formSeleccion.Controls.Add(btnAceptar);
+            formSeleccion.Controls.Add(btnCancelar);
+
+            if (formSeleccion.ShowDialog(this) != DialogResult.OK) return;
+
+            var usuarioSeleccionado = (Usuario)cmbUsuarios.SelectedItem;
+            if (usuarioSeleccionado == null) return;
+
+            var confirmacion = MessageBox.Show(
+                $"¿Desea generar un PIN temporal para el usuario '{usuarioSeleccionado.Nombre}'?\n\nEl sistema asignará una clave temporal que el usuario estará obligado a cambiar en su primer uso en el cajero (D-09).",
+                "Restablecer PIN Temporal",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirmacion != DialogResult.Yes) return;
+
+            // Llamada al servicio para generar el PIN temporal
+            string pinTemporal = await Contexto.Datos.RestablecerPinTemporalAsync(usuarioSeleccionado.IdUsuario);
+
+            if (!string.IsNullOrEmpty(pinTemporal))
+            {
+                MessageBox.Show(
+                    $"¡PIN temporal generado con éxito!\n\nUsuario: {usuarioSeleccionado.Nombre}\nPIN Temporal: {pinTemporal}\n\n(Comuníquese con el cliente de forma segura. Este PIN caducará al primer cambio en el cajero).",
+                    "PIN Temporal Asignado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                await ActualizarAsync();
+            }
+            else
+            {
+                MessageBox.Show("No se pudo procesar el restablecimiento del PIN.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
-        var transaccion = _cambiosPin.FirstOrDefault(t => t.IdTransaccion == idTransaccion);
-        if (transaccion == null) return;
-
-        var confirmacion = MessageBox.Show(
-            $"¿Desea generar un PIN temporal para el usuario '{transaccion.NombreUsuario}'?\n\nEl sistema asignará una clave temporal que el usuario estará obligado a cambiar en su primer uso en el cajero (D-09).",
-            "Restablecer PIN Temporal",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question);
-
-        if (confirmacion != DialogResult.Yes) return;
-
-        // Llamada al servicio para generar el PIN temporal
-        string pinTemporal = await Contexto.Datos.RestablecerPinTemporalAsync(transaccion.IdUsuario);
-
-        if (!string.IsNullOrEmpty(pinTemporal))
+        catch (Exception ex)
         {
-            MessageBox.Show(
-                $"¡PIN temporal generado con éxito!\n\nUsuario: {transaccion.NombreUsuario}\nPIN Temporal: {pinTemporal}\n\n(Comuníquese con el cliente de forma segura. Este PIN caducará al primer cambio en el cajero).",
-                "PIN Temporal Asignado",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-        }
-        else
-        {
-            MessageBox.Show("No se pudo procesar el restablecimiento del PIN.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show($"Error al restablecer el PIN: {ex.Message}", "Excepción", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -143,8 +217,15 @@ public class PaginaCambiosPin : PaginaBase
 
     public override async Task ActualizarAsync()
     {
-        _cambiosPin = await Contexto.Datos.ObtenerCambiosPinAsync();
-        PintarFilas();
+        try
+        {
+            _cambiosPin = await Contexto.Datos.ObtenerCambiosPinAsync();
+            PintarFilas();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al cargar el historial de cambios de PIN: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     private void PintarFilas()
@@ -154,7 +235,7 @@ public class PaginaCambiosPin : PaginaBase
         {
             int indice = _grid.Rows.Add();
             var fila = _grid.Rows[indice];
-            fila.Tag = t.IdTransaccion; // Guardamos el IdTransaccion para ubicar al usuario
+            fila.Tag = t.IdTransaccion;
 
             fila.Cells["Id"].Value = t.IdTransaccion;
             fila.Cells["Fecha"].Value = t.Fecha.ToString("dd/MM/yyyy HH:mm:ss");
@@ -175,7 +256,6 @@ public class PaginaCambiosPin : PaginaBase
             }
             celdaEstado.Style.Font = FuenteNegrita;
 
-            // Criterio de seguridad: El PIN nunca se muestra en texto plano
             fila.Cells["Seguridad"].Value = "PIN protegido con cifrado (********)";
         }
     }

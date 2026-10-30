@@ -70,10 +70,10 @@ public class PaginaDepositos : PaginaBase
             Padding = new Padding(12, 10, 12, 10)
         };
 
-        // Filtros de fecha (Desde / Hasta)
+        // Filtros de fecha (Desde / Hasta) - Abarcamos desde un mes antes para asegurar ver el depósito reciente
         var lblDesde = new Label { Text = "Desde:", AutoSize = true, Font = FuenteNegrita, Margin = new Padding(0, 6, 5, 0) };
         _dtpInicio.Format = DateTimePickerFormat.Short;
-        _dtpInicio.Value = DateTime.Now.AddDays(-7);
+        _dtpInicio.Value = DateTime.Now.AddDays(-30);
         _dtpInicio.Width = 100;
         _dtpInicio.Margin = new Padding(0, 3, 10, 0);
 
@@ -91,6 +91,7 @@ public class PaginaDepositos : PaginaBase
         _cmbCajero.Items.Add("ATM-01");
         _cmbCajero.Items.Add("ATM-02");
         _cmbCajero.Items.Add("ATM-03");
+        _cmbCajero.Items.Add("ATM-04"); // Añadido ATM-04
         _cmbCajero.SelectedIndex = 0;
         _cmbCajero.Margin = new Padding(0, 3, 15, 0);
 
@@ -170,7 +171,7 @@ public class PaginaDepositos : PaginaBase
         AgregarColumna("Usuario", "Usuario", 140);
         AgregarColumna("Tarjeta", "Tarjeta", 100);
         AgregarColumna("Monto", "Monto (Q)", 100, true);
-        AgregarColumna("Desglose", "Desglose Billetes", 200);
+        AgregarColumna("Resultado", "Resultado", 100);
     }
 
     private void AgregarColumna(string nombre, string encabezado, float peso, bool derecha = false)
@@ -183,5 +184,88 @@ public class PaginaDepositos : PaginaBase
             MinimumWidth = 50,
             SortMode = DataGridViewColumnSortMode.NotSortable
         };
+        int indice = _grid.Columns.Add(columna);
+        if (derecha)
+        {
+            _grid.Columns[indice].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            _grid.Columns[indice].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
+        }
+    }
+
+    public override async Task ActualizarAsync()
+    {
+        try
+        {
+            // 1. Obtener todos los depósitos desde el servicio
+            var todosLosDepositos = await Contexto.Datos.ObtenerDepositosAsync();
+
+            string cajeroFiltro = _cmbCajero.SelectedItem?.ToString() ?? "Todos";
+            string usuarioFiltro = _txtUsuario.Text.Trim().ToLower();
+            DateTime fechaInicio = _dtpInicio.Value.Date;
+            DateTime fechaFin = _dtpFin.Value.Date.AddDays(1).AddSeconds(-1); // Fin del día
+
+            // 2. Aplicar filtros en memoria
+            _depositos = todosLosDepositos.Where(d =>
+                d.Fecha >= fechaInicio &&
+                d.Fecha <= fechaFin &&
+                (cajeroFiltro == "Todos" || d.CodigoCajero == cajeroFiltro) &&
+                (string.IsNullOrEmpty(usuarioFiltro) ||
+                 (!string.IsNullOrEmpty(d.NombreUsuario) && d.NombreUsuario.ToLower().Contains(usuarioFiltro)) ||
+                 (!string.IsNullOrEmpty(d.TarjetaEnmascarada) && d.TarjetaEnmascarada.Contains(usuarioFiltro)))
+            ).ToList();
+
+            // 3. Pintar en el grid
+            // 3. Pintar en el grid
+            // 3. Pintar en el grid
+            _grid.Rows.Clear();
+            foreach (var dep in _depositos)
+            {
+                int rowIndex = _grid.Rows.Add(
+                    dep.IdTransaccion,
+                    dep.Fecha.ToString("dd/MM/yyyy HH:mm:ss"), // Fecha formateada de manera nativa y segura
+                    dep.CodigoCajero,
+                    dep.NombreUsuario,
+                    dep.TarjetaEnmascarada,
+                    Formato.Numero((double)dep.Monto),
+                    dep.Aprobada ? "Aprobada (00)" : "Rechazada"
+                );
+
+                var row = _grid.Rows[rowIndex];
+                row.Cells["Resultado"].Style.ForeColor = dep.Aprobada ? Tema.Verde : Tema.Rojo;
+                row.Cells["Resultado"].Style.Font = FuenteNegrita;
+            }
+            
+            // 3. Pintar en el grid
+            _grid.Rows.Clear();
+            foreach (var dep in _depositos)
+            {
+                int rowIndex = _grid.Rows.Add(
+                    dep.IdTransaccion,
+                    dep.Fecha.ToString("dd/MM/yyyy HH:mm:ss"), // Fecha formateada de manera nativa y segura
+                    dep.CodigoCajero,
+                    dep.NombreUsuario,
+                    dep.TarjetaEnmascarada,
+                    Formato.Numero((double)dep.Monto),
+                    dep.Aprobada ? "Aprobada (00)" : "Rechazada"
+                );
+
+                var row = _grid.Rows[rowIndex];
+                row.Cells["Resultado"].Style.ForeColor = dep.Aprobada ? Tema.Verde : Tema.Rojo;
+                row.Cells["Resultado"].Style.Font = FuenteNegrita;
+            }
+
+            // 4. Calcular totales y promedios para el panel inferior
+            decimal total = _depositos.Sum(d => d.Monto);
+            int cantidad = _depositos.Count;
+            decimal promedio = cantidad > 0 ? total / cantidad : 0;
+
+            _lblTotalGeneral.Text = $"Total Depositado: {Formato.Quetzales(total)}";
+            _lblPromedio.Text = $"Promedio por Depósito: {Formato.Quetzales(promedio)}";
+            _lblDesglose.Text = $"Depósitos encontrados: {cantidad} operación(es)";
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al cargar los depósitos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

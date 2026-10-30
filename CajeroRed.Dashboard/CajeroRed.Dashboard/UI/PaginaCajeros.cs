@@ -235,11 +235,13 @@ public class PaginaCajeros : PaginaBase
             return;
         }
 
-        var desgloseDemo = new Dictionary<int, int> { { 200, 30 }, { 100, 40 } };
+        // 1. Solicitar la cantidad por cada denominación mediante un formulario rápido
+        var desglose = SolicitarDesgloseBilletes("Inicializar Cajero (Desglose)");
+        if (desglose == null || desglose.Count == 0) return;
 
-        if (MessageBox.Show($"¿Desea inicializar el cajero {_codigoSeleccionado} con el monto límite de Q 10,000.00?", "Confirmar Inicialización", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        if (MessageBox.Show($"¿Desea inicializar el cajero {_codigoSeleccionado} con el desglose ingresado?", "Confirmar Inicialización", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
         {
-            bool exito = await Contexto.Datos.InicializarCajeroAsync(_codigoSeleccionado, desgloseDemo);
+            bool exito = await Contexto.Datos.InicializarCajeroAsync(_codigoSeleccionado, desglose);
             if (exito)
             {
                 MessageBox.Show("Cajero inicializado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -247,7 +249,7 @@ public class PaginaCajeros : PaginaBase
             }
             else
             {
-                MessageBox.Show("No se pudo inicializar. Verifique que no exceda Q 10,000.00.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se pudo inicializar. Verifique que no exceda el límite permitido (RN-03).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
@@ -260,11 +262,13 @@ public class PaginaCajeros : PaginaBase
             return;
         }
 
-        var desgloseCarga = new Dictionary<int, int> { { 100, 50 } };
+        // 1. Solicitar las cantidades de billetes a cargar por denominación
+        var desglose = SolicitarDesgloseBilletes("Cargar Efectivo (Desglose)");
+        if (desglose == null || desglose.Count == 0) return;
 
-        if (MessageBox.Show($"¿Desea agregar efectivo al cajero {_codigoSeleccionado}?", "Carga de Efectivo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        if (MessageBox.Show($"¿Desea agregar este efectivo al cajero {_codigoSeleccionado}?", "Carga de Efectivo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
         {
-            bool exito = await Contexto.Datos.AgregarEfectivoCajeroAsync(_codigoSeleccionado, desgloseCarga);
+            bool exito = await Contexto.Datos.AgregarEfectivoCajeroAsync(_codigoSeleccionado, desglose);
             if (exito)
             {
                 MessageBox.Show("Efectivo agregado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -272,26 +276,106 @@ public class PaginaCajeros : PaginaBase
             }
             else
             {
-                MessageBox.Show("Operación rechazada. El cajero debe estar inicializado y el total no puede superar Q 30,000.00 (RN-03).", "Regla de Negocio", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Operación rechazada. El cajero debe estar inicializado y el total no puede superar el límite establecido (RN-03).", "Regla de Negocio", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
 
+    // Método auxiliar para pedir billetes por denominación de forma ordenada
+    private Dictionary<int, int> SolicitarDesgloseBilletes(string tituloVentana)
+    {
+        var desglose = new Dictionary<int, int>();
+        foreach (int d in Denominaciones)
+        {
+            string input = Microsoft.VisualBasic.Interaction.InputBox(
+                $"Ingrese la cantidad de billetes de Q {d}:",
+                tituloVentana,
+                "0");
+
+            if (string.IsNullOrEmpty(input)) return null; // Si cancela, se aborta
+
+            if (int.TryParse(input, out int cantidad) && cantidad > 0)
+            {
+                desglose[d] = cantidad;
+            }
+        }
+        return desglose;
+    }
+
     private async void BtnEstadoRemoto_Click(object sender, EventArgs e)
     {
-        if (string.IsNullOrEmpty(_codigoSeleccionado)) return;
-
-        bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, "FueraDeServicio");
-        if (exito)
+        if (string.IsNullOrEmpty(_codigoSeleccionado))
         {
-            MessageBox.Show($"Cajero {_codigoSeleccionado} puesto fuera de servicio.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            await ActualizarAsync();
+            MessageBox.Show("Seleccione un cajero de la tabla primero.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        var cajeroActual = _cajeros.FirstOrDefault(c => c.Codigo == _codigoSeleccionado);
+        if (cajeroActual == null) return;
+
+        // Alternar estado: Si está fuera de servicio o desconectado, lo pasamos a En Línea; si está activo, lo pasamos a Fuera de Servicio
+        string nuevoEstado = (cajeroActual.Estado == EstadoCajero.FueraDeServicio || cajeroActual.Estado == EstadoCajero.Desconectado)
+            ? "EnLinea"
+            : "FueraDeServicio";
+
+        string mensajeAccion = nuevoEstado == "EnLinea" ? "habilitar (poner en línea)" : "deshabilitar (poner fuera de servicio)";
+
+        if (MessageBox.Show($"¿Desea {mensajeAccion} el cajero {_codigoSeleccionado}?", "Cambio de Estado Remoto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        {
+            bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, nuevoEstado);
+            if (exito)
+            {
+                MessageBox.Show($"Cajero {_codigoSeleccionado} actualizado a estado: {nuevoEstado}.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                await ActualizarAsync();
+            }
+            else
+            {
+                MessageBox.Show("No se pudo cambiar el estado remoto.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 
-    private void BtnNuevoCajero_Click(object sender, EventArgs e)
+    private async void BtnNuevoCajero_Click(object sender, EventArgs e)
     {
-        MessageBox.Show("Utilice la base de datos o el módulo de registro para dar de alta nuevos cajeros.", "Nuevo Cajero", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        // 1. Solicitar Código
+        string codigo = Microsoft.VisualBasic.Interaction.InputBox("Ingrese el código único del nuevo cajero (ej. C04):", "Nuevo Cajero - Código", "C04");
+        if (string.IsNullOrWhiteSpace(codigo)) return;
+
+        // 2. Solicitar Nombre
+        string nombre = Microsoft.VisualBasic.Interaction.InputBox("Ingrese el nombre descriptivo del cajero:", "Nuevo Cajero - Nombre", "Cajero Zona 10");
+        if (string.IsNullOrWhiteSpace(nombre)) return;
+
+        // 3. Solicitar Ubicación
+        string ubicacion = Microsoft.VisualBasic.Interaction.InputBox("Ingrese la ubicación física:", "Nuevo Cajero - Ubicación", "Centro Comercial");
+        if (string.IsNullOrWhiteSpace(ubicacion)) ubicacion = "Central";
+
+        // 4. Solicitar IP (Requerimiento clave)
+        string ip = Microsoft.VisualBasic.Interaction.InputBox("Ingrese la dirección IP del cajero:", "Nuevo Cajero - Dirección IP", "192.168.1.50");
+        if (string.IsNullOrWhiteSpace(ip)) return;
+
+        try
+        {
+            // Usamos GuardarCajeroAsync que ya existe en tu interfaz IServicioDatos para darlo de alta/guardarlo
+            bool exito = await Contexto.Datos.GuardarCajeroAsync(
+                codigo.Trim(),
+                nombre.Trim(),
+                ubicacion.Trim(),
+                ip.Trim());
+
+            if (exito)
+            {
+                MessageBox.Show($"¡Cajero '{codigo}' creado con éxito y asociado a la IP {ip}!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                await ActualizarAsync();
+            }
+            else
+            {
+                MessageBox.Show("No se pudo registrar el nuevo cajero en la base de datos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al crear el cajero: {ex.Message}", "Excepción", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     private async void BtnEditarCajero_Click(object sender, EventArgs e)

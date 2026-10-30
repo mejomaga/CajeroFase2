@@ -225,7 +225,7 @@ public class MainForm : Form
         _lblUsuario.ForeColor = Tema.Texto;
 
         cabecera.Controls.Add(titulos, 0, 0);
-        cabecera.Controls.Add(_lblAlertas, 1, 0);
+        //cabecera.Controls.Add(_lblAlertas, 1, 0);
         cabecera.Controls.Add(_lblUsuario, 2, 0);
 
         // ----- Contenido -----

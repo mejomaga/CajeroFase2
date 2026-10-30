@@ -61,5 +61,10 @@ namespace CajeroAutomatico
                 }
             }
         }
+
+        private void lblEstado_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
