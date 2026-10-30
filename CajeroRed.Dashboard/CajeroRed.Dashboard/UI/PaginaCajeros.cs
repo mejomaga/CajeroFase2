@@ -21,9 +21,11 @@ public class PaginaCajeros : PaginaBase
     private readonly TarjetaTitulada _tarjetaGrafica;
 
     // Botones de gestión
+    
     private readonly Button _btnInicializar = new();
     private readonly Button _btnCargarEfectivo = new();
-    private readonly Button _btnEstadoRemoto = new();
+    private readonly Button _btnHabilitar = new();    
+    private readonly Button _btnInhabilitar = new();   
     private readonly Button _btnNuevoCajero = new();
     private readonly Button _btnEditarCajero = new();
     private readonly Button _btnEliminarCajero = new();
@@ -90,24 +92,28 @@ public class PaginaCajeros : PaginaBase
             Padding = new Padding(10, 8, 10, 8)
         };
 
-        EstilizarBoton(_btnNuevoCajero, "＋ Nuevo Cajero", Color.FromArgb(37, 99, 235));
         EstilizarBoton(_btnInicializar, "⚙ Inicializar (Q10k)", Color.FromArgb(13, 148, 136));
+        EstilizarBoton(_btnNuevoCajero, "＋ Nuevo Cajero", Color.FromArgb(37, 99, 235));
         EstilizarBoton(_btnCargarEfectivo, "💵 Cargar Efectivo", Color.FromArgb(217, 119, 6));
-        EstilizarBoton(_btnEstadoRemoto, "🔌 Estado Remoto", Color.FromArgb(100, 116, 139));
+        EstilizarBoton(_btnHabilitar, "✔ Habilitar Cajero", Color.FromArgb(22, 163, 74));
+        EstilizarBoton(_btnInhabilitar, "✖ Inhabilitar Cajero", Color.FromArgb(100, 116, 139));
         EstilizarBoton(_btnEditarCajero, "✏️ Editar IP / Nombre", Color.FromArgb(79, 70, 229));
         EstilizarBoton(_btnEliminarCajero, "🗑 Dar de Baja", Color.FromArgb(220, 38, 38));
 
         _btnInicializar.Click += BtnInicializar_Click;
         _btnCargarEfectivo.Click += BtnCargarEfectivo_Click;
-        _btnEstadoRemoto.Click += BtnEstadoRemoto_Click;
+        _btnHabilitar.Click += BtnHabilitar_Click;       // <-- Nuevo evento
+        _btnInhabilitar.Click += BtnInhabilitar_Click;   // <-- Nuevo evento
         _btnNuevoCajero.Click += BtnNuevoCajero_Click;
         _btnEditarCajero.Click += BtnEditarCajero_Click;
         _btnEliminarCajero.Click += BtnEliminarCajero_Click;
 
-        panel.Controls.Add(_btnNuevoCajero);
+
         panel.Controls.Add(_btnInicializar);
+        panel.Controls.Add(_btnNuevoCajero);
         panel.Controls.Add(_btnCargarEfectivo);
-        panel.Controls.Add(_btnEstadoRemoto);
+        panel.Controls.Add(_btnHabilitar);
+        panel.Controls.Add(_btnInhabilitar);
         panel.Controls.Add(_btnEditarCajero);
         panel.Controls.Add(_btnEliminarCajero);
 
@@ -302,7 +308,7 @@ public class PaginaCajeros : PaginaBase
         return desglose;
     }
 
-    private async void BtnEstadoRemoto_Click(object sender, EventArgs e)
+    private async void BtnHabilitar_Click(object sender, EventArgs e)
     {
         if (string.IsNullOrEmpty(_codigoSeleccionado))
         {
@@ -310,27 +316,44 @@ public class PaginaCajeros : PaginaBase
             return;
         }
 
-        var cajeroActual = _cajeros.FirstOrDefault(c => c.Codigo == _codigoSeleccionado);
-        if (cajeroActual == null) return;
-
-        // Alternar estado: Si está fuera de servicio o desconectado, lo pasamos a En Línea; si está activo, lo pasamos a Fuera de Servicio
-        string nuevoEstado = (cajeroActual.Estado == EstadoCajero.FueraDeServicio || cajeroActual.Estado == EstadoCajero.Desconectado)
-            ? "EnLinea"
-            : "FueraDeServicio";
-
-        string mensajeAccion = nuevoEstado == "EnLinea" ? "habilitar (poner en línea)" : "deshabilitar (poner fuera de servicio)";
-
-        if (MessageBox.Show($"¿Desea {mensajeAccion} el cajero {_codigoSeleccionado}?", "Cambio de Estado Remoto", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        if (MessageBox.Show($"¿Desea habilitar el cajero {_codigoSeleccionado} para que acepte transacciones?", "Habilitar Cajero", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
         {
-            bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, nuevoEstado);
+            // El estado "Activo" es el que tu cajero reconoce como encendido
+            bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, "Activo");
+
             if (exito)
             {
-                MessageBox.Show($"Cajero {_codigoSeleccionado} actualizado a estado: {nuevoEstado}.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Cajero {_codigoSeleccionado} habilitado. Ya puede recibir clientes.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 await ActualizarAsync();
             }
             else
             {
-                MessageBox.Show("No se pudo cambiar el estado remoto.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se pudo habilitar el cajero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+
+    private async void BtnInhabilitar_Click(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(_codigoSeleccionado))
+        {
+            MessageBox.Show("Seleccione un cajero de la tabla primero.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (MessageBox.Show($"¿Desea inhabilitar el cajero {_codigoSeleccionado}? Seguirá conectado pero no permitirá el acceso.", "Inhabilitar Cajero", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        {
+            // Lo pasamos a Inactivo (o "FueraDeServicio" según lo que espere tu servidor)
+            bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, "Inactivo");
+
+            if (exito)
+            {
+                MessageBox.Show($"Cajero {_codigoSeleccionado} inhabilitado correctamente. Seguirá conectado pero bloqueado.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                await ActualizarAsync();
+            }
+            else
+            {
+                MessageBox.Show("No se pudo inhabilitar el cajero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
