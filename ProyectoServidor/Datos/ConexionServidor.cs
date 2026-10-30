@@ -149,8 +149,81 @@ namespace ProyectoServidor.Datos
                 return false;
             }
         }
+        // ============================================================
+        // TOKEN DE OPERACIÓN (autoriza una sola transacción)
+        // ============================================================
 
-    
+        /// <summary>Genera un token de 6 dígitos para autorizar UNA transacción específica.</summary>
+        public bool GenerarTokenOperacion(int idUsuario, string codigoCajero,
+            out string tokenGenerado, out string mensajeError)
+        {
+            tokenGenerado = string.Empty;
+            mensajeError = string.Empty;
+
+            try
+            {
+                using var conexion = new SqlConnection(_cadenaConexion);
+                conexion.Open();
+
+                using var comando = new SqlCommand("sp_GenerarToken", conexion);
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.Parameters.AddWithValue("@IdUsuario", idUsuario);
+                comando.Parameters.AddWithValue("@CodigoCajero", codigoCajero);
+
+                var pToken = new SqlParameter("@TokenGenerado", SqlDbType.NVarChar, 6)
+                { Direction = ParameterDirection.Output };
+                comando.Parameters.Add(pToken);
+
+                comando.ExecuteNonQuery();
+
+                tokenGenerado = pToken.Value?.ToString() ?? string.Empty;
+                return !string.IsNullOrEmpty(tokenGenerado);
+            }
+            catch (Exception ex)
+            {
+                mensajeError = $"Error BD: {ex.Message}";
+                return false;
+            }
+        }
+
+        /// <summary>Valida el token ingresado. El SP lo marca como usado si es correcto.</summary>
+        public bool ValidarTokenOperacion(int idUsuario, string codigoCajero,
+            string tokenIngresado, out string mensajeError)
+        {
+            mensajeError = string.Empty;
+
+            try
+            {
+                using var conexion = new SqlConnection(_cadenaConexion);
+                conexion.Open();
+
+                using var comando = new SqlCommand("sp_ValidarToken", conexion);
+                comando.CommandType = CommandType.StoredProcedure;
+                comando.Parameters.AddWithValue("@IdUsuario", idUsuario);
+                comando.Parameters.AddWithValue("@CodigoCajero", codigoCajero);
+                comando.Parameters.AddWithValue("@TokenIngresado", tokenIngresado);
+
+                var pCodigo = new SqlParameter("@CodigoRespuesta", SqlDbType.NVarChar, 5)
+                { Direction = ParameterDirection.Output };
+                var pMensaje = new SqlParameter("@Mensaje", SqlDbType.NVarChar, 100)
+                { Direction = ParameterDirection.Output };
+                comando.Parameters.Add(pCodigo);
+                comando.Parameters.Add(pMensaje);
+
+                comando.ExecuteNonQuery();
+
+                string cod = pCodigo.Value?.ToString() ?? "96";
+                mensajeError = pMensaje.Value?.ToString() ?? MapearCodigoError(cod);
+                return cod == "00";
+            }
+            catch (Exception ex)
+            {
+                mensajeError = $"Error BD: {ex.Message}";
+                return false;
+            }
+        }
+
+
         public bool GenerarToken(int idUsuario, string codigoCajero, out string tokenGenerado, out string mensajeError)
         {
             tokenGenerado = string.Empty;
@@ -519,11 +592,12 @@ namespace ProyectoServidor.Datos
                                 var fila = new Dictionary<string, object>
                                 {
                                     { "idTransaccion", reader.GetInt32(0) },
-                                    { "tipo", reader.GetString(1) },
-                                    { "monto", reader.GetDecimal(2) },
-                                    { "fecha", reader.GetDateTime(3).ToString("yyyy-MM-ddTHH:mm:ss") },
-                                    { "cajero", reader.GetString(4) },
-                                    { "codigo", reader.GetString(5) }
+                                    { "tipo",          reader.GetString(1) },
+                                    { "monto",         reader.GetDecimal(2) },
+                                    { "fecha",         reader.GetDateTime(3).ToString("dd/MM/yyyy") },   // 👈 solo fecha
+                                    { "hora",          reader.GetDateTime(3).ToString("HH:mm:ss") },     // 👈 solo hora
+                                    { "cajero",        reader.GetString(4) },
+                                    { "codigo",        reader.GetString(5) }
                                 };
                                 lista.Add(fila);
                             }
@@ -568,6 +642,25 @@ namespace ProyectoServidor.Datos
             {
                 mensaje = "Error de conexión: " + ex.Message;
                 return false;
+            }
+        }
+
+        /// <summary>Lee un parámetro de la tabla Parametro (por ejemplo MAX_CAPACIDAD_CAJERO o
+        /// el monto máximo por retiro si lo tienes configurado).</summary>
+        public decimal ObtenerParametroDecimal(string nombre, decimal porDefecto = 0m)
+        {
+            try
+            {
+                using var conexion = new SqlConnection(_cadenaConexion);
+                conexion.Open();
+                using var comando = new SqlCommand("SELECT Valor FROM Parametro WHERE Nombre = @Nombre", conexion);
+                comando.Parameters.AddWithValue("@Nombre", nombre);
+                var resultado = comando.ExecuteScalar()?.ToString();
+                return decimal.TryParse(resultado, out decimal v) ? v : porDefecto;
+            }
+            catch
+            {
+                return porDefecto;
             }
         }
     }

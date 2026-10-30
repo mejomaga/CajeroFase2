@@ -125,29 +125,12 @@ namespace CajeroAutomatico.Presentacion
                 return;
             }
 
-            // El servidor es quien valida saldo, límite diario y
-            // disponibilidad de billetes; el cliente solo envía la solicitud.
-            var resultado = Program.Servidor.Retirar(montoRetiro, desglose);
+            Program.Navegar(this, new FormToken(FormToken.TipoOperacion.RETIRO, montoRetiro, desglose));
 
-            lblMensaje.ForeColor = resultado.Exito ? Color.DarkGreen : Color.DarkRed;
-            lblMensaje.Text = resultado.Mensaje;
-
-            if (resultado.Exito)
-            {
-                MessageBox.Show(resultado.Mensaje, "Resultado de la operación", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                Program.Navegar(this, new FormRetireDinero(desglose, montoRetiro));
-
-                _montoCadena = "0";
-                numMonto.Value = 0;
-                DenominacionesHelper.Limpiar(controlesDesglose);
-                ActualizarTotalDesglose();
-            }
-            else
-            {
-                MessageBox.Show(resultado.Mensaje, "Resultado de la operación", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Program.Navegar(this, new FormFinProceso());
-            }
+            _montoCadena = "0";
+            numMonto.Value = 0;
+            DenominacionesHelper.Limpiar(controlesDesglose);
+            ActualizarTotalDesglose();
         }
 
         private void FormRetiro_Load(object sender, EventArgs e)

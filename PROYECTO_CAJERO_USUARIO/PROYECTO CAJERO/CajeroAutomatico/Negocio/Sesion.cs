@@ -9,6 +9,7 @@ namespace CajeroAutomatico.Negocio
     public static class Sesion
     {
         public static Usuario UsuarioActual { get; set; }
+        public static string CodigoCajero { get; set; } = "ATM-01";
 
         public static void CerrarSesion()
         {

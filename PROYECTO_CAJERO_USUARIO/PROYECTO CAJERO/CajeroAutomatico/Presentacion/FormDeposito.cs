@@ -140,26 +140,11 @@ namespace CajeroAutomatico.Presentacion
                 return;
             }
 
-            var resultado = Program.Servidor.Depositar(desglose);
+            Program.Navegar(this, new FormToken(FormToken.TipoOperacion.DEPOSITO, total, desglose));
 
-            lblMensaje.ForeColor = resultado.Exito ? Color.DarkGreen : Color.DarkRed;
-            lblMensaje.Text = resultado.Mensaje;
-
-            if (resultado.Exito)
-            {
-                MessageBox.Show(resultado.Mensaje, "Resultado de la operación", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Navegar pasando el desglose y el total al formulario que anima la ranura e imprime
-                Program.Navegar(this, new FormIngresarDinero(desglose, total));
-
-                DenominacionesHelper.Limpiar(controlesDesglose);
-                _cantidadCadena = "0";
-                ActualizarTotal();
-            }
-            else
-            {
-                MessageBox.Show(resultado.Mensaje, "Resultado de la operación", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            DenominacionesHelper.Limpiar(controlesDesglose);
+            _cantidadCadena = "0";
+            ActualizarTotal();
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

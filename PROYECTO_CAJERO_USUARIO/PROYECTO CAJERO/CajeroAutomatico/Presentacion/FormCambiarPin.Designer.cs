@@ -56,9 +56,10 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.LightGray;
-            this.label1.Location = new System.Drawing.Point(50, 70);
+            this.label1.Location = new System.Drawing.Point(395, 21);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(107, 28);
+            this.label1.Size = new System.Drawing.Size(85, 21);
             this.label1.TabIndex = 0;
             this.label1.Text = "PIN Actual:";
             // 
@@ -69,11 +70,12 @@
             this.txtPinActual.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPinActual.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.txtPinActual.ForeColor = System.Drawing.Color.White;
-            this.txtPinActual.Location = new System.Drawing.Point(55, 100);
+            this.txtPinActual.Location = new System.Drawing.Point(398, 45);
+            this.txtPinActual.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtPinActual.MaxLength = 4;
             this.txtPinActual.Name = "txtPinActual";
             this.txtPinActual.PasswordChar = '●';
-            this.txtPinActual.Size = new System.Drawing.Size(220, 39);
+            this.txtPinActual.Size = new System.Drawing.Size(218, 32);
             this.txtPinActual.TabIndex = 1;
             // 
             // txtPinNuevo
@@ -83,11 +85,12 @@
             this.txtPinNuevo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPinNuevo.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.txtPinNuevo.ForeColor = System.Drawing.Color.White;
-            this.txtPinNuevo.Location = new System.Drawing.Point(55, 180);
+            this.txtPinNuevo.Location = new System.Drawing.Point(398, 110);
+            this.txtPinNuevo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtPinNuevo.MaxLength = 4;
             this.txtPinNuevo.Name = "txtPinNuevo";
             this.txtPinNuevo.PasswordChar = '●';
-            this.txtPinNuevo.Size = new System.Drawing.Size(220, 39);
+            this.txtPinNuevo.Size = new System.Drawing.Size(218, 32);
             this.txtPinNuevo.TabIndex = 3;
             // 
             // label2
@@ -96,9 +99,10 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.LightGray;
-            this.label2.Location = new System.Drawing.Point(50, 150);
+            this.label2.Location = new System.Drawing.Point(395, 86);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(110, 28);
+            this.label2.Size = new System.Drawing.Size(88, 21);
             this.label2.TabIndex = 2;
             this.label2.Text = "PIN Nuevo:";
             // 
@@ -109,11 +113,12 @@
             this.txtConfirmarPinNuevo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtConfirmarPinNuevo.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.txtConfirmarPinNuevo.ForeColor = System.Drawing.Color.White;
-            this.txtConfirmarPinNuevo.Location = new System.Drawing.Point(55, 260);
+            this.txtConfirmarPinNuevo.Location = new System.Drawing.Point(398, 175);
+            this.txtConfirmarPinNuevo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtConfirmarPinNuevo.MaxLength = 4;
             this.txtConfirmarPinNuevo.Name = "txtConfirmarPinNuevo";
             this.txtConfirmarPinNuevo.PasswordChar = '●';
-            this.txtConfirmarPinNuevo.Size = new System.Drawing.Size(220, 39);
+            this.txtConfirmarPinNuevo.Size = new System.Drawing.Size(218, 32);
             this.txtConfirmarPinNuevo.TabIndex = 5;
             // 
             // label3
@@ -122,9 +127,10 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.LightGray;
-            this.label3.Location = new System.Drawing.Point(50, 230);
+            this.label3.Location = new System.Drawing.Point(395, 151);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(202, 28);
+            this.label3.Size = new System.Drawing.Size(163, 21);
             this.label3.TabIndex = 4;
             this.label3.Text = "Confirmar PIN Nuevo:";
             // 
@@ -134,11 +140,12 @@
             this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
             this.btnGuardar.FlatAppearance.BorderSize = 0;
             this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGuardar.ForeColor = System.Drawing.Color.White;
-            this.btnGuardar.Location = new System.Drawing.Point(750, 355);
+            this.btnGuardar.Location = new System.Drawing.Point(548, 449);
+            this.btnGuardar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(115, 70);
+            this.btnGuardar.Size = new System.Drawing.Size(68, 57);
             this.btnGuardar.TabIndex = 6;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = false;
@@ -150,9 +157,10 @@
             this.lblMensaje.AutoSize = true;
             this.lblMensaje.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMensaje.ForeColor = System.Drawing.Color.Gold;
-            this.lblMensaje.Location = new System.Drawing.Point(50, 350);
+            this.lblMensaje.Location = new System.Drawing.Point(395, 225);
+            this.lblMensaje.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMensaje.Name = "lblMensaje";
-            this.lblMensaje.Size = new System.Drawing.Size(98, 28);
+            this.lblMensaje.Size = new System.Drawing.Size(79, 21);
             this.lblMensaje.TabIndex = 7;
             this.lblMensaje.Text = "Resultado";
             // 
@@ -164,9 +172,10 @@
             this.btnBorrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBorrar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBorrar.ForeColor = System.Drawing.Color.White;
-            this.btnBorrar.Location = new System.Drawing.Point(650, 355);
+            this.btnBorrar.Location = new System.Drawing.Point(474, 449);
+            this.btnBorrar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnBorrar.Name = "btnBorrar";
-            this.btnBorrar.Size = new System.Drawing.Size(90, 70);
+            this.btnBorrar.Size = new System.Drawing.Size(68, 57);
             this.btnBorrar.TabIndex = 24;
             this.btnBorrar.Text = "Borrar";
             this.btnBorrar.UseVisualStyleBackColor = false;
@@ -179,9 +188,10 @@
             this.btn0.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn0.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn0.ForeColor = System.Drawing.Color.White;
-            this.btn0.Location = new System.Drawing.Point(550, 355);
+            this.btn0.Location = new System.Drawing.Point(398, 449);
+            this.btn0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn0.Name = "btn0";
-            this.btn0.Size = new System.Drawing.Size(90, 70);
+            this.btn0.Size = new System.Drawing.Size(68, 57);
             this.btn0.TabIndex = 23;
             this.btn0.Text = "0";
             this.btn0.UseVisualStyleBackColor = false;
@@ -194,9 +204,10 @@
             this.btn9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn9.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn9.ForeColor = System.Drawing.Color.White;
-            this.btn9.Location = new System.Drawing.Point(750, 275);
+            this.btn9.Location = new System.Drawing.Point(548, 384);
+            this.btn9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn9.Name = "btn9";
-            this.btn9.Size = new System.Drawing.Size(90, 70);
+            this.btn9.Size = new System.Drawing.Size(68, 57);
             this.btn9.TabIndex = 22;
             this.btn9.Text = "9";
             this.btn9.UseVisualStyleBackColor = false;
@@ -209,9 +220,10 @@
             this.btn8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn8.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn8.ForeColor = System.Drawing.Color.White;
-            this.btn8.Location = new System.Drawing.Point(650, 275);
+            this.btn8.Location = new System.Drawing.Point(474, 384);
+            this.btn8.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn8.Name = "btn8";
-            this.btn8.Size = new System.Drawing.Size(90, 70);
+            this.btn8.Size = new System.Drawing.Size(68, 57);
             this.btn8.TabIndex = 21;
             this.btn8.Text = "8";
             this.btn8.UseVisualStyleBackColor = false;
@@ -224,9 +236,10 @@
             this.btn7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn7.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn7.ForeColor = System.Drawing.Color.White;
-            this.btn7.Location = new System.Drawing.Point(550, 275);
+            this.btn7.Location = new System.Drawing.Point(398, 384);
+            this.btn7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn7.Name = "btn7";
-            this.btn7.Size = new System.Drawing.Size(90, 70);
+            this.btn7.Size = new System.Drawing.Size(68, 57);
             this.btn7.TabIndex = 20;
             this.btn7.Text = "7";
             this.btn7.UseVisualStyleBackColor = false;
@@ -239,9 +252,10 @@
             this.btn6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn6.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn6.ForeColor = System.Drawing.Color.White;
-            this.btn6.Location = new System.Drawing.Point(750, 195);
+            this.btn6.Location = new System.Drawing.Point(548, 319);
+            this.btn6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn6.Name = "btn6";
-            this.btn6.Size = new System.Drawing.Size(90, 70);
+            this.btn6.Size = new System.Drawing.Size(68, 57);
             this.btn6.TabIndex = 19;
             this.btn6.Text = "6";
             this.btn6.UseVisualStyleBackColor = false;
@@ -254,9 +268,10 @@
             this.btn5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn5.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn5.ForeColor = System.Drawing.Color.White;
-            this.btn5.Location = new System.Drawing.Point(650, 195);
+            this.btn5.Location = new System.Drawing.Point(474, 319);
+            this.btn5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn5.Name = "btn5";
-            this.btn5.Size = new System.Drawing.Size(90, 70);
+            this.btn5.Size = new System.Drawing.Size(68, 57);
             this.btn5.TabIndex = 18;
             this.btn5.Text = "5";
             this.btn5.UseVisualStyleBackColor = false;
@@ -269,9 +284,10 @@
             this.btn4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn4.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn4.ForeColor = System.Drawing.Color.White;
-            this.btn4.Location = new System.Drawing.Point(550, 195);
+            this.btn4.Location = new System.Drawing.Point(398, 319);
+            this.btn4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn4.Name = "btn4";
-            this.btn4.Size = new System.Drawing.Size(90, 70);
+            this.btn4.Size = new System.Drawing.Size(68, 57);
             this.btn4.TabIndex = 17;
             this.btn4.Text = "4";
             this.btn4.UseVisualStyleBackColor = false;
@@ -284,9 +300,10 @@
             this.btn3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn3.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn3.ForeColor = System.Drawing.Color.White;
-            this.btn3.Location = new System.Drawing.Point(750, 115);
+            this.btn3.Location = new System.Drawing.Point(548, 254);
+            this.btn3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn3.Name = "btn3";
-            this.btn3.Size = new System.Drawing.Size(90, 70);
+            this.btn3.Size = new System.Drawing.Size(68, 57);
             this.btn3.TabIndex = 16;
             this.btn3.Text = "3";
             this.btn3.UseVisualStyleBackColor = false;
@@ -299,9 +316,10 @@
             this.btn2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn2.ForeColor = System.Drawing.Color.White;
-            this.btn2.Location = new System.Drawing.Point(650, 115);
+            this.btn2.Location = new System.Drawing.Point(474, 254);
+            this.btn2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn2.Name = "btn2";
-            this.btn2.Size = new System.Drawing.Size(90, 70);
+            this.btn2.Size = new System.Drawing.Size(68, 57);
             this.btn2.TabIndex = 15;
             this.btn2.Text = "2";
             this.btn2.UseVisualStyleBackColor = false;
@@ -314,9 +332,10 @@
             this.btn1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn1.ForeColor = System.Drawing.Color.White;
-            this.btn1.Location = new System.Drawing.Point(550, 115);
+            this.btn1.Location = new System.Drawing.Point(398, 254);
+            this.btn1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn1.Name = "btn1";
-            this.btn1.Size = new System.Drawing.Size(90, 70);
+            this.btn1.Size = new System.Drawing.Size(68, 57);
             this.btn1.TabIndex = 14;
             this.btn1.Text = "1";
             this.btn1.UseVisualStyleBackColor = false;
@@ -329,9 +348,10 @@
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancelar.ForeColor = System.Drawing.Color.White;
-            this.btnCancelar.Location = new System.Drawing.Point(550, 440);
+            this.btnCancelar.Location = new System.Drawing.Point(398, 549);
+            this.btnCancelar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(315, 50);
+            this.btnCancelar.Size = new System.Drawing.Size(218, 41);
             this.btnCancelar.TabIndex = 55;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = false;
@@ -339,10 +359,10 @@
             // 
             // FormCambiarPin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(40)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(1024, 768);
+            this.ClientSize = new System.Drawing.Size(1003, 624);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnBorrar);
             this.Controls.Add(this.btn0);
@@ -364,6 +384,7 @@
             this.Controls.Add(this.txtPinActual);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FormCambiarPin";
             this.Text = "Cajero Automático - Julian Antonio Monterroso González_202342200";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

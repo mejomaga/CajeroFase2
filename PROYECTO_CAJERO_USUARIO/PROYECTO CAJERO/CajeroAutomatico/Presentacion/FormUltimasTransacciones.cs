@@ -2,13 +2,10 @@
 using CajeroAutomatico.Negocio;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CajeroAutomatico.Presentacion
@@ -21,13 +18,18 @@ namespace CajeroAutomatico.Presentacion
             CargarTransacciones();
         }
 
+        private void FormUltimasTransacciones_Load(object sender, EventArgs e)
+        {
+            VozService.Hablar("Estas son sus últimas transacciones");
+        }
+
         private void CargarTransacciones()
         {
             if (Sesion.UsuarioActual == null) return;
 
             var respuesta = Program.Servidor.UltimasTransacciones(5);
 
-            // 1. CREAR LAS COLUMNAS POR CÓDIGO SI EL GRID ESTÁ VACÍO
+            // 1. Crear columnas por código si el grid está vacío
             if (dgvTransacciones.Columns.Count == 0)
             {
                 dgvTransacciones.Columns.Add("Fecha", "Fecha");
@@ -36,13 +38,9 @@ namespace CajeroAutomatico.Presentacion
                 dgvTransacciones.Columns.Add("Monto", "Monto");
             }
 
-            // 2. Limpiar filas viejas e insertar las que mandó el servidor
-            //    (Datos["Transacciones"] es una lista de objetos JSON con
-            //    Fecha, Hora, Tipo y Monto)
             dgvTransacciones.Rows.Clear();
 
-            // El JSON que llega del servidor para una lista se deserializa
-            // como System.Collections.ArrayList (no como object[]).
+            // 2. El servidor devuelve la lista en Datos["Transacciones"] como ArrayList
             var lista = respuesta.Exito && respuesta.Datos.ContainsKey("Transacciones")
                 ? respuesta.Datos["Transacciones"] as System.Collections.IEnumerable
                 : null;
@@ -55,18 +53,45 @@ namespace CajeroAutomatico.Presentacion
                 {
                     if (!(item is Dictionary<string, object> t)) continue;
 
-                    string fecha = t.ContainsKey("Fecha") ? t["Fecha"]?.ToString() : "";
-                    string hora = t.ContainsKey("Hora") ? t["Hora"]?.ToString() : "";
-                    string tipo = t.ContainsKey("Tipo") ? t["Tipo"]?.ToString() : "";
-                    decimal monto = t.ContainsKey("Monto") ? Convert.ToDecimal(t["Monto"]) : 0m;
+                    // 🟢 Claves en minúscula como las devuelve ConexionServidor
+                    string fechaIso = ObtenerTexto(t, "fecha", "Fecha");
+                    string tipo = ObtenerTexto(t, "tipo", "Tipo");
+                    decimal monto = ObtenerDecimal(t, "monto", "Monto");
 
-                    dgvTransacciones.Rows.Add(fecha, hora, tipo, $"Q.{monto:N2}");
+                    // La fecha viene como "yyyy-MM-ddTHH:mm:ss"
+                    DateTime fecha = DateTime.TryParse(fechaIso, CultureInfo.InvariantCulture,
+                        DateTimeStyles.None, out var f) ? f : DateTime.Now;
+
+                    dgvTransacciones.Rows.Add(
+                        fecha.ToString("dd/MM/yyyy"),
+                        fecha.ToString("HH:mm:ss"),
+                        tipo,
+                        $"Q.{monto:N2}");
                     hayFilas = true;
                 }
             }
 
             if (!hayFilas)
                 dgvTransacciones.Rows.Add("—", "—", "Sin transacciones registradas", "—");
+        }
+
+        // Helpers para tolerar mayúsculas/minúsculas y JsonElement
+        private static string ObtenerTexto(Dictionary<string, object> dict, params string[] claves)
+        {
+            foreach (var clave in claves)
+            {
+                if (!dict.ContainsKey(clave) || dict[clave] == null) continue;
+                if (dict[clave] is System.Text.Json.JsonElement elem)
+                    return elem.ToString();
+                return dict[clave].ToString();
+            }
+            return "";
+        }
+
+        private static decimal ObtenerDecimal(Dictionary<string, object> dict, params string[] claves)
+        {
+            string s = ObtenerTexto(dict, claves);
+            return decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var v) ? v : 0m;
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
@@ -80,12 +105,8 @@ namespace CajeroAutomatico.Presentacion
             {
                 using (PrintDocument doc = new PrintDocument())
                 {
-                    // Impresión silenciosa sin cuadro emergente
                     doc.PrintController = new StandardPrintController();
-
-                    // Alto de 600px para dar margen a la lista de movimientos
                     doc.DefaultPageSettings.PaperSize = new PaperSize("Ticket", 300, 600);
-
                     doc.PrintPage += ImprimirVoucher_PrintPage;
                     doc.Print();
                 }
@@ -94,10 +115,12 @@ namespace CajeroAutomatico.Presentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al enviar a la impresora: {ex.Message}", "Error de Impresión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al enviar a la impresora: {ex.Message}", "Error de Impresión",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Program.Navegar(this, new FormFinProceso());
             }
         }
+
         private void ImprimirVoucher_PrintPage(object sender, PrintPageEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -119,10 +142,10 @@ namespace CajeroAutomatico.Presentacion
                 // Metadatos
                 g.DrawString($"Fecha: {DateTime.Now:dd/MM/yyyy HH:mm:ss}", fontCuerpo, brocha, x, y);
                 y += interlineado;
-                g.DrawString("Cajero: #01-AGENCIA", fontCuerpo, brocha, x, y);
+                g.DrawString($"Cajero: {Program.Servidor.CodigoCajero}", fontCuerpo, brocha, x, y);
                 y += interlineado;
 
-                // Datos de usuario y tarjeta enmascarada
+                // Datos del usuario
                 var u = Sesion.UsuarioActual;
                 string nombre = u?.Nombre ?? "CLIENTE";
                 string tarjeta = u?.NumeroTarjeta != null && u.NumeroTarjeta.Length >= 4
@@ -136,18 +159,16 @@ namespace CajeroAutomatico.Presentacion
                 g.DrawString("------------------------------------", fontCuerpo, brocha, x, y);
                 y += interlineado;
 
-                // Título de sección y cabecera de columnas
+                // Título de sección
                 g.DrawString("       ULTIMOS MOVIMIENTOS          ", fontNegrita, brocha, x, y);
                 y += interlineado + 4;
 
-                // Columnas: Fecha(8) | Tipo(10) | Monto(14)
-                string cabecera = string.Format("{0,-9}{1,-11}{2,14}", "FECHA", "TIPO", "MONTO");
+                string cabecera = string.Format("{0,-11}{1,-10}{2,13}", "FECHA", "TIPO", "MONTO");
                 g.DrawString(cabecera, fontNegrita, brocha, x, y);
                 y += interlineado;
                 g.DrawString("------------------------------------", fontCuerpo, brocha, x, y);
                 y += interlineado;
 
-                // Iterar directamente sobre las filas del DataGridView
                 foreach (DataGridViewRow fila in dgvTransacciones.Rows)
                 {
                     if (fila.IsNewRow) continue;
@@ -163,16 +184,13 @@ namespace CajeroAutomatico.Presentacion
                         break;
                     }
 
-                    // Abreviar el tipo si es necesario para mantener alineación
                     if (tipo.Length > 9) tipo = tipo.Substring(0, 9);
 
-                    // Formato tabular alineado
-                    string linea = string.Format("{0,-9}{1,-11}{2,14}", fecha, tipo, monto);
+                    string linea = string.Format("{0,-11}{1,-10}{2,13}", fecha, tipo, monto);
                     g.DrawString(linea, fontCuerpo, brocha, x, y);
                     y += interlineado;
                 }
 
-                // Pie de comprobante
                 y += 5;
                 g.DrawString("------------------------------------", fontCuerpo, brocha, x, y);
                 y += interlineado;

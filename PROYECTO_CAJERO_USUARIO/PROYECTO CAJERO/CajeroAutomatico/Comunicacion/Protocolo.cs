@@ -22,6 +22,7 @@ namespace CajeroAutomatico.Comunicacion
         public const string RegistrarCajero = "REGISTRAR_CAJERO";
         public const string Heartbeat = "HEARTBEAT";
         public const string Login = "LOGIN";
+        public const string GenerarToken = "GENERAR_TOKEN";
         public const string ValidarToken = "VALIDAR_TOKEN";
         public const string ConsultarSaldo = "CONSULTA_SALDO";
         public const string Retirar = "RETIRO";
@@ -30,6 +31,7 @@ namespace CajeroAutomatico.Comunicacion
         public const string UltimasTransacciones = "ULTIMAS_TRANSACCIONES";
         public const string CerrarSesion = "LOGOUT";
         public const string EstadoCajero = "ESTADO_CAJERO";
+
     }
 
     // Mensaje que viaja del cliente hacia el servidor.

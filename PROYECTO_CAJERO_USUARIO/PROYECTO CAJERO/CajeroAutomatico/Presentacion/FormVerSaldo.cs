@@ -1,48 +1,63 @@
 ﻿using CajeroAutomatico.Negocio;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CajeroAutomatico.Presentacion
 {
     public partial class FormVerSaldo : Form
     {
-        private decimal _limiteMaximo;
-        private decimal _disponibleHoy;
+        // Datos que se muestran en pantalla y se imprimen en el voucher
+        private decimal _saldoActual;
+        private decimal _limiteUsuario;    // Límite diario del usuario (LimiteDiario)
+        private decimal _disponibleHoy;    // Cuánto le queda por retirar hoy
+        private decimal _limiteSistema;    // Máximo por operación (MAX_CAPACIDAD_CAJERO o similar)
+
         public FormVerSaldo()
         {
             InitializeComponent();
-            CargarSaldo();
         }
 
         private void FormVerSaldo_Load(object sender, EventArgs e)
         {
-         
+            CargarSaldo();
+            VozService.Hablar("Su saldo ha sido consultado");
         }
+
         private void CargarSaldo()
         {
             var respuesta = Program.Servidor.ConsultarSaldo();
 
             if (!respuesta.Exito)
             {
-                lblLimiteMaximo.Text = "No se pudo consultar el saldo.";
-                lblDisponibleHoy.Text = respuesta.Mensaje;
+                lblSaldoActual.Text = "—";
+                lblLimiteUsuario.Text = "—";
+                lblDisponibleHoy.Text = "—";
+                lblLimiteSistema.Text = "—";
+                MessageBox.Show(respuesta.Mensaje ?? "No se pudo consultar el saldo.",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            _limiteMaximo = respuesta.Decimal("LimiteMaximo");
+            // Claves tal como las envía ServidorCentral
+            _saldoActual = respuesta.Decimal("SaldoActual");
+            _limiteUsuario = respuesta.Decimal("LimiteMaximo");
             _disponibleHoy = respuesta.Decimal("DisponibleHoy");
+            _limiteSistema = respuesta.Decimal("LimiteSistema");
 
-            lblLimiteMaximo.Text = $"Límite máximo de retiro: {_limiteMaximo:C}";
+            lblSaldoActual.Text = $"Saldo actual: {_saldoActual:C}";
+            lblLimiteUsuario.Text = $"Límite diario del usuario: {_limiteUsuario:C}";
             lblDisponibleHoy.Text = $"Disponible para hoy: {_disponibleHoy:C}";
+            lblLimiteSistema.Text = $"Límite máximo por retiro: {_limiteSistema:C}";
+
+            // Colores según estado
+            lblSaldoActual.ForeColor = _saldoActual > 0 ? Color.DarkGreen : Color.DarkRed;
+            lblDisponibleHoy.ForeColor = _disponibleHoy > 0 ? Color.DarkGreen : Color.DarkRed;
+            lblLimiteUsuario.ForeColor = Color.Black;
+            lblLimiteSistema.ForeColor = Color.Black;
         }
+
         private void btnSalir_Click(object sender, EventArgs e)
         {
             Program.Navegar(this, new FormFinProceso());
@@ -54,18 +69,9 @@ namespace CajeroAutomatico.Presentacion
             {
                 using (PrintDocument doc = new PrintDocument())
                 {
-                    // Oculta el cuadro emergente predeterminado de Windows "Imprimiendo..."
                     doc.PrintController = new StandardPrintController();
-
-                    // Configuración del tamaño de papel (80mm térmica ~300px)
-                    doc.DefaultPageSettings.PaperSize = new PaperSize("Ticket", 300, 500);
-
-                    // Si tienes una impresora térmica específica, puedes asignarla directamente por nombre:
-                    // doc.PrinterSettings.PrinterName = "NombreDeTuImpresoraTermica";
-
+                    doc.DefaultPageSettings.PaperSize = new PaperSize("Ticket", 300, 550);
                     doc.PrintPage += ImprimirVoucher_PrintPage;
-
-                    // Envío directo a la impresora predeterminada
                     doc.Print();
                 }
 
@@ -73,7 +79,8 @@ namespace CajeroAutomatico.Presentacion
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al enviar a la impresora: {ex.Message}", "Error de Impresión", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al enviar a la impresora: {ex.Message}", "Error de Impresión",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Program.Navegar(this, new FormFinProceso());
             }
         }
@@ -99,34 +106,37 @@ namespace CajeroAutomatico.Presentacion
                 // Metadatos
                 g.DrawString($"Fecha: {DateTime.Now:dd/MM/yyyy HH:mm:ss}", fontCuerpo, brocha, x, y);
                 y += interlineado;
-                g.DrawString("Cajero: #01-AGENCIA", fontCuerpo, brocha, x, y);
+                g.DrawString($"Cajero: {Program.Servidor.CodigoCajero}", fontCuerpo, brocha, x, y);
                 y += interlineado;
 
-                // 1. OBTENER PROPIEDAD REAL DEL USUARIO (ajusta .Nombre por la propiedad de tu modelo)
+                // Usuario y tarjeta
                 var u = Sesion.UsuarioActual;
-                string nombreUsuario = u?.Nombre ?? "CLIENTE";
-                g.DrawString($"Usuario: {nombreUsuario}", fontCuerpo, brocha, x, y);
+                string nombre = u?.Nombre ?? "CLIENTE";
+                string tarjeta = u?.NumeroTarjeta != null && u.NumeroTarjeta.Length >= 4
+                    ? $"**** **** **** {u.NumeroTarjeta.Substring(u.NumeroTarjeta.Length - 4)}"
+                    : "**** **** **** ****";
+
+                g.DrawString($"Usuario: {nombre}", fontCuerpo, brocha, x, y);
+                y += interlineado;
+                g.DrawString($"Tarjeta: {tarjeta}", fontCuerpo, brocha, x, y);
                 y += interlineado;
                 g.DrawString("--------------------------------", fontCuerpo, brocha, x, y);
                 y += interlineado;
 
-                // Detalle de saldos
+                // Sección de saldos
                 g.DrawString("CONSULTA DE SALDOS", fontNegrita, brocha, x, y);
                 y += interlineado + 5;
 
-                // 2. LEER DIRECTAMENTE EL TEXTO YA FORMATEADO DE TUS LABELS
-                g.DrawString(lblLimiteMaximo.Text, fontCuerpo, brocha, x, y);
-                y += interlineado;
-                g.DrawString(lblDisponibleHoy.Text, fontCuerpo, brocha, x, y);
-                y += interlineado + 5;
+                // Leer los textos ya formateados de los labels
+                g.DrawString(lblSaldoActual.Text, fontCuerpo, brocha, x, y); y += interlineado;
+                g.DrawString(lblLimiteUsuario.Text, fontCuerpo, brocha, x, y); y += interlineado;
+                g.DrawString(lblDisponibleHoy.Text, fontCuerpo, brocha, x, y); y += interlineado;
+                g.DrawString(lblLimiteSistema.Text, fontCuerpo, brocha, x, y); y += interlineado + 5;
 
-                // Pie del comprobante
-                g.DrawString("--------------------------------", fontCuerpo, brocha, x, y);
-                y += interlineado;
-                g.DrawString("   ¡Gracias por su preferencia!  ", fontCuerpo, brocha, x, y);
-                y += interlineado;
-                g.DrawString(" Guarde este comprobante como   ", fontCuerpo, brocha, x, y);
-                y += interlineado;
+                // Pie
+                g.DrawString("--------------------------------", fontCuerpo, brocha, x, y); y += interlineado;
+                g.DrawString("   ¡Gracias por su preferencia!  ", fontCuerpo, brocha, x, y); y += interlineado;
+                g.DrawString(" Guarde este comprobante como   ", fontCuerpo, brocha, x, y); y += interlineado;
                 g.DrawString("      respaldo de su operacion.  ", fontCuerpo, brocha, x, y);
             }
         }

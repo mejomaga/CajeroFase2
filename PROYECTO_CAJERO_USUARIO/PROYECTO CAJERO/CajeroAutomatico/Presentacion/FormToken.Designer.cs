@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblToken = new System.Windows.Forms.Label();
-            this.lblIntentos = new System.Windows.Forms.Label();
+            this.components = new System.ComponentModel.Container();
+            this.lblUsuario = new System.Windows.Forms.Label();
+            this.lblMensaje = new System.Windows.Forms.Label();
             this.btnAceptar = new System.Windows.Forms.Button();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.btn0 = new System.Windows.Forms.Button();
@@ -44,32 +45,36 @@
             this.btn1 = new System.Windows.Forms.Button();
             this.txtToken = new System.Windows.Forms.TextBox();
             this.lblTitulo = new System.Windows.Forms.Label();
+            this.lblToken = new System.Windows.Forms.Label();
+            this.lblTiempo = new System.Windows.Forms.Label();
+            this.btnReenviar = new System.Windows.Forms.Button();
+            this.timerExpiracion = new System.Windows.Forms.Timer(this.components);
+            this.lblInstruccion = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // lblToken
+            // lblUsuario
             // 
-            this.lblToken.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblToken.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblToken.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.lblToken.Location = new System.Drawing.Point(-33, 58);
-            this.lblToken.Name = "lblToken";
-            this.lblToken.Size = new System.Drawing.Size(1024, 30);
-            this.lblToken.TabIndex = 31;
-            this.lblToken.Text = "Token";
-            this.lblToken.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblToken.Visible = false;
+            this.lblUsuario.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblUsuario.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUsuario.ForeColor = System.Drawing.Color.MediumSpringGreen;
+            this.lblUsuario.Location = new System.Drawing.Point(-33, 81);
+            this.lblUsuario.Name = "lblUsuario";
+            this.lblUsuario.Size = new System.Drawing.Size(1024, 30);
+            this.lblUsuario.TabIndex = 31;
+            this.lblUsuario.Text = ".";
+            this.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblUsuario.Visible = false;
             // 
-            // lblIntentos
+            // lblMensaje
             // 
-            this.lblIntentos.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblIntentos.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIntentos.ForeColor = System.Drawing.Color.Gold;
-            this.lblIntentos.Location = new System.Drawing.Point(-33, 198);
-            this.lblIntentos.Name = "lblIntentos";
-            this.lblIntentos.Size = new System.Drawing.Size(1024, 30);
-            this.lblIntentos.TabIndex = 30;
-            this.lblIntentos.Text = "Intentos";
-            this.lblIntentos.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblMensaje.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblMensaje.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMensaje.ForeColor = System.Drawing.Color.Gold;
+            this.lblMensaje.Location = new System.Drawing.Point(-33, 225);
+            this.lblMensaje.Name = "lblMensaje";
+            this.lblMensaje.Size = new System.Drawing.Size(1024, 30);
+            this.lblMensaje.TabIndex = 30;
+            this.lblMensaje.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnAceptar
             // 
@@ -258,7 +263,7 @@
             this.txtToken.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtToken.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtToken.ForeColor = System.Drawing.Color.White;
-            this.txtToken.Location = new System.Drawing.Point(329, 118);
+            this.txtToken.Location = new System.Drawing.Point(329, 181);
             this.txtToken.MaxLength = 6;
             this.txtToken.Name = "txtToken";
             this.txtToken.PasswordChar = '●';
@@ -272,21 +277,78 @@
             this.lblTitulo.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
-            this.lblTitulo.Location = new System.Drawing.Point(-33, 8);
+            this.lblTitulo.Location = new System.Drawing.Point(-33, 31);
             this.lblTitulo.Name = "lblTitulo";
             this.lblTitulo.Size = new System.Drawing.Size(1024, 50);
             this.lblTitulo.TabIndex = 16;
             this.lblTitulo.Text = "Ingrese El Token";
             this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblToken
+            // 
+            this.lblToken.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblToken.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblToken.ForeColor = System.Drawing.Color.Red;
+            this.lblToken.Location = new System.Drawing.Point(-33, 148);
+            this.lblToken.Name = "lblToken";
+            this.lblToken.Size = new System.Drawing.Size(1024, 30);
+            this.lblToken.TabIndex = 32;
+            this.lblToken.Text = ".";
+            this.lblToken.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblToken.Visible = false;
+            // 
+            // lblTiempo
+            // 
+            this.lblTiempo.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblTiempo.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTiempo.ForeColor = System.Drawing.Color.Gold;
+            this.lblTiempo.Location = new System.Drawing.Point(-19, 1);
+            this.lblTiempo.Name = "lblTiempo";
+            this.lblTiempo.Size = new System.Drawing.Size(1024, 30);
+            this.lblTiempo.TabIndex = 33;
+            this.lblTiempo.Text = "Tiempo restante:";
+            this.lblTiempo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnReenviar
+            // 
+            this.btnReenviar.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnReenviar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.btnReenviar.FlatAppearance.BorderSize = 0;
+            this.btnReenviar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReenviar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReenviar.ForeColor = System.Drawing.Color.White;
+            this.btnReenviar.Location = new System.Drawing.Point(648, 258);
+            this.btnReenviar.Name = "btnReenviar";
+            this.btnReenviar.Size = new System.Drawing.Size(90, 70);
+            this.btnReenviar.TabIndex = 34;
+            this.btnReenviar.Text = "Reenviar Token";
+            this.btnReenviar.UseVisualStyleBackColor = false;
+            // 
+            // lblInstruccion
+            // 
+            this.lblInstruccion.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.lblInstruccion.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInstruccion.ForeColor = System.Drawing.Color.MediumSpringGreen;
+            this.lblInstruccion.Location = new System.Drawing.Point(-30, 118);
+            this.lblInstruccion.Name = "lblInstruccion";
+            this.lblInstruccion.Size = new System.Drawing.Size(1024, 30);
+            this.lblInstruccion.TabIndex = 35;
+            this.lblInstruccion.Text = ".";
+            this.lblInstruccion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblInstruccion.Visible = false;
+            // 
             // FormToken
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(40)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(958, 590);
+            this.Controls.Add(this.lblInstruccion);
+            this.Controls.Add(this.btnReenviar);
+            this.Controls.Add(this.lblTiempo);
             this.Controls.Add(this.lblToken);
-            this.Controls.Add(this.lblIntentos);
+            this.Controls.Add(this.lblUsuario);
+            this.Controls.Add(this.lblMensaje);
             this.Controls.Add(this.btnAceptar);
             this.Controls.Add(this.btnBorrar);
             this.Controls.Add(this.btn0);
@@ -312,8 +374,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblToken;
-        private System.Windows.Forms.Label lblIntentos;
+        private System.Windows.Forms.Label lblUsuario;
+        private System.Windows.Forms.Label lblMensaje;
         private System.Windows.Forms.Button btnAceptar;
         private System.Windows.Forms.Button btnBorrar;
         private System.Windows.Forms.Button btn0;
@@ -328,5 +390,10 @@
         private System.Windows.Forms.Button btn1;
         private System.Windows.Forms.TextBox txtToken;
         private System.Windows.Forms.Label lblTitulo;
+        private System.Windows.Forms.Label lblToken;
+        private System.Windows.Forms.Label lblTiempo;
+        private System.Windows.Forms.Button btnReenviar;
+        private System.Windows.Forms.Timer timerExpiracion;
+        private System.Windows.Forms.Label lblInstruccion;
     }
 }

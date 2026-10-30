@@ -23,6 +23,7 @@ namespace CajeroAutomatico.Comunicacion
         private Timer _timerHeartbeat;
 
         public string Token { get; private set; }
+        public string TokenOperacion { get; private set; }
         public string CodigoCajero { get; set; } = "ATM-01";
 
         public ServidorClient()
@@ -180,6 +181,21 @@ namespace CajeroAutomatico.Comunicacion
             _stream = null;
             _cliente = null;
         }
+
+        // --- 11. GENERAR TOKEN (para autorizar una transacción) ---
+        public RespuestaRed GenerarTokenOperacion()
+        {
+            var respuesta = Enviar(Operaciones.GenerarToken, new { });
+            return respuesta;
+        }
+
+        // --- 12. VALIDAR TOKEN DE OPERACIÓN ---
+        public RespuestaRed ValidarTokenOperacion(string tokenIngresado)
+        {
+            var datos = new { tokenOperacion = tokenIngresado };
+            return Enviar(Operaciones.ValidarToken, datos);
+        }
+
 
         // =========================================================
         // EL CORAZÓN: Comunicación JSON thread-safe sobre socket persistente

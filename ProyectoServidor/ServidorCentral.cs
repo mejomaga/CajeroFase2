@@ -22,6 +22,7 @@ namespace ProyectoServidor.Comunicaciones
 
         // Variables necesarias para el control de sesiones y heartbeats
         private ConcurrentDictionary<string, (int idUsuario, int idTarjeta)> _sesionesActivas;
+        private readonly ConcurrentDictionary<string, DateTime> _tokensOperacionValidados;
         private ConcurrentDictionary<string, DateTime> _ultimoHeartbeat;
         private Timer _timerHeartbeat;
 
@@ -32,6 +33,7 @@ namespace ProyectoServidor.Comunicaciones
 
         public ServidorCentral()
         {
+            _tokensOperacionValidados = new ConcurrentDictionary<string, DateTime>();
             _cajerosConectados = new ConcurrentDictionary<string, TcpClient>();
             _sesionesActivas = new ConcurrentDictionary<string, (int, int)>();
             _ultimoHeartbeat = new ConcurrentDictionary<string, DateTime>();
@@ -49,6 +51,7 @@ namespace ProyectoServidor.Comunicaciones
 
                 // Iniciar el vigilante de Heartbeats cada 10 segundos
                 _timerHeartbeat = new Timer(RevisarCajerosInactivos, null, 10000, 10000);
+
 
                 OnMensajeConsola?.Invoke($"[SERVIDOR] Iniciado correctamente en el puerto {puerto}.");
                 OnMensajeConsola?.Invoke("[SERVIDOR] Esperando conexiones de cajeros...");
@@ -184,33 +187,82 @@ namespace ProyectoServidor.Comunicaciones
                 }
                 return $"{{\"Exito\":false,\"Mensaje\":\"{err}\"}}";
             }
-
-            // --- 4. RETIRAR ---
-            if (tipo == "RETIRO" || tipo == "RETIRAR")
+            // --- 3.5 GENERAR TOKEN DE OPERACIÓN ---
+            if (tipo == "GENERAR_TOKEN")
             {
-                var datos = jsonNode["Datos"];
-                decimal monto = datos?["Monto"] != null ? Convert.ToDecimal(datos["Monto"].ToString()) : Convert.ToDecimal(jsonNode["monto"]?.ToString());
-                var desgloseInt = ProcesarDesglose(datos?["Desglose"] ?? jsonNode["desglose"]);
-
                 if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
                     return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
 
-                bool exito = _bd.ProcesarRetiro(ids.idUsuario, ids.idTarjeta, idCajero, monto, desgloseInt, out int idTx, out string cod, out string err);
+                bool exito = _bd.GenerarTokenOperacion(ids.idUsuario, idCajero, out string token, out string err);
+
+                if (exito)
+                    return $"{{\"Exito\":true,\"Mensaje\":\"Token generado\",\"Datos\":{{\"TokenOperacion\":\"{token}\"}}}}";
+
+                return $"{{\"Exito\":false,\"Mensaje\":\"{err}\"}}";
+            }
+
+            // --- 3.6 VALIDAR TOKEN DE OPERACIÓN ---
+            if (tipo == "VALIDAR_TOKEN")
+            {
+                if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
+                    return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
+
+                // El cliente puede enviarlo en Datos o en la raíz
+                string tokenIng = jsonNode["Datos"]?["TokenOperacion"]?.ToString()
+                               ?? jsonNode["tokenOperacion"]?.ToString()
+                               ?? jsonNode["Datos"]?["tokenOperacion"]?.ToString();
+
+                if (string.IsNullOrWhiteSpace(tokenIng))
+                    return "{\"Exito\":false,\"Mensaje\":\"Token no recibido\"}";
+
+                bool exito = _bd.ValidarTokenOperacion(ids.idUsuario, idCajero, tokenIng, out string err);
+
+                if (exito)
+                {
+                    // 🔑 Guarda por 3 minutos (más que suficiente para ejecutar la transacción)
+                    _tokensOperacionValidados[idCajero] = DateTime.Now;
+                }
+
+                return $"{{\"Exito\":{exito.ToString().ToLower()},\"Mensaje\":\"{(exito ? "Token válido" : err)}\"}}";
+            }
+
+            // --- 4. RETIRAR (requiere token ya validado) ---
+            if (tipo == "RETIRO" || tipo == "RETIRAR")
+            {
+                if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
+                    return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
+
+                // 🔒 El cliente debe haber validado el token ANTES de llegar aquí
+                if (!_tokensOperacionValidados.TryRemove(idCajero, out _))
+                    return "{\"Exito\":false,\"Mensaje\":\"Debe validar el token antes de ejecutar la transacción\"}";
+
+                var datos = jsonNode["Datos"];
+                decimal monto = datos?["Monto"] != null
+                    ? Convert.ToDecimal(datos["Monto"].ToString())
+                    : Convert.ToDecimal(jsonNode["monto"]?.ToString());
+                var desgloseInt = ProcesarDesglose(datos?["Desglose"] ?? jsonNode["desglose"]);
+
+                bool exito = _bd.ProcesarRetiro(ids.idUsuario, ids.idTarjeta, idCajero,
+                    monto, desgloseInt, out int idTx, out string cod, out string err);
 
                 return $"{{\"Exito\":{exito.ToString().ToLower()},\"Mensaje\":\"{(exito ? "Retiro aprobado" : err)}\"}}";
             }
 
-            // --- 5. DEPOSITAR ---
+            // --- 5. DEPOSITAR (requiere token ya validado) ---
             if (tipo == "DEPOSITO" || tipo == "DEPOSITAR")
             {
+                if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
+                    return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
+
+                if (!_tokensOperacionValidados.TryRemove(idCajero, out _))
+                    return "{\"Exito\":false,\"Mensaje\":\"Debe validar el token antes de ejecutar la transacción\"}";
+
                 var datos = jsonNode["Datos"];
                 var desgloseInt = ProcesarDesglose(datos?["Desglose"] ?? jsonNode["desglose"]);
                 decimal monto = desgloseInt.Sum(x => x.Key * x.Value);
 
-                if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
-                    return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
-
-                bool exito = _bd.ProcesarDeposito(ids.idUsuario, ids.idTarjeta, idCajero, monto, desgloseInt, out int idTx, out string cod, out string err);
+                bool exito = _bd.ProcesarDeposito(ids.idUsuario, ids.idTarjeta, idCajero,
+                    monto, desgloseInt, out int idTx, out string cod, out string err);
 
                 return $"{{\"Exito\":{exito.ToString().ToLower()},\"Mensaje\":\"{(exito ? "Depósito aprobado" : err)}\"}}";
             }
@@ -221,12 +273,22 @@ namespace ProyectoServidor.Comunicaciones
                 if (!_sesionesActivas.TryGetValue(idCajero, out var ids))
                     return "{\"Exito\":false,\"Mensaje\":\"Sesión no iniciada\"}";
 
-                bool exito = _bd.ConsultarSaldo(ids.idUsuario, out decimal saldo, out decimal limite, out decimal disponible, out string err);
+                bool exito = _bd.ConsultarSaldo(ids.idUsuario, out decimal saldo, out decimal limite,
+                    out decimal disponible, out string err);
 
-                if (exito)
-                    return $"{{\"Exito\":true,\"Datos\":{{\"SaldoActual\":{saldo},\"LimiteMaximo\":{limite},\"DisponibleHoy\":{disponible}}}}}";
+                if (!exito)
+                    return "{\"Exito\":false,\"Mensaje\":\"Error al consultar\"}";
 
-                return "{\"Exito\":false,\"Mensaje\":\"Error al consultar\"}";
+                // Lee el límite máximo por operación desde Parametro
+                decimal limiteSistema = _bd.ObtenerParametroDecimal("MAX_RETIRO_POR_OPERACION",
+                                            _bd.ObtenerParametroDecimal("MAX_CAPACIDAD_CAJERO", 30000m));
+
+                return $"{{\"Exito\":true,\"Datos\":{{" +
+                       $"\"SaldoActual\":{saldo.ToString(System.Globalization.CultureInfo.InvariantCulture)}," +
+                       $"\"LimiteMaximo\":{limite.ToString(System.Globalization.CultureInfo.InvariantCulture)}," +
+                       $"\"DisponibleHoy\":{disponible.ToString(System.Globalization.CultureInfo.InvariantCulture)}," +
+                       $"\"LimiteSistema\":{limiteSistema.ToString(System.Globalization.CultureInfo.InvariantCulture)}" +
+                       $"}}}}";
             }
 
             // --- 7. CAMBIAR PIN ---
@@ -308,6 +370,8 @@ namespace ProyectoServidor.Comunicaciones
                     OnMensajeConsola?.Invoke($"[ALERTA] El cajero {kvp.Key} se ha desconectado (sin heartbeat por 30s).");
                     _ultimoHeartbeat.TryRemove(kvp.Key, out _);
                     _cajerosConectados.TryRemove(kvp.Key, out _);
+                    // En LOGOUT:
+                    _tokensOperacionValidados.TryRemove(kvp.Key, out _);
 
                     _bd.MarcarCajeroDesconectado(kvp.Key);
                 }
