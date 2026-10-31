@@ -57,11 +57,11 @@
             this.lblUsuario.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblUsuario.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUsuario.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.lblUsuario.Location = new System.Drawing.Point(-33, 81);
+            this.lblUsuario.Location = new System.Drawing.Point(-36, 89);
             this.lblUsuario.Name = "lblUsuario";
             this.lblUsuario.Size = new System.Drawing.Size(1024, 30);
             this.lblUsuario.TabIndex = 31;
-            this.lblUsuario.Text = ".";
+            this.lblUsuario.Text = "\"\"";
             this.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblUsuario.Visible = false;
             // 
@@ -70,10 +70,11 @@
             this.lblMensaje.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblMensaje.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMensaje.ForeColor = System.Drawing.Color.Gold;
-            this.lblMensaje.Location = new System.Drawing.Point(-33, 225);
+            this.lblMensaje.Location = new System.Drawing.Point(-33, 179);
             this.lblMensaje.Name = "lblMensaje";
             this.lblMensaje.Size = new System.Drawing.Size(1024, 30);
             this.lblMensaje.TabIndex = 30;
+            this.lblMensaje.Text = "\" \"";
             this.lblMensaje.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnAceptar
@@ -84,7 +85,7 @@
             this.btnAceptar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAceptar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAceptar.ForeColor = System.Drawing.Color.White;
-            this.btnAceptar.Location = new System.Drawing.Point(539, 513);
+            this.btnAceptar.Location = new System.Drawing.Point(536, 570);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(90, 70);
             this.btnAceptar.TabIndex = 29;
@@ -99,7 +100,7 @@
             this.btnBorrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBorrar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBorrar.ForeColor = System.Drawing.Color.White;
-            this.btnBorrar.Location = new System.Drawing.Point(329, 513);
+            this.btnBorrar.Location = new System.Drawing.Point(326, 570);
             this.btnBorrar.Name = "btnBorrar";
             this.btnBorrar.Size = new System.Drawing.Size(90, 70);
             this.btnBorrar.TabIndex = 28;
@@ -114,7 +115,7 @@
             this.btn0.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn0.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn0.ForeColor = System.Drawing.Color.White;
-            this.btn0.Location = new System.Drawing.Point(434, 513);
+            this.btn0.Location = new System.Drawing.Point(431, 570);
             this.btn0.Name = "btn0";
             this.btn0.Size = new System.Drawing.Size(90, 70);
             this.btn0.TabIndex = 27;
@@ -129,7 +130,7 @@
             this.btn9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn9.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn9.ForeColor = System.Drawing.Color.White;
-            this.btn9.Location = new System.Drawing.Point(539, 428);
+            this.btn9.Location = new System.Drawing.Point(536, 485);
             this.btn9.Name = "btn9";
             this.btn9.Size = new System.Drawing.Size(90, 70);
             this.btn9.TabIndex = 26;
@@ -144,7 +145,7 @@
             this.btn8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn8.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn8.ForeColor = System.Drawing.Color.White;
-            this.btn8.Location = new System.Drawing.Point(434, 428);
+            this.btn8.Location = new System.Drawing.Point(431, 485);
             this.btn8.Name = "btn8";
             this.btn8.Size = new System.Drawing.Size(90, 70);
             this.btn8.TabIndex = 25;
@@ -159,7 +160,7 @@
             this.btn7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn7.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn7.ForeColor = System.Drawing.Color.White;
-            this.btn7.Location = new System.Drawing.Point(329, 428);
+            this.btn7.Location = new System.Drawing.Point(326, 485);
             this.btn7.Name = "btn7";
             this.btn7.Size = new System.Drawing.Size(90, 70);
             this.btn7.TabIndex = 24;
@@ -174,7 +175,7 @@
             this.btn6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn6.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn6.ForeColor = System.Drawing.Color.White;
-            this.btn6.Location = new System.Drawing.Point(539, 343);
+            this.btn6.Location = new System.Drawing.Point(536, 400);
             this.btn6.Name = "btn6";
             this.btn6.Size = new System.Drawing.Size(90, 70);
             this.btn6.TabIndex = 23;
@@ -189,7 +190,7 @@
             this.btn5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn5.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn5.ForeColor = System.Drawing.Color.White;
-            this.btn5.Location = new System.Drawing.Point(434, 343);
+            this.btn5.Location = new System.Drawing.Point(431, 400);
             this.btn5.Name = "btn5";
             this.btn5.Size = new System.Drawing.Size(90, 70);
             this.btn5.TabIndex = 22;
@@ -204,7 +205,7 @@
             this.btn4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn4.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn4.ForeColor = System.Drawing.Color.White;
-            this.btn4.Location = new System.Drawing.Point(329, 343);
+            this.btn4.Location = new System.Drawing.Point(326, 400);
             this.btn4.Name = "btn4";
             this.btn4.Size = new System.Drawing.Size(90, 70);
             this.btn4.TabIndex = 21;
@@ -219,7 +220,7 @@
             this.btn3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn3.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn3.ForeColor = System.Drawing.Color.White;
-            this.btn3.Location = new System.Drawing.Point(539, 258);
+            this.btn3.Location = new System.Drawing.Point(536, 315);
             this.btn3.Name = "btn3";
             this.btn3.Size = new System.Drawing.Size(90, 70);
             this.btn3.TabIndex = 20;
@@ -234,7 +235,7 @@
             this.btn2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn2.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn2.ForeColor = System.Drawing.Color.White;
-            this.btn2.Location = new System.Drawing.Point(434, 258);
+            this.btn2.Location = new System.Drawing.Point(431, 315);
             this.btn2.Name = "btn2";
             this.btn2.Size = new System.Drawing.Size(90, 70);
             this.btn2.TabIndex = 19;
@@ -249,7 +250,7 @@
             this.btn1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn1.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn1.ForeColor = System.Drawing.Color.White;
-            this.btn1.Location = new System.Drawing.Point(329, 258);
+            this.btn1.Location = new System.Drawing.Point(326, 315);
             this.btn1.Name = "btn1";
             this.btn1.Size = new System.Drawing.Size(90, 70);
             this.btn1.TabIndex = 18;
@@ -263,7 +264,7 @@
             this.txtToken.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtToken.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtToken.ForeColor = System.Drawing.Color.White;
-            this.txtToken.Location = new System.Drawing.Point(329, 181);
+            this.txtToken.Location = new System.Drawing.Point(326, 238);
             this.txtToken.MaxLength = 6;
             this.txtToken.Name = "txtToken";
             this.txtToken.PasswordChar = '●';
@@ -277,23 +278,24 @@
             this.lblTitulo.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
-            this.lblTitulo.Location = new System.Drawing.Point(-33, 31);
+            this.lblTitulo.Location = new System.Drawing.Point(-39, 39);
             this.lblTitulo.Name = "lblTitulo";
             this.lblTitulo.Size = new System.Drawing.Size(1024, 50);
             this.lblTitulo.TabIndex = 16;
             this.lblTitulo.Text = "Ingrese El Token";
             this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTitulo.Click += new System.EventHandler(this.lblTitulo_Click);
             // 
             // lblToken
             // 
             this.lblToken.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblToken.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblToken.ForeColor = System.Drawing.Color.Red;
-            this.lblToken.Location = new System.Drawing.Point(-33, 148);
+            this.lblToken.Location = new System.Drawing.Point(-33, 149);
             this.lblToken.Name = "lblToken";
             this.lblToken.Size = new System.Drawing.Size(1024, 30);
             this.lblToken.TabIndex = 32;
-            this.lblToken.Text = ".";
+            this.lblToken.Text = "\"\"";
             this.lblToken.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblToken.Visible = false;
             // 
@@ -302,7 +304,7 @@
             this.lblTiempo.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblTiempo.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTiempo.ForeColor = System.Drawing.Color.Gold;
-            this.lblTiempo.Location = new System.Drawing.Point(-19, 1);
+            this.lblTiempo.Location = new System.Drawing.Point(-33, 9);
             this.lblTiempo.Name = "lblTiempo";
             this.lblTiempo.Size = new System.Drawing.Size(1024, 30);
             this.lblTiempo.TabIndex = 33;
@@ -317,7 +319,7 @@
             this.btnReenviar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReenviar.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReenviar.ForeColor = System.Drawing.Color.White;
-            this.btnReenviar.Location = new System.Drawing.Point(648, 258);
+            this.btnReenviar.Location = new System.Drawing.Point(645, 315);
             this.btnReenviar.Name = "btnReenviar";
             this.btnReenviar.Size = new System.Drawing.Size(90, 70);
             this.btnReenviar.TabIndex = 34;
@@ -329,11 +331,11 @@
             this.lblInstruccion.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblInstruccion.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblInstruccion.ForeColor = System.Drawing.Color.MediumSpringGreen;
-            this.lblInstruccion.Location = new System.Drawing.Point(-30, 118);
+            this.lblInstruccion.Location = new System.Drawing.Point(-33, 119);
             this.lblInstruccion.Name = "lblInstruccion";
             this.lblInstruccion.Size = new System.Drawing.Size(1024, 30);
             this.lblInstruccion.TabIndex = 35;
-            this.lblInstruccion.Text = ".";
+            this.lblInstruccion.Text = "\"\"";
             this.lblInstruccion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblInstruccion.Visible = false;
             // 
@@ -342,7 +344,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(40)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(958, 590);
+            this.ClientSize = new System.Drawing.Size(952, 704);
             this.Controls.Add(this.lblInstruccion);
             this.Controls.Add(this.btnReenviar);
             this.Controls.Add(this.lblTiempo);
