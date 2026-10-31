@@ -13,15 +13,17 @@ namespace CajeroAutomatico.Presentacion
         private readonly TipoOperacion tipoOperacion;
         private readonly Dictionary<int, int> desglose;
         private readonly decimal monto;
+        private readonly string _token;
 
         public enum TipoOperacion { RETIRO, DEPOSITO }
 
-        public FormToken(TipoOperacion tipoOperacion, decimal monto, Dictionary<int, int> desglose)
+        public FormToken(TipoOperacion tipoOperacion, decimal monto, Dictionary<int, int> desglose, string token)
         {
             InitializeComponent();
             this.tipoOperacion = tipoOperacion;
             this.monto = monto;
             this.desglose = desglose ?? new Dictionary<int, int>();
+            this._token = token;
 
             lblUsuario.Text = Sesion.UsuarioActual?.Nombre ?? "Cliente";
             AsignarEventosTeclado();
@@ -29,15 +31,25 @@ namespace CajeroAutomatico.Presentacion
 
         private void FormToken_Load(object sender, EventArgs e)
         {
-            string accion = tipoOperacion == TipoOperacion.RETIRO ? "retiro" : "depósito";
-            lblInstruccion.Text = $"Confirme su {accion} de Q.{monto:N2} con el token:";
-            VozService.Hablar($"Confirme su {accion} ingresando el token generado");
+            try
+            {
+                string accion = tipoOperacion == TipoOperacion.RETIRO ? "retiro" : "depósito";
 
-            GenerarToken();
+                lblUsuario.Text = Sesion.UsuarioActual?.Nombre ?? "Cliente";
+                lblInstruccion.Text = $"Confirme su {accion} de Q.{monto:N2} con el token:";
 
-            timerExpiracion.Interval = 1000;
-            timerExpiracion.Tick += TimerExpiracion_Tick;
-            timerExpiracion.Start();
+                GenerarToken();   // esta es la única fuente del token
+
+                timerExpiracion.Interval = 1000;
+                timerExpiracion.Tick += TimerExpiracion_Tick;
+                timerExpiracion.Start();
+
+                VozService.Hablar($"Confirme su {accion} ingresando el token generado");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar el formulario: " + ex.Message);
+            }
         }
 
         private void GenerarToken()
@@ -179,6 +191,11 @@ namespace CajeroAutomatico.Presentacion
                 Program.Navegar(this, new FormRetiro());
             else
                 Program.Navegar(this, new FormDeposito());
+        }
+
+        private void lblTitulo_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

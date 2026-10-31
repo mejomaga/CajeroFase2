@@ -24,11 +24,11 @@ namespace CajeroAutomatico.Comunicacion
 
         public string Token { get; private set; }
         public string TokenOperacion { get; private set; }
-        public string CodigoCajero { get; set; } = "ATM-01";
+        public string CodigoCajero { get; set; } = "ATM-02";
 
         public ServidorClient()
         {
-            _host = ConfigurationManager.AppSettings["ServidorIP"] ?? "192.168.0.5";
+            _host = ConfigurationManager.AppSettings["ServidorIP"] ?? "192.168.1.43";
             _puerto = int.TryParse(ConfigurationManager.AppSettings["ServidorPuerto"], out var p) ? p : 5000;
             _timeoutMs = int.TryParse(ConfigurationManager.AppSettings["ServidorTimeoutMs"], out var t) ? t : 10000;
 
