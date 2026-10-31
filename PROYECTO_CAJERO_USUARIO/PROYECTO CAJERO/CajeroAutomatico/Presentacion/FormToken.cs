@@ -13,17 +13,17 @@ namespace CajeroAutomatico.Presentacion
         private readonly TipoOperacion tipoOperacion;
         private readonly Dictionary<int, int> desglose;
         private readonly decimal monto;
-        private readonly string _token;
+        //private readonly string _token;
 
         public enum TipoOperacion { RETIRO, DEPOSITO }
 
-        public FormToken(TipoOperacion tipoOperacion, decimal monto, Dictionary<int, int> desglose, string token)
+        public FormToken(TipoOperacion tipoOperacion, decimal monto, Dictionary<int, int> desglose)
         {
             InitializeComponent();
             this.tipoOperacion = tipoOperacion;
             this.monto = monto;
             this.desglose = desglose ?? new Dictionary<int, int>();
-            this._token = token;
+            //this._token = token;
 
             lblUsuario.Text = Sesion.UsuarioActual?.Nombre ?? "Cliente";
             AsignarEventosTeclado();
