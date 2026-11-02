@@ -72,7 +72,7 @@ public class PaginaCambiosPin : PaginaBase
         return panel;
     }
 
-    private async void BtnRestablecerPin_Click(object sender, EventArgs e)
+    private async void BtnRestablecerPin_Click(object? sender, EventArgs e)
     {
         try
         {

@@ -172,7 +172,7 @@ public class PaginaUsuarios : PaginaBase
         }
     }
 
-    private async void BtnNuevoUsuario_Click(object sender, EventArgs e)
+    private async void BtnNuevoUsuario_Click(object? sender, EventArgs e)
     {
         // Ventana rápida de captura para cumplir estrictamente con D-10 (Nombre, Tarjeta 16 dígitos, PIN 4 dígitos, Saldo, Límite)
         string nombre = Microsoft.VisualBasic.Interaction.InputBox("Ingrese el nombre completo del usuario:", "Nuevo Usuario", "Cliente Nuevo");
@@ -206,7 +206,7 @@ public class PaginaUsuarios : PaginaBase
         }
     }
 
-    private async void BtnModificar_Click(object sender, EventArgs e)
+    private async void BtnModificar_Click(object? sender, EventArgs e)
     {
         if (!_idUsuarioSeleccionado.HasValue)
         {
@@ -231,7 +231,7 @@ public class PaginaUsuarios : PaginaBase
         }
     }
 
-    private async void BtnCambiarTarjeta_Click(object sender, EventArgs e)
+    private async void BtnCambiarTarjeta_Click(object? sender, EventArgs e)
     {
         if (!_idUsuarioSeleccionado.HasValue)
         {
@@ -255,7 +255,7 @@ public class PaginaUsuarios : PaginaBase
         }
     }
 
-    private async void BtnBloquearDesbloquear_Click(object sender, EventArgs e)
+    private async void BtnBloquearDesbloquear_Click(object? sender, EventArgs e)
     {
         if (!_idUsuarioSeleccionado.HasValue)
         {

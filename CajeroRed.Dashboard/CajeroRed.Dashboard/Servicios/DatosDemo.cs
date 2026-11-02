@@ -154,6 +154,37 @@ public class DatosDemo : IServicioDatos
     {
         await Task.Delay(150);
 
+        decimal total = desglose.Sum(kvp => kvp.Key * kvp.Value);
+
+        if (total > 10000m) return false;
+
+        var cajero = _cajeros.FirstOrDefault(c => c.Codigo == codigoCajero);
+        if (cajero != null)
+        {
+            cajero.Inicializado = true;
+            cajero.Estado = EstadoCajero.EnLinea;
+
+            // SOLUCIÓN: Limpiar el inventario anterior y asignar exactamente el nuevo desglose
+            cajero.Inventario = new Dictionary<int, int>
+            {
+                [200] = desglose.GetValueOrDefault(200, 0),
+                [100] = desglose.GetValueOrDefault(100, 0),
+                [50] = desglose.GetValueOrDefault(50, 0),
+                [20] = desglose.GetValueOrDefault(20, 0),
+                [10] = desglose.GetValueOrDefault(10, 0),
+                [5] = desglose.GetValueOrDefault(5, 0),
+                [1] = desglose.GetValueOrDefault(1, 0)
+            };
+
+            return true;
+        }
+        return false;
+    }
+
+    /*public async Task<bool> InicializarCajeroAsync(string codigoCajero, Dictionary<int, int> desglose)
+    {
+        await Task.Delay(150);
+
         // Calcular el total del efectivo a cargar
         decimal total = desglose.Sum(kvp => kvp.Key * kvp.Value);
 
@@ -174,7 +205,7 @@ public class DatosDemo : IServicioDatos
             return true;
         }
         return false;
-    }
+    }*/
 
     public async Task<bool> AgregarEfectivoCajeroAsync(string codigoCajero, Dictionary<int, int> desglose)
     {

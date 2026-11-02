@@ -140,7 +140,7 @@ public class PaginaConfiguracion : PaginaBase
         return tarjeta;
     }
 
-    private async void BtnGuardar_Click(object sender, EventArgs e)
+    private async void BtnGuardar_Click(object? sender, EventArgs e)
     {
         try
         {

@@ -233,7 +233,7 @@ public class PaginaCajeros : PaginaBase
 
     // ------------------------------------------------------------------ eventos de gestión (Etapa 3)
 
-    private async void BtnInicializar_Click(object sender, EventArgs e)
+    private async void BtnInicializar_Click(object? sender, EventArgs e)
     {
         if (string.IsNullOrEmpty(_codigoSeleccionado))
         {
@@ -260,7 +260,7 @@ public class PaginaCajeros : PaginaBase
         }
     }
 
-    private async void BtnCargarEfectivo_Click(object sender, EventArgs e)
+    private async void BtnCargarEfectivo_Click(object? sender, EventArgs e)
     {
         if (string.IsNullOrEmpty(_codigoSeleccionado))
         {
@@ -288,7 +288,7 @@ public class PaginaCajeros : PaginaBase
     }
 
     // Método auxiliar para pedir billetes por denominación de forma ordenada
-    private Dictionary<int, int> SolicitarDesgloseBilletes(string tituloVentana)
+    private Dictionary<int, int>? SolicitarDesgloseBilletes(string tituloVentana)
     {
         var desglose = new Dictionary<int, int>();
         foreach (int d in Denominaciones)
@@ -308,7 +308,7 @@ public class PaginaCajeros : PaginaBase
         return desglose;
     }
 
-    private async void BtnHabilitar_Click(object sender, EventArgs e)
+    private async void BtnHabilitar_Click(object? sender, EventArgs e)
     {
         if (string.IsNullOrEmpty(_codigoSeleccionado))
         {
@@ -333,7 +333,7 @@ public class PaginaCajeros : PaginaBase
         }
     }
 
-    private async void BtnInhabilitar_Click(object sender, EventArgs e)
+    private async void BtnInhabilitar_Click(object? sender, EventArgs e)
     {
         if (string.IsNullOrEmpty(_codigoSeleccionado))
         {
@@ -358,7 +358,7 @@ public class PaginaCajeros : PaginaBase
         }
     }
 
-    private async void BtnNuevoCajero_Click(object sender, EventArgs e)
+    private async void BtnNuevoCajero_Click(object? sender, EventArgs e)
     {
         // 1. Solicitar Código
         string codigo = Microsoft.VisualBasic.Interaction.InputBox("Ingrese el código único del nuevo cajero (ej. C04):", "Nuevo Cajero - Código", "C04");
@@ -401,7 +401,7 @@ public class PaginaCajeros : PaginaBase
         }
     }
 
-    private async void BtnEditarCajero_Click(object sender, EventArgs e)
+    private async void BtnEditarCajero_Click(object? sender, EventArgs e)
     {
         if (string.IsNullOrEmpty(_codigoSeleccionado))
         {
@@ -452,7 +452,7 @@ public class PaginaCajeros : PaginaBase
         }
     }
 
-    private async void BtnEliminarCajero_Click(object sender, EventArgs e)
+    private async void BtnEliminarCajero_Click(object? sender, EventArgs e)
     {
         if (string.IsNullOrEmpty(_codigoSeleccionado))
         {

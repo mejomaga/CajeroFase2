@@ -365,15 +365,20 @@ namespace ProyectoServidor.Comunicaciones
             DateTime ahora = DateTime.Now;
             foreach (var kvp in _ultimoHeartbeat)
             {
-                if ((ahora - kvp.Value).TotalSeconds > 30)
+                if ((ahora - kvp.Value).TotalSeconds > 10)
                 {
                     OnMensajeConsola?.Invoke($"[ALERTA] El cajero {kvp.Key} se ha desconectado (sin heartbeat por 30s).");
                     _ultimoHeartbeat.TryRemove(kvp.Key, out _);
                     _cajerosConectados.TryRemove(kvp.Key, out _);
-                    // En LOGOUT:
                     _tokensOperacionValidados.TryRemove(kvp.Key, out _);
 
-                    _bd.MarcarCajeroDesconectado(kvp.Key);
+                    //_bd.MarcarCajeroDesconectado(kvp.Key);
+
+                    using var conn = new Microsoft.Data.SqlClient.SqlConnection(@"Server=MELQUI\SQLEXPRESS;Database=BD_CajeroRed;Trusted_Connection=True;TrustServerCertificate=True;");
+                    conn.Open();
+                    var cmd = new Microsoft.Data.SqlClient.SqlCommand("UPDATE Cajero SET Estado = 'Desconectado' WHERE CodigoCajero = @Cod", conn);
+                    cmd.Parameters.AddWithValue("@Cod", kvp.Key);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

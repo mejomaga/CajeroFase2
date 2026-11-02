@@ -162,7 +162,7 @@ public class PaginaReportes : PaginaBase
         return tarjeta;
     }
 
-    private async void BtnExportarCsv_Click(object sender, EventArgs e)
+    private async void BtnExportarCsv_Click(object? sender, EventArgs e)
     {
         string tipoReporte = _cmbTipoReporte.SelectedItem?.ToString() ?? "Reporte";
         string cajeroFiltro = _cmbCajero.SelectedItem?.ToString() ?? "Todos los cajeros de la red";

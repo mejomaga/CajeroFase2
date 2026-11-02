@@ -77,7 +77,7 @@ public class PaginaAlertas : PaginaBase
         return panel;
     }
 
-    private async void BtnAtender_Click(object sender, EventArgs e)
+    private async void BtnAtender_Click(object? sender, EventArgs e)
     {
         if (_grid.CurrentRow?.Tag is not int idAlerta)
         {

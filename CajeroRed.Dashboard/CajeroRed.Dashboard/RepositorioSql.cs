@@ -83,6 +83,59 @@ public class RepositorioSql : IServicioDatos
     {
         var lista = new List<Cajero>();
         using var conexion = new SqlConnection(_cadenaConexion);
+
+        // Consulta mejorada para traer los datos del cajero y contar sus billetes al mismo tiempo
+        string query = @"
+            SELECT 
+                c.CodigoCajero, c.Nombre, c.Ubicacion, c.IP, c.Estado, c.Inicializado, c.UltimoHeartbeat,
+                ISNULL((SELECT Cantidad FROM InventarioCajero WHERE CodigoCajero = c.CodigoCajero AND Valor = 200), 0) AS Q200,
+                ISNULL((SELECT Cantidad FROM InventarioCajero WHERE CodigoCajero = c.CodigoCajero AND Valor = 100), 0) AS Q100,
+                ISNULL((SELECT Cantidad FROM InventarioCajero WHERE CodigoCajero = c.CodigoCajero AND Valor = 50), 0) AS Q50,
+                ISNULL((SELECT Cantidad FROM InventarioCajero WHERE CodigoCajero = c.CodigoCajero AND Valor = 20), 0) AS Q20,
+                ISNULL((SELECT Cantidad FROM InventarioCajero WHERE CodigoCajero = c.CodigoCajero AND Valor = 10), 0) AS Q10,
+                ISNULL((SELECT Cantidad FROM InventarioCajero WHERE CodigoCajero = c.CodigoCajero AND Valor = 5), 0) AS Q5,
+                ISNULL((SELECT Cantidad FROM InventarioCajero WHERE CodigoCajero = c.CodigoCajero AND Valor = 1), 0) AS Q1
+            FROM Cajero c";
+
+        using var comando = new SqlCommand(query, conexion);
+
+        await conexion.OpenAsync();
+        using var reader = await comando.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
+        {
+            var estadoEnum = Cajero.ParsearEstado(reader["Estado"].ToString());
+
+            lista.Add(new Cajero
+            {
+                Codigo = reader["CodigoCajero"]?.ToString() ?? "",
+                Nombre = reader["Nombre"]?.ToString() ?? "",
+                Ubicacion = reader["Ubicacion"]?.ToString() ?? "",
+                IP = reader["IP"]?.ToString() ?? "",
+                Estado = estadoEnum,
+                Inicializado = Convert.ToBoolean(reader["Inicializado"]),
+                UltimoHeartbeat = reader["UltimoHeartbeat"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["UltimoHeartbeat"]),
+
+                // Aquí se llena el diccionario de billetes que te dejaba la tabla en 0
+                Inventario = new Dictionary<int, int>
+                {
+                    { 200, Convert.ToInt32(reader["Q200"]) },
+                    { 100, Convert.ToInt32(reader["Q100"]) },
+                    { 50,  Convert.ToInt32(reader["Q50"]) },
+                    { 20,  Convert.ToInt32(reader["Q20"]) },
+                    { 10,  Convert.ToInt32(reader["Q10"]) },
+                    { 5,   Convert.ToInt32(reader["Q5"]) },
+                    { 1,   Convert.ToInt32(reader["Q1"]) }
+                }
+            });
+        }
+        return lista;
+    }
+
+    /*public async Task<List<Cajero>> ObtenerCajerosAsync()
+    {
+        var lista = new List<Cajero>();
+        using var conexion = new SqlConnection(_cadenaConexion);
         using var comando = new SqlCommand("SELECT CodigoCajero, Nombre, Ubicacion, IP, Estado, Inicializado, UltimoHeartbeat FROM Cajero", conexion);
 
         await conexion.OpenAsync();
@@ -104,7 +157,7 @@ public class RepositorioSql : IServicioDatos
             });
         }
         return lista;
-    }
+    }*/
 
     public async Task<List<PuntoHora>> ObtenerSerieHorariaAsync()
     {
@@ -267,7 +320,8 @@ public class RepositorioSql : IServicioDatos
             cmdUser.Parameters.AddWithValue("@Nom", nombre);
             cmdUser.Parameters.AddWithValue("@Saldo", saldo);
             cmdUser.Parameters.AddWithValue("@Limite", limiteDiario);
-            int idUsuario = (int)await cmdUser.ExecuteScalarAsync();
+            int idUsuario = Convert.ToInt32(await cmdUser.ExecuteScalarAsync() ?? 0);
+            //int idUsuario = (int)await cmdUser.ExecuteScalarAsync();
 
             string salt = "salt123";
             string hash = Seguridad.Sha256Hex(pin + salt);

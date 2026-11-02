@@ -545,6 +545,7 @@ namespace ProyectoServidor.Datos
             }
             catch { return false; }
         }
+
         public bool ActualizarHeartbeat(string codigoCajero)
         {
             try
