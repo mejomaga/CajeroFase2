@@ -14,7 +14,7 @@ namespace ProyectoServidor.Datos
         private readonly string _cadenaConexion =
             System.Configuration.ConfigurationManager.ConnectionStrings["BD_CajeroRed_Actualizada"]?.ConnectionString
             ?? System.Configuration.ConfigurationManager.AppSettings["CadenaConexion"]
-            ?? @"Server=.;Database=BD_CajeroRed_Actualizada;Trusted_Connection=True;TrustServerCertificate=True;";
+            ?? @"Server=Melqui\SQLEXPRESS;Database=BD_CajeroRed_Actualizada;Trusted_Connection=True;TrustServerCertificate=True;";
 
         public static string CalcularSha256(string texto)
         {

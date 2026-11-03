@@ -12,7 +12,7 @@ public class RepositorioSql : IServicioDatos
 {
     private readonly string _cadenaConexion;
 
-    public string Descripcion => "SQL Server: BD_CajeroRed (Conectado)";
+    public string Descripcion => "SQL Server: BD_CajeroRed_Actualizada (Conectado)";
 
     public RepositorioSql(string cadenaConexion)
     {
