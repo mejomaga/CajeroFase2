@@ -12,9 +12,9 @@ namespace ProyectoServidor.Datos
         // Cadena de conexión a la Base de Datos
         public string CadenaConexion => _cadenaConexion;
         private readonly string _cadenaConexion =
-            System.Configuration.ConfigurationManager.ConnectionStrings["BD_CajeroRed"]?.ConnectionString
+            System.Configuration.ConfigurationManager.ConnectionStrings["BD_CajeroRed_Actualizada"]?.ConnectionString
             ?? System.Configuration.ConfigurationManager.AppSettings["CadenaConexion"]
-            ?? @"Server=.\SQLEXPRESS;Database=BD_CajeroRed;Trusted_Connection=True;TrustServerCertificate=True;";
+            ?? @"Server=.;Database=BD_CajeroRed_Actualizada;Trusted_Connection=True;TrustServerCertificate=True;";
 
 
 
@@ -31,10 +31,11 @@ namespace ProyectoServidor.Datos
 
 
         public bool ValidarCredenciales(string numeroTarjeta, string pinPlano,
-    out int idUsuario, out int idTarjeta, out string codigoRespuesta, out string mensajeError)
+      out int idUsuario, out int idTarjeta, out string nombreUsuario, out string codigoRespuesta, out string mensajeError)
         {
             idUsuario = 0;
             idTarjeta = 0;
+            nombreUsuario = string.Empty; // <-- Nuevo parámetro
             codigoRespuesta = "96";
             mensajeError = string.Empty;
 
@@ -46,15 +47,15 @@ namespace ProyectoServidor.Datos
                     using (SqlCommand comando = new SqlCommand("sp_ValidarCredenciales", conexion))
                     {
                         comando.CommandType = CommandType.StoredProcedure;
-
                         comando.Parameters.AddWithValue("@NumeroTarjeta", numeroTarjeta);
 
-                        // Soporte hibrido: detecta si la BD en este equipo espera @PinHash o @PinPlano
+                        // Soporte híbrido
                         bool usaPinHash = false;
                         using (SqlCommand cmdCheck = new SqlCommand("SELECT COUNT(1) FROM sys.parameters WHERE object_id = OBJECT_ID('sp_ValidarCredenciales') AND name = '@PinHash'", conexion))
                         {
                             usaPinHash = Convert.ToInt32(cmdCheck.ExecuteScalar()) > 0;
                         }
+
                         if (usaPinHash)
                         {
                             string hashParaEnviar = CalcularSha256(pinPlano);
@@ -96,7 +97,15 @@ namespace ProyectoServidor.Datos
                         codigoRespuesta = pCodigo.Value?.ToString() ?? "96";
 
                         if (codigoRespuesta == "00")
+                        {
+                            // 👇 AQUÍ CONSULTAMOS EL NOMBRE DEL USUARIO 👇
+                            using (SqlCommand cmdNombre = new SqlCommand("SELECT Nombre FROM Usuario WHERE IdUsuario = @Id", conexion))
+                            {
+                                cmdNombre.Parameters.AddWithValue("@Id", idUsuario);
+                                nombreUsuario = cmdNombre.ExecuteScalar()?.ToString() ?? "Cliente";
+                            }
                             return true;
+                        }
 
                         mensajeError = MapearCodigoError(codigoRespuesta);
                         return false;
@@ -105,13 +114,10 @@ namespace ProyectoServidor.Datos
             }
             catch (Exception ex)
             {
-                // Esto atrapará cualquier error y lo mostrará sin cerrar el socket a la fuerza
                 mensajeError = $"Error BD: {ex.Message}";
-                Console.WriteLine("EXCEPCIÓN EN VALIDAR CREDENCIALES: " + ex.ToString());
                 return false;
             }
         }
-
 
         public bool RegistrarCajero(string codigoCajero, string nombre, string ip, out string codigoRespuesta, out string mensajeError)
         {
@@ -257,7 +263,7 @@ namespace ProyectoServidor.Datos
             }
         }
 
-        
+
         public bool ValidarToken(int idUsuario, string codigoCajero, string tokenIngresado, out string codigoRespuesta, out string mensajeError)
         {
             codigoRespuesta = "96";
@@ -297,7 +303,7 @@ namespace ProyectoServidor.Datos
             }
         }
 
-      
+
         public bool ProcesarRetiro(int idUsuario, int idTarjeta, string codigoCajero, decimal monto,
             Dictionary<int, int> desglose, out int idTransaccion, out string codigoRespuesta, out string mensajeError)
         {
@@ -403,7 +409,7 @@ namespace ProyectoServidor.Datos
             }
         }
 
- 
+
         public bool CambiarPin(int idUsuario, string codigoCajero, string origen, string nuevoPinPlano,
             out string codigoRespuesta, out string mensajeError)
         {
@@ -422,7 +428,7 @@ namespace ProyectoServidor.Datos
                         comando.Parameters.AddWithValue("@CodigoCajero", (object)codigoCajero ?? DBNull.Value);
                         comando.Parameters.AddWithValue("@Origen", origen);
                         comando.Parameters.AddWithValue("@NuevoPinHash", CalcularSha256(nuevoPinPlano + "salt123"));
-                        comando.Parameters.AddWithValue("@NuevoPinSalt", "salt123"); 
+                        comando.Parameters.AddWithValue("@NuevoPinSalt", "salt123");
 
                         var pCodigo = new SqlParameter("@CodigoRespuesta", SqlDbType.NVarChar, 5) { Direction = ParameterDirection.Output };
                         var pMensaje = new SqlParameter("@Mensaje", SqlDbType.NVarChar, 100) { Direction = ParameterDirection.Output };
@@ -664,7 +670,28 @@ namespace ProyectoServidor.Datos
                 return porDefecto;
             }
         }
+        public bool ExisteTarjeta(string numeroTarjeta)
+        {
+            try
+            {
+                using (var conexion = new Microsoft.Data.SqlClient.SqlConnection(_cadenaConexion))
+                {
+                    conexion.Open();
+                    string query = @"
+                SELECT COUNT(1) 
+                FROM Tarjeta t
+                INNER JOIN Usuario u ON t.IdUsuario = u.IdUsuario
+                WHERE t.NumeroTarjeta = @Num AND t.Activa = 1 AND u.Estado = 'Activo'";
+
+                    using (var cmd = new Microsoft.Data.SqlClient.SqlCommand(query, conexion))
+                    {
+                        cmd.Parameters.AddWithValue("@Num", numeroTarjeta);
+                        return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                    }
+                }
+            }
+            catch { return false; }
+        }
     }
-
 }
-
+ 

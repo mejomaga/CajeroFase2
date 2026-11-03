@@ -116,6 +116,15 @@ namespace CajeroAutomatico.Presentacion
 
             if (respuesta.Exito)
             {
+                // 1. Extraemos el nombre real desde el JSON enviado por ServidorCentral
+                if (respuesta.Datos != null && respuesta.Datos.ContainsKey("Nombre"))
+                {
+                    // Al deserializar con JsonElement (igual que en los otros formularios), 
+                    // asegúrate de llamar a ToString()
+                    usuario.Nombre = respuesta.Datos["Nombre"].ToString();
+                }
+
+                // 2. Guardamos el usuario (ahora con su nombre real) en la sesión global
                 Sesion.UsuarioActual = usuario;
                 Program.Navegar(this, new FormMenuUsuario());
                 return;

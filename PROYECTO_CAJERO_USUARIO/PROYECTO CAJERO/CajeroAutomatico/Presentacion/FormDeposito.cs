@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +18,10 @@ namespace CajeroAutomatico.Presentacion
         // Rastrea cuál NumericUpDown está tocando el usuario en pantalla
         private NumericUpDown _controlActivo;
         private string _cantidadCadena = "0";
+
+        // Límite máximo de depósito permitido por operación (Ej: Q. 10,000)
+        private const decimal LIMITE_DEPOSITO = 10000m;
+
         public FormDeposito()
         {
             InitializeComponent();
@@ -33,12 +36,23 @@ namespace CajeroAutomatico.Presentacion
                 { 5,   numeric5 },
                 { 1,   numeric1 }
             };
+
             // Por defecto, enfocar la denominación de mayor valor
             _controlActivo = numeric200;
 
             AsignarEventosControles();
             AsignarEventosTeclado();
+
+            // Conectar el evento Load
+            this.Load += FormDeposito_Load;
         }
+
+        private void FormDeposito_Load(object sender, EventArgs e)
+        {
+            try { VozService.Hablar("Indique la cantidad de billetes que va a depositar"); } catch { }
+            ActualizarTotal();
+        }
+
         private void AsignarEventosControles()
         {
             foreach (var numeric in controlesDesglose.Values)
@@ -66,6 +80,9 @@ namespace CajeroAutomatico.Presentacion
             btn7.Click += BotonNumero_Click;
             btn8.Click += BotonNumero_Click;
             btn9.Click += BotonNumero_Click;
+
+            // Asegurarnos de que el botón de borrar esté conectado
+            btnBorrar.Click += btnBorrar_Click;
         }
 
         private void BotonNumero_Click(object sender, EventArgs e)
@@ -121,11 +138,21 @@ namespace CajeroAutomatico.Presentacion
 
             ActualizarTotal();
         }
+
         private void ActualizarTotal()
         {
             var total = DenominacionesHelper.CalcularTotal(controlesDesglose);
             lblTotalDeposito.Text = $"Total a depositar: Q.{total:N2}";
-            lblTotalDeposito.ForeColor = total > 0 ? Color.DarkGreen : Color.Black;
+
+            // Pintar de rojo el total si excede el límite permitido
+            if (total > LIMITE_DEPOSITO)
+            {
+                lblTotalDeposito.ForeColor = Color.DarkRed;
+            }
+            else
+            {
+                lblTotalDeposito.ForeColor = total > 0 ? Color.DarkGreen : Color.Black;
+            }
         }
 
         private void btnConfirmar_Click(object sender, EventArgs e)
@@ -133,23 +160,41 @@ namespace CajeroAutomatico.Presentacion
             var desglose = DenominacionesHelper.ObtenerDesglose(controlesDesglose);
             var total = DenominacionesHelper.CalcularTotal(controlesDesglose);
 
+            // 1. Validar que el usuario haya seleccionado billetes
             if (total <= 0)
             {
-                lblMensaje.ForeColor = Color.DarkRed;
-                lblMensaje.Text = "Debe ingresar al menos un billete para realizar el depósito.";
+                MostrarError("Debe ingresar al menos un billete para realizar el depósito.");
                 return;
             }
 
+            // 2. Validar que no se exceda la capacidad máxima por depósito
+            if (total > LIMITE_DEPOSITO)
+            {
+                MostrarError($"El monto máximo permitido por depósito es de Q.{LIMITE_DEPOSITO:N2}.");
+                return;
+            }
+
+            // Si pasa las validaciones, vamos a la pantalla del token
             Program.Navegar(this, new FormToken(FormToken.TipoOperacion.DEPOSITO, total, desglose));
 
+            // Limpiamos los campos (para cuando el usuario regrese)
             DenominacionesHelper.Limpiar(controlesDesglose);
             _cantidadCadena = "0";
             ActualizarTotal();
         }
 
+        // Método centralizado para mostrar advertencias al usuario
+        private void MostrarError(string mensaje)
+        {
+            lblMensaje.ForeColor = Color.DarkRed;
+            lblMensaje.Text = mensaje;
+            MessageBox.Show(mensaje, "Validación de Depósito", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            Program.Navegar(this, new FormFinProceso());
+            // Regresar al menú principal en lugar de cerrar toda la sesión
+            Program.Navegar(this, new FormMenuUsuario());
         }
     }
 }

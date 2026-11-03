@@ -7,42 +7,90 @@ namespace CajeroAutomatico.Presentacion
     public partial class FormEstadoCajero : Form
     {
         private bool yaAvanzo = false;
+        private Timer timerEstado;
+
         public FormEstadoCajero()
         {
             InitializeComponent();
+
             lblEstadoActual.Click += FormEstadoCajero_Click;
+            this.Click += FormEstadoCajero_Click;
+
             this.Cursor = Cursors.Hand;
             lblEstadoActual.Cursor = Cursors.Hand;
+
+            timerEstado = new Timer();
+            timerEstado.Interval = 5000;
+            timerEstado.Tick += TimerEstado_Tick;
+
+            this.Load += FormEstadoCajero_Load;
+        }
+
+        private void FormEstadoCajero_Load(object sender, EventArgs e)
+        {
             ActualizarEstado();
+            timerEstado.Start();
+        }
+
+        private void TimerEstado_Tick(object sender, EventArgs e)
+        {
+            if (!yaAvanzo)
+            {
+                ActualizarEstado();
+            }
         }
 
         private void ActualizarEstado()
         {
             var respuesta = Program.Servidor.ObtenerEstadoCajero();
-            bool activo = respuesta.Exito && string.Equals(respuesta.Texto("Estado"), "Activo", StringComparison.OrdinalIgnoreCase);
 
-            lblEstadoActual.Text = activo ? "Cajero activo" : "Cajero inactivo";
-            lblEstadoActual.ForeColor = activo ? Color.DarkGreen : Color.DarkRed;
+            bool activo = false;
+            if (respuesta != null && respuesta.Exito && respuesta.Datos != null && respuesta.Datos.ContainsKey("Estado"))
+            {
+                string estadoStr = respuesta.Datos["Estado"]?.ToString() ?? "";
+
+                // Solo será verdadero si el servidor envía EXPLÍCITAMENTE la palabra "Activo"
+                // (Ignora "Inactivo", "Desconectado" o "En línea Inactivo")
+                activo = estadoStr.IndexOf("Activo", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                         estadoStr.IndexOf("Inactivo", StringComparison.OrdinalIgnoreCase) < 0;
+            }
+
+            if (activo)
+            {
+                lblEstadoActual.Text = "Cajero Activo\n(Toque la pantalla para iniciar)";
+                lblEstadoActual.ForeColor = Color.DarkGreen;
+            }
+            else
+            {
+                lblEstadoActual.Text = "Cajero Inactivo\nTemporalmente fuera de servicio";
+                lblEstadoActual.ForeColor = Color.DarkRed;
+            }
         }
 
         private void FormEstadoCajero_Click(object sender, EventArgs e)
         {
             if (yaAvanzo) return;
 
-            // 1. Verificamos el estado justo antes de dejar pasar al usuario
             var respuesta = Program.Servidor.ObtenerEstadoCajero();
-            bool activo = respuesta.Exito && string.Equals(respuesta.Texto("Estado"), "Activo", StringComparison.OrdinalIgnoreCase);
+
+            bool activo = false;
+            if (respuesta != null && respuesta.Exito && respuesta.Datos != null && respuesta.Datos.ContainsKey("Estado"))
+            {
+                string estadoStr = respuesta.Datos["Estado"]?.ToString() ?? "";
+                activo = estadoStr.IndexOf("Activo", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                         estadoStr.IndexOf("Inactivo", StringComparison.OrdinalIgnoreCase) < 0;
+            }
 
             if (!activo)
             {
-                // 2. Si está inactivo, bloqueamos el paso
-                MessageBox.Show("Este cajero se encuentra temporalmente fuera de servicio.\nPor favor, acuda a otro cajero o intente más tarde.",
-                                "Cajero Inhabilitado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; // No hace nada más, se queda en la pantalla de inicio
+                MessageBox.Show("Este cajero se encuentra temporalmente fuera de servicio (Inactivo).\nPor favor, acuda a otro cajero o intente más tarde.",
+                                "Cajero Inactivo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
-            // 3. Si está activo, procede normal
             yaAvanzo = true;
+            timerEstado.Stop();
+
             this.Hide();
             FormInsertarTarjeta siguientePantalla = new FormInsertarTarjeta();
             siguientePantalla.FormClosed += (s, args) => this.Close();

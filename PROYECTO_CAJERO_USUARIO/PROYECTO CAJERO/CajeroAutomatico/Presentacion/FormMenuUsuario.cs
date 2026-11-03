@@ -16,6 +16,7 @@ namespace CajeroAutomatico.Presentacion
         public FormMenuUsuario()
         {
             InitializeComponent();
+            this.Load += FormMenuUsuario_Load;
         }
 
         private void btnCambiarPIN_Click(object sender, EventArgs e)

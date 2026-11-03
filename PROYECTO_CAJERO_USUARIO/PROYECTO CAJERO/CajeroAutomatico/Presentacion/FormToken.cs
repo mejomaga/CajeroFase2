@@ -23,7 +23,17 @@ namespace CajeroAutomatico.Presentacion
             this.tipoOperacion = tipoOperacion;
             this.monto = monto;
             this.desglose = desglose ?? new Dictionary<int, int>();
-            //this._token = token;
+
+            // Labels que el diseñador dejó ocultos
+            lblToken.Visible = true;
+            lblUsuario.Visible = true;
+            lblInstruccion.Visible = true;
+
+            // Eventos que el diseñador no enlazó
+            this.Load += FormToken_Load;
+            btnAceptar.Click += btnAceptar_Click;
+            btnBorrar.Click += btnBorrar_Click;
+            btnReenviar.Click += btnReenviar_Click;
 
             lblUsuario.Text = Sesion.UsuarioActual?.Nombre ?? "Cliente";
             AsignarEventosTeclado();

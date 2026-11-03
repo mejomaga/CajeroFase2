@@ -16,22 +16,20 @@ namespace CajeroAutomatico.Presentacion
         {
             InitializeComponent();
             lblMensaje.Text = mensaje;
-
         }
 
         private void btnReintentar_Click(object sender, EventArgs e)
         {
-            bool conectadoAlServidor = Program.Servidor.VerificarConexion();
-
-            if (conectadoAlServidor)
-                Program.Navegar(this, new FormEstadoCajero());
-            else
-                lblMensaje.Text = "Sigue sin haber conexión con el servidor. Verifique la red e intente de nuevo.";
+            // En lugar de congelar la pantalla verificando aquí, 
+            // regresamos al FormCargando para que el usuario vea la animación de la barra de nuevo
+            Program.Navegar(this, new FormCargando());
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
-            Close();
+            // Cierra este formulario. Como en FormCargando estamos escuchando este cierre, 
+            // se cerrará toda la aplicación de forma limpia.
+            this.Close();
         }
     }
 }

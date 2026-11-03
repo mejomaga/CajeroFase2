@@ -25,11 +25,11 @@ namespace CajeroAutomatico.Comunicacion
         public string Token { get; private set; }
         public string TokenOperacion { get; private set; }
 
-        public string CodigoCajero { get; set; } = "ATM-04";
+        public string CodigoCajero { get; set; } = "ATM-01";
 
         public ServidorClient()
         {
-            _host = ConfigurationManager.AppSettings["ServidorIP"] ?? "192.168.1.5";
+            _host = ConfigurationManager.AppSettings["ServidorIP"] ?? "127.0.0.1";
             _puerto = int.TryParse(ConfigurationManager.AppSettings["ServidorPuerto"], out var p) ? p : 5000;
             _timeoutMs = int.TryParse(ConfigurationManager.AppSettings["ServidorTimeoutMs"], out var t) ? t : 10000;
 
@@ -133,7 +133,10 @@ namespace CajeroAutomatico.Comunicacion
         {
             return AsegurarConexion();
         }
-
+        public RespuestaRed ValidarTarjeta(string numeroTarjeta)
+        {
+            return Enviar("VALIDAR_TARJETA", new { tarjeta = numeroTarjeta });
+        }
         private bool AsegurarConexion()
         {
             lock (_lockRed)
@@ -186,15 +189,13 @@ namespace CajeroAutomatico.Comunicacion
         // --- 11. GENERAR TOKEN (para autorizar una transacción) ---
         public RespuestaRed GenerarTokenOperacion()
         {
-            var respuesta = Enviar(Operaciones.GenerarToken, new { });
-            return respuesta;
+            return Enviar(Operaciones.GenerarToken, new { token = Token });
         }
 
         // --- 12. VALIDAR TOKEN DE OPERACIÓN ---
         public RespuestaRed ValidarTokenOperacion(string tokenIngresado)
         {
-            var datos = new { tokenOperacion = tokenIngresado };
-            return Enviar(Operaciones.ValidarToken, datos);
+            return Enviar(Operaciones.ValidarToken, new { token = Token, tokenOperacion = tokenIngresado });
         }
 
 
@@ -260,7 +261,37 @@ namespace CajeroAutomatico.Comunicacion
                         var dict = JsonSerializer.Deserialize<Dictionary<string, object>>(respuestaRaw[claveDatos].GetRawText());
                         if (dict != null)
                         {
-                            res.Datos = new Dictionary<string, object>(dict, StringComparer.OrdinalIgnoreCase);
+                            var dictProcesado = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+                            foreach (var kvp in dict)
+                            {
+                                // Extraemos los valores de JsonElement a tipos nativos
+                                if (kvp.Value is JsonElement elementoJson)
+                                {
+                                    switch (elementoJson.ValueKind)
+                                    {
+                                        case JsonValueKind.Number:
+                                            dictProcesado[kvp.Key] = elementoJson.GetDecimal();
+                                            break;
+                                        case JsonValueKind.String:
+                                            dictProcesado[kvp.Key] = elementoJson.GetString();
+                                            break;
+                                        case JsonValueKind.True:
+                                        case JsonValueKind.False:
+                                            dictProcesado[kvp.Key] = elementoJson.GetBoolean();
+                                            break;
+                                        default:
+                                            dictProcesado[kvp.Key] = elementoJson.GetRawText();
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    dictProcesado[kvp.Key] = kvp.Value;
+                                }
+                            }
+
+                            res.Datos = dictProcesado;
                         }
                     }
 

@@ -43,7 +43,7 @@
             this.dgvTransacciones.AllowUserToResizeColumns = false;
             this.dgvTransacciones.AllowUserToResizeRows = false;
             this.dgvTransacciones.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.dgvTransacciones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvTransacciones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvTransacciones.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.dgvTransacciones.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvTransacciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -57,7 +57,7 @@
             this.dgvTransacciones.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvTransacciones.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.dgvTransacciones.Location = new System.Drawing.Point(11, 82);
-            this.dgvTransacciones.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvTransacciones.Margin = new System.Windows.Forms.Padding(2);
             this.dgvTransacciones.Name = "dgvTransacciones";
             this.dgvTransacciones.ReadOnly = true;
             this.dgvTransacciones.RowHeadersWidth = 51;
@@ -73,7 +73,7 @@
             this.btnVoucher.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnVoucher.ForeColor = System.Drawing.Color.White;
             this.btnVoucher.Location = new System.Drawing.Point(483, 455);
-            this.btnVoucher.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnVoucher.Margin = new System.Windows.Forms.Padding(2);
             this.btnVoucher.Name = "btnVoucher";
             this.btnVoucher.Size = new System.Drawing.Size(105, 41);
             this.btnVoucher.TabIndex = 6;
@@ -90,7 +90,7 @@
             this.btnSalir.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSalir.ForeColor = System.Drawing.Color.White;
             this.btnSalir.Location = new System.Drawing.Point(603, 455);
-            this.btnSalir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSalir.Margin = new System.Windows.Forms.Padding(2);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(105, 41);
             this.btnSalir.TabIndex = 5;
@@ -121,7 +121,7 @@
             this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.dgvTransacciones);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormUltimasTransacciones";
             this.Text = "Cajero Automático - Julian Antonio Monterroso González_202342200";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

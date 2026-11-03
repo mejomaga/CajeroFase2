@@ -44,7 +44,6 @@ namespace CajeroAutomatico
 
                     FormEstadoCajero pantallaExito = new FormEstadoCajero();
                     pantallaExito.FormClosed += (s, args) => this.Close();
-
                     pantallaExito.Show();
                 }
                 else
@@ -55,16 +54,16 @@ namespace CajeroAutomatico
                     this.Hide();
 
                     FormErrorConexion pantallaError = new FormErrorConexion("No se pudo conectar con el servidor. Verifique la red y vuelva a intentarlo.");
-                    pantallaError.Show();
 
-                    this.Close();
+                    // Aseguramos que la aplicación se cierre solo cuando el FormErrorConexion se cierre
+                    pantallaError.FormClosed += (s, args) => this.Close();
+                    pantallaError.Show();
                 }
             }
         }
 
         private void lblEstado_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

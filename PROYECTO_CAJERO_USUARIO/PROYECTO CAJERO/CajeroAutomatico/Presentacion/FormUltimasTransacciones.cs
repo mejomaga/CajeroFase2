@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json;
 using System.Windows.Forms;
 
 namespace CajeroAutomatico.Presentacion
@@ -15,85 +16,99 @@ namespace CajeroAutomatico.Presentacion
         public FormUltimasTransacciones()
         {
             InitializeComponent();
-            CargarTransacciones();
+            this.Load += FormUltimasTransacciones_Load;
         }
 
         private void FormUltimasTransacciones_Load(object sender, EventArgs e)
         {
-            VozService.Hablar("Estas son sus últimas transacciones");
+            CargarTransacciones();
+            try { VozService.Hablar("Estas son sus últimas transacciones"); } catch { }
         }
 
         private void CargarTransacciones()
         {
             if (Sesion.UsuarioActual == null) return;
 
-            var respuesta = Program.Servidor.UltimasTransacciones(5);
-
-            // 1. Crear columnas por código si el grid está vacío
-            if (dgvTransacciones.Columns.Count == 0)
+            try
             {
-                dgvTransacciones.Columns.Add("Fecha", "Fecha");
-                dgvTransacciones.Columns.Add("Hora", "Hora");
-                dgvTransacciones.Columns.Add("Tipo", "Tipo Transacción");
-                dgvTransacciones.Columns.Add("Monto", "Monto");
-            }
+                var respuesta = Program.Servidor.UltimasTransacciones(5);
 
-            dgvTransacciones.Rows.Clear();
-
-            // 2. El servidor devuelve la lista en Datos["Transacciones"] como ArrayList
-            var lista = respuesta.Exito && respuesta.Datos.ContainsKey("Transacciones")
-                ? respuesta.Datos["Transacciones"] as System.Collections.IEnumerable
-                : null;
-
-            bool hayFilas = false;
-
-            if (lista != null)
-            {
-                foreach (var item in lista)
+                // 1. Crear columnas si el grid está vacío
+                if (dgvTransacciones.Columns.Count == 0)
                 {
-                    if (!(item is Dictionary<string, object> t)) continue;
+                    dgvTransacciones.Columns.Add("Fecha", "Fecha");
+                    dgvTransacciones.Columns.Add("Hora", "Hora");
+                    dgvTransacciones.Columns.Add("Tipo", "Tipo Transacción");
+                    dgvTransacciones.Columns.Add("Monto", "Monto");
+                }
 
-                    // 🟢 Claves en minúscula como las devuelve ConexionServidor
-                    string fechaIso = ObtenerTexto(t, "fecha", "Fecha");
-                    string tipo = ObtenerTexto(t, "tipo", "Tipo");
-                    decimal monto = ObtenerDecimal(t, "monto", "Monto");
+                dgvTransacciones.Rows.Clear();
+                bool hayFilas = false;
 
-                    // La fecha viene como "yyyy-MM-ddTHH:mm:ss"
-                    DateTime fecha = DateTime.TryParse(fechaIso, CultureInfo.InvariantCulture,
-                        DateTimeStyles.None, out var f) ? f : DateTime.Now;
+                if (respuesta != null && respuesta.Exito && respuesta.Datos != null && respuesta.Datos.ContainsKey("Transacciones"))
+                {
+                    // 2. Extraemos el string JSON crudo del diccionario
+                    string jsonTransacciones = respuesta.Datos["Transacciones"]?.ToString();
 
-                    dgvTransacciones.Rows.Add(
-                        fecha.ToString("dd/MM/yyyy"),
-                        fecha.ToString("HH:mm:ss"),
-                        tipo,
-                        $"Q.{monto:N2}");
-                    hayFilas = true;
+                    if (!string.IsNullOrWhiteSpace(jsonTransacciones))
+                    {
+                        // 3. Deserializamos a una lista de diccionarios de JsonElement
+                        var lista = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(jsonTransacciones);
+
+                        if (lista != null)
+                        {
+                            foreach (var t in lista)
+                            {
+                                // El servidor ya envía la fecha y hora separadas y formateadas
+                                string fechaStr = ObtenerTexto(t, "fecha", "Fecha");
+                                string horaStr = ObtenerTexto(t, "hora", "Hora");
+                                string tipo = ObtenerTexto(t, "tipo", "Tipo");
+                                decimal monto = ObtenerDecimal(t, "monto", "Monto");
+
+                                dgvTransacciones.Rows.Add(
+                                    fechaStr,
+                                    horaStr,
+                                    tipo,
+                                    $"Q.{monto:N2}");
+
+                                hayFilas = true;
+                            }
+                        }
+                    }
+                }
+
+                if (!hayFilas)
+                {
+                    dgvTransacciones.Rows.Add("—", "—", "Sin transacciones registradas", "—");
                 }
             }
-
-            if (!hayFilas)
-                dgvTransacciones.Rows.Add("—", "—", "Sin transacciones registradas", "—");
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ocurrió un error al cargar el historial:\n{ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dgvTransacciones.Rows.Add("—", "—", "Error de lectura", "—");
+            }
         }
 
-        // Helpers para tolerar mayúsculas/minúsculas y JsonElement
-        private static string ObtenerTexto(Dictionary<string, object> dict, params string[] claves)
+        // Helpers ajustados para leer Dictionary<string, JsonElement> sin importar mayúsculas
+        private static string ObtenerTexto(Dictionary<string, JsonElement> dict, params string[] claves)
         {
             foreach (var clave in claves)
             {
-                if (!dict.ContainsKey(clave) || dict[clave] == null) continue;
-                if (dict[clave] is System.Text.Json.JsonElement elem)
-                    return elem.ToString();
-                return dict[clave].ToString();
+                var keyReal = dict.Keys.FirstOrDefault(k => string.Equals(k, clave, StringComparison.OrdinalIgnoreCase));
+                if (keyReal != null)
+                {
+                    return dict[keyReal].ToString();
+                }
             }
             return "";
         }
 
-        private static decimal ObtenerDecimal(Dictionary<string, object> dict, params string[] claves)
+        private static decimal ObtenerDecimal(Dictionary<string, JsonElement> dict, params string[] claves)
         {
             string s = ObtenerTexto(dict, claves);
             return decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out var v) ? v : 0m;
         }
-
         private void btnSalir_Click(object sender, EventArgs e)
         {
             Program.Navegar(this, new FormFinProceso());

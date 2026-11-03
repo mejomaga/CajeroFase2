@@ -37,8 +37,21 @@ namespace CajeroAutomatico.Presentacion
                 return;
             }
 
+            // 1. Preguntamos al servidor si la tarjeta es válida
+            var respuesta = Program.Servidor.ValidarTarjeta(numeroTarjeta);
+
+            // 2. Si no es válida, mostramos el error y detenemos el proceso
+            if (!respuesta.Exito)
+            {
+                MessageBox.Show(respuesta.Mensaje ?? "Tarjeta no válida.",
+                    "Verificación fallida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNumeroTarjeta.Clear();
+                txtNumeroTarjeta.Focus();
+                return;
+            }
+
+            // 3. Si todo está bien, pasamos a la pantalla del PIN
             var usuario = new Usuario { NumeroTarjeta = numeroTarjeta, Nombre = "Cliente" };
-            // Pasamos directo a la pantalla de PIN
             Program.Navegar(this, new FormPIN(usuario));
         }
 
@@ -87,5 +100,6 @@ namespace CajeroAutomatico.Presentacion
         {
             ValidarTarjetaYContinuar(txtNumeroTarjeta.Text.Trim());
         }
+
     }
 }

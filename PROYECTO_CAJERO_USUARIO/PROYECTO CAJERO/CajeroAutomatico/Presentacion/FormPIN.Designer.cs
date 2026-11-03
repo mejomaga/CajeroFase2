@@ -290,7 +290,6 @@
             this.lblUsuario.TabIndex = 15;
             this.lblUsuario.Text = "usuario";
             this.lblUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblUsuario.Visible = false;
             // 
             // FormPIN
             // 

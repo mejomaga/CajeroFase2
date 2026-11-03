@@ -16,6 +16,7 @@ namespace CajeroAutomatico.Presentacion
         private readonly Dictionary<int, NumericUpDown> controlesDesglose;
         // Almacena los dígitos ingresados mediante el teclado táctil
         private string _montoCadena = "0";
+
         public FormRetiro()
         {
             InitializeComponent();
@@ -106,6 +107,7 @@ namespace CajeroAutomatico.Presentacion
         {
             ActualizarTotalDesglose();
         }
+
         private void ActualizarTotalDesglose()
         {
             var total = DenominacionesHelper.CalcularTotal(controlesDesglose);
@@ -115,67 +117,65 @@ namespace CajeroAutomatico.Presentacion
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
-            var desglose = DenominacionesHelper.ObtenerDesglose(controlesDesglose);
             decimal montoRetiro = numMonto.Value;
+            var desglose = DenominacionesHelper.ObtenerDesglose(controlesDesglose);
+            decimal totalDesglose = DenominacionesHelper.CalcularTotal(controlesDesglose);
 
+            // 1. Validar que el monto sea mayor a 0
             if (montoRetiro <= 0)
             {
-                lblMensaje.ForeColor = Color.DarkRed;
-                lblMensaje.Text = "Debe ingresar un monto mayor a Q.0.00";
+                MostrarError("Debe ingresar un monto mayor a Q.0.00");
                 return;
             }
 
+            // 2. Validar que se haya seleccionado al menos un billete en el desglose
+            if (totalDesglose <= 0)
+            {
+                MostrarError("Debe desglosar el monto seleccionando al menos un billete.");
+                return;
+            }
+
+            // 3. Validar que el total del desglose coincida estrictamente con el monto a retirar
+            if (totalDesglose != montoRetiro)
+            {
+                MostrarError("El total del desglose de billetes no coincide con el monto del retiro.");
+                return;
+            }
+
+            // Si pasa todas las validaciones, avanzamos a la pantalla del token
             Program.Navegar(this, new FormToken(FormToken.TipoOperacion.RETIRO, montoRetiro, desglose));
 
+            // Limpiamos los campos al salir
             _montoCadena = "0";
             numMonto.Value = 0;
             DenominacionesHelper.Limpiar(controlesDesglose);
             ActualizarTotalDesglose();
         }
 
+        private void MostrarError(string mensaje)
+        {
+            lblMensaje.ForeColor = Color.DarkRed;
+            lblMensaje.Text = mensaje;
+            MessageBox.Show(mensaje, "Validación de Retiro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
         private void FormRetiro_Load(object sender, EventArgs e)
         {
-            
+            try { VozService.Hablar("Ingrese el monto a retirar y seleccione su desglose"); } catch { }
+            ActualizarTotalDesglose();
         }
 
-        private void numeric100_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numeric50_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numeric20_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numeric200_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numeric10_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numeric5_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numeric1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void numeric100_ValueChanged(object sender, EventArgs e) { }
+        private void numeric50_ValueChanged(object sender, EventArgs e) { }
+        private void numeric20_ValueChanged(object sender, EventArgs e) { }
+        private void numeric200_ValueChanged(object sender, EventArgs e) { }
+        private void numeric10_ValueChanged(object sender, EventArgs e) { }
+        private void numeric5_ValueChanged(object sender, EventArgs e) { }
+        private void numeric1_ValueChanged(object sender, EventArgs e) { }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            Program.Navegar(this, new FormFinProceso());
+            Program.Navegar(this, new FormMenuUsuario());
         }
     }
 }

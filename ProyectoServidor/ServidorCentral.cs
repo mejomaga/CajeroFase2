@@ -171,19 +171,23 @@ namespace ProyectoServidor.Comunicaciones
             }
 
             // --- 3. VALIDAR PIN (LOGIN) ---
+            // --- 3. VALIDAR PIN (LOGIN) ---
             if (tipo == "LOGIN" || tipo == "VALIDAR_PIN")
             {
                 var datos = jsonNode["Datos"];
                 string tarjeta = datos?["NumeroTarjeta"]?.ToString() ?? jsonNode["tarjeta"]?.ToString();
                 string pin = datos?["Pin"]?.ToString() ?? jsonNode["pin"]?.ToString();
 
-                bool exito = _bd.ValidarCredenciales(tarjeta, pin, out int idUsuario, out int idTarjeta, out string cod, out string err);
+                // Actualizamos la llamada para recibir 'nombreUsuario'
+                bool exito = _bd.ValidarCredenciales(tarjeta, pin, out int idUsuario, out int idTarjeta, out string nombreUsuario, out string cod, out string err);
 
                 if (exito)
                 {
                     _bd.GenerarToken(idUsuario, idCajero, out string token, out _);
                     _sesionesActivas[idCajero] = (idUsuario, idTarjeta);
-                    return $"{{\"Exito\":true,\"Mensaje\":\"Ingreso correcto\",\"Datos\":{{\"Token\":\"{token}\"}}}}";
+
+                    // Incluimos el Nombre en el JSON que se le manda al cajero
+                    return $"{{\"Exito\":true,\"Mensaje\":\"Ingreso correcto\",\"Datos\":{{\"Token\":\"{token}\", \"Nombre\":\"{nombreUsuario}\"}}}}";
                 }
                 return $"{{\"Exito\":false,\"Mensaje\":\"{err}\"}}";
             }
@@ -322,6 +326,18 @@ namespace ProyectoServidor.Comunicaciones
                 return "{\"Exito\":true,\"Mensaje\":\"Sesión cerrada\"}";
             }
 
+            // --- VALIDAR TARJETA ANTES DEL PIN ---
+            if (tipo == "VALIDAR_TARJETA")
+            {
+                var datos = jsonNode["Datos"];
+                string tarjeta = datos?["NumeroTarjeta"]?.ToString() ?? jsonNode["tarjeta"]?.ToString();
+
+                bool existe = _bd.ExisteTarjeta(tarjeta);
+                if (existe)
+                    return "{\"Exito\":true,\"Mensaje\":\"Tarjeta válida\"}";
+                else
+                    return "{\"Exito\":false,\"Mensaje\":\"La tarjeta no existe, está inactiva o bloqueada.\"}";
+            }
             return "{\"Exito\":false,\"Mensaje\":\"Operación no soportada\"}";
         }
 
@@ -374,7 +390,7 @@ namespace ProyectoServidor.Comunicaciones
 
                     //_bd.MarcarCajeroDesconectado(kvp.Key);
 
-                    using var conn = new Microsoft.Data.SqlClient.SqlConnection(@"Server=MELQUI\SQLEXPRESS;Database=BD_CajeroRed;Trusted_Connection=True;TrustServerCertificate=True;");
+                    using var conn = new Microsoft.Data.SqlClient.SqlConnection(@"Server=DESKTOP-J1B62LL;Database=BD_CajeroRed_Actualizada;Trusted_Connection=True;TrustServerCertificate=True;");
                     conn.Open();
                     var cmd = new Microsoft.Data.SqlClient.SqlCommand("UPDATE Cajero SET Estado = 'Desconectado' WHERE CodigoCajero = @Cod", conn);
                     cmd.Parameters.AddWithValue("@Cod", kvp.Key);
