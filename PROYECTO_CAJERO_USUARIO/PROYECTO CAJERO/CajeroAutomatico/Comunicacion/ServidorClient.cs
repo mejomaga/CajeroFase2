@@ -25,15 +25,14 @@ namespace CajeroAutomatico.Comunicacion
         public string Token { get; private set; }
         public string TokenOperacion { get; private set; }
 
-        public string CodigoCajero { get; set; } = "ATM-01";
+        public string CodigoCajero { get; set; } = "ATM-04";
 
         public ServidorClient()
         {
-            _host = ConfigurationManager.AppSettings["ServidorIP"] ?? "127.0.0.1";
+            _host = ConfigurationManager.AppSettings["ServidorIP"] ?? "10.125.197.14";
             _puerto = int.TryParse(ConfigurationManager.AppSettings["ServidorPuerto"], out var p) ? p : 5000;
             _timeoutMs = int.TryParse(ConfigurationManager.AppSettings["ServidorTimeoutMs"], out var t) ? t : 10000;
 
-            // Timer de Heartbeat cada 10 segundos para mantener el cajero en línea en el servidor
             _timerHeartbeat = new Timer(EjecutarHeartbeat, null, 10000, 10000);
         }
 
@@ -60,7 +59,6 @@ namespace CajeroAutomatico.Comunicacion
         public void FijarToken(string token) => Token = token;
         public void LimpiarToken() => Token = null;
 
-        // --- 1. LOGIN (Tarjeta + PIN) ---
         public RespuestaRed Login(string numeroTarjeta, string pin)
         {
             var datos = new { tarjeta = numeroTarjeta, pin = pin };
@@ -77,7 +75,6 @@ namespace CajeroAutomatico.Comunicacion
             return respuesta;
         }
 
-        // --- 2. RETIRAR ---
         public RespuestaRed Retirar(decimal monto, Dictionary<int, int> desglose)
         {
             var datos = new
@@ -89,31 +86,26 @@ namespace CajeroAutomatico.Comunicacion
             return Enviar(Operaciones.Retirar, datos);
         }
 
-        // --- 3. DEPOSITAR ---
         public RespuestaRed Depositar(Dictionary<int, int> desglose)
         {
             var datos = new { token = Token, desglose = desglose };
             return Enviar(Operaciones.Depositar, datos);
         }
 
-        // --- 4. CONSULTAR SALDO ---
         public RespuestaRed ConsultarSaldo() => Enviar(Operaciones.ConsultarSaldo, new { token = Token });
 
-        // --- 5. CAMBIAR PIN ---
         public RespuestaRed CambiarPin(string pinActual, string pinNuevo)
         {
             var datos = new { token = Token, pinActual = pinActual, pinNuevo = pinNuevo };
             return Enviar(Operaciones.CambiarPin, datos);
         }
 
-        // --- 6. ULTIMAS TRANSACCIONES ---
         public RespuestaRed UltimasTransacciones(int cantidad = 5)
         {
             var datos = new { token = Token, cantidad = cantidad };
             return Enviar(Operaciones.UltimasTransacciones, datos);
         }
 
-        // --- 7. LOGOUT ---
         public RespuestaRed CerrarSesion()
         {
             if (string.IsNullOrEmpty(Token)) return new RespuestaRed { Exito = true };
@@ -122,21 +114,86 @@ namespace CajeroAutomatico.Comunicacion
             return respuesta;
         }
 
-        // --- 8. ESTADO CAJERO ---
         public RespuestaRed ObtenerEstadoCajero() => Enviar(Operaciones.EstadoCajero, new { });
 
-        // --- 9. HEARTBEAT (Para mantener estado 'En línea' en el servidor) ---
         public RespuestaRed EnviarHeartbeat() => Enviar(Operaciones.Heartbeat, new { cajero = CodigoCajero });
 
-        // --- 10. VERIFICAR O ASEGURAR CONEXIÓN ---
         public bool VerificarConexion()
         {
             return AsegurarConexion();
         }
+
         public RespuestaRed ValidarTarjeta(string numeroTarjeta)
         {
             return Enviar("VALIDAR_TARJETA", new { tarjeta = numeroTarjeta });
         }
+
+        public RespuestaRed GenerarTokenOperacion()
+        {
+            return Enviar(Operaciones.GenerarToken, new { token = Token });
+        }
+
+        public RespuestaRed ValidarTokenOperacion(string tokenIngresado)
+        {
+            return Enviar(Operaciones.ValidarToken, new { token = Token, tokenOperacion = tokenIngresado });
+        }
+
+        // --- OPERACIONES INTERBANCARIAS (PROTOCOLO NETGEAR 2.2) ---
+        public List<BancoExternoDto> ObtenerBancosAutorizados()
+        {
+            var lista = new List<BancoExternoDto>();
+            var res = Enviar(Operaciones.BancosAutorizados, new { token = Token });
+            if (res.Exito && res.Datos != null && res.Datos.ContainsKey("Bancos"))
+            {
+                try
+                {
+                    string rawJson = res.Datos["Bancos"].ToString();
+                    var doc = JsonDocument.Parse(rawJson);
+                    foreach (var elem in doc.RootElement.EnumerateArray())
+                    {
+                        lista.Add(new BancoExternoDto
+                        {
+                            CodigoBanco = elem.TryGetProperty("codigoBanco", out var c) ? c.GetString() : "",
+                            NombreBanco = elem.TryGetProperty("nombreBanco", out var n) ? n.GetString() : "",
+                            IP = elem.TryGetProperty("ip", out var ip) ? ip.GetString() : "",
+                            PuertoTcp = elem.TryGetProperty("puertoTcp", out var p) ? p.GetInt32() : 5000,
+                            CupoDisponible = elem.TryGetProperty("cupoDisponible", out var cupo) ? cupo.GetDecimal() : 0m
+                        });
+                    }
+                }
+                catch { }
+            }
+            return lista;
+        }
+
+        public RespuestaRed VerificarCuentaInterbancaria(string bancoDestino, string numeroCuenta)
+        {
+            return Enviar(Operaciones.VerificarCuentaIb, new
+            {
+                token = Token,
+                bancoDestino = bancoDestino,
+                numeroCuenta = numeroCuenta
+            });
+        }
+
+        public RespuestaRed TransferirInterbancario(
+            string bancoDestino,
+            string cuentaDestino,
+            decimal monto,
+            string concepto,
+            string tokenTransferencia = "")
+        {
+            return Enviar(Operaciones.TransferirIb, new
+            {
+                token = Token,
+                bancoDestino = bancoDestino,
+                cuentaDestino = cuentaDestino,
+                monto = monto,
+                concepto = concepto,
+                tokenTransferencia = tokenTransferencia
+            });
+        }
+
         private bool AsegurarConexion()
         {
             lock (_lockRed)
@@ -186,22 +243,6 @@ namespace CajeroAutomatico.Comunicacion
             _cliente = null;
         }
 
-        // --- 11. GENERAR TOKEN (para autorizar una transacción) ---
-        public RespuestaRed GenerarTokenOperacion()
-        {
-            return Enviar(Operaciones.GenerarToken, new { token = Token });
-        }
-
-        // --- 12. VALIDAR TOKEN DE OPERACIÓN ---
-        public RespuestaRed ValidarTokenOperacion(string tokenIngresado)
-        {
-            return Enviar(Operaciones.ValidarToken, new { token = Token, tokenOperacion = tokenIngresado });
-        }
-
-
-        // =========================================================
-        // EL CORAZÓN: Comunicación JSON thread-safe sobre socket persistente
-        // =========================================================
         private RespuestaRed Enviar(string tipoMensaje, object datos)
         {
             lock (_lockRed)
@@ -240,19 +281,16 @@ namespace CajeroAutomatico.Comunicacion
                     var respuestaRaw = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(linea);
                     var res = new RespuestaRed();
 
-                    // Soportar 'Exito' o 'exito'
                     if (respuestaRaw.ContainsKey("Exito"))
                         res.Exito = respuestaRaw["Exito"].GetBoolean();
                     else if (respuestaRaw.ContainsKey("exito"))
                         res.Exito = respuestaRaw["exito"].GetBoolean();
 
-                    // Soportar 'Mensaje' o 'mensaje'
                     if (respuestaRaw.ContainsKey("Mensaje"))
                         res.Mensaje = respuestaRaw["Mensaje"].GetString();
                     else if (respuestaRaw.ContainsKey("mensaje"))
                         res.Mensaje = respuestaRaw["mensaje"].GetString();
 
-                    // Soportar 'Datos' o 'datos'
                     string claveDatos = respuestaRaw.ContainsKey("Datos") ? "Datos"
                                       : (respuestaRaw.ContainsKey("datos") ? "datos" : null);
 
@@ -265,7 +303,6 @@ namespace CajeroAutomatico.Comunicacion
 
                             foreach (var kvp in dict)
                             {
-                                // Extraemos los valores de JsonElement a tipos nativos
                                 if (kvp.Value is JsonElement elementoJson)
                                 {
                                     switch (elementoJson.ValueKind)

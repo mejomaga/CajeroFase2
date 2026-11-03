@@ -61,7 +61,7 @@ namespace CajeroAutomatico.Presentacion
             VozService.Hablar("Bienvenido. Por favor, Ingrese el número de su tarjeta.");
 
             // Mensaje visual
-            lblMensaje.Text = "Inserte su tarjeta";
+            //lblMensaje.Text = "Inserte su tarjeta";
             lblEstado.Text = "";
             _procesando = false;
 

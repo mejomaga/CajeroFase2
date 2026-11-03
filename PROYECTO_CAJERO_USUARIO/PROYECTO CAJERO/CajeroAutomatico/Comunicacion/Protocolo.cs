@@ -3,20 +3,6 @@ using System.Collections.Generic;
 
 namespace CajeroAutomatico.Comunicacion
 {
-    // ---------------------------------------------------------------------
-    // Protocolo de comunicación Cliente (cajero) <-> Servidor central.
-    //
-    // Transporte: TCP (TcpClient / NetworkStream).
-    // Formato:    1 objeto JSON por mensaje, terminado en '\n' (newline-delimited).
-    //             El cliente abre la conexión, envía una Solicitud y espera
-    //             exactamente una Respuesta antes de enviar la siguiente.
-    //
-    // El servidor es la ÚNICA autoridad sobre usuarios, saldos, PIN, huellas,
-    // límites diarios, denominaciones de efectivo y transacciones. El cliente
-    // nunca decide si una operación es válida: solo arma la Solicitud, la
-    // envía y muestra lo que el servidor responde.
-    // ---------------------------------------------------------------------
-
     public static class Operaciones
     {
         public const string RegistrarCajero = "REGISTRAR_CAJERO";
@@ -31,26 +17,34 @@ namespace CajeroAutomatico.Comunicacion
         public const string UltimasTransacciones = "ULTIMAS_TRANSACCIONES";
         public const string CerrarSesion = "LOGOUT";
         public const string EstadoCajero = "ESTADO_CAJERO";
-
+        public const string BancosAutorizados = "BANCOS_AUTORIZADOS";
+        public const string VerificarCuentaIb = "VERIFICAR_CUENTA_IB";
+        public const string TransferirIb = "TRANSFERIR_IB";
     }
 
-    // Mensaje que viaja del cliente hacia el servidor.
+    public class BancoExternoDto
+    {
+        public string CodigoBanco { get; set; } = "";
+        public string NombreBanco { get; set; } = "";
+        public string IP { get; set; } = "";
+        public int PuertoTcp { get; set; } = 5000;
+        public decimal CupoDisponible { get; set; }
+
+        public override string ToString() => $"{NombreBanco} ({CodigoBanco})";
+    }
+
     public class SolicitudRed
     {
         public string Operacion { get; set; }
         public Dictionary<string, object> Datos { get; set; } = new Dictionary<string, object>();
     }
 
-    // Mensaje que viaja del servidor hacia el cliente.
     public class RespuestaRed
     {
         public bool Exito { get; set; }
         public string Mensaje { get; set; } = "";
         public Dictionary<string, object> Datos { get; set; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-        // Se usa cuando ni siquiera se pudo hablar con el servidor
-        // (sin red, servidor caído, timeout, etc.), para que el Form
-        // muestre el mismo tipo de mensaje que un rechazo normal.
         public static RespuestaRed ErrorConexion(string mensaje) =>
             new RespuestaRed { Exito = false, Mensaje = mensaje };
 
@@ -74,7 +68,6 @@ namespace CajeroAutomatico.Comunicacion
             return respuesta;
         }
 
-        // ---------- Helpers para leer "Datos" sin pelear con tipos de JSON ----------
         public string Texto(string clave, string porDefecto = "")
         {
             if (!Datos.ContainsKey(clave) || Datos[clave] == null) return porDefecto;
