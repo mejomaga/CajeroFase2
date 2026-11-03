@@ -308,52 +308,34 @@ public class PaginaCajeros : PaginaBase
         return desglose;
     }
 
+
     private async void BtnHabilitar_Click(object? sender, EventArgs e)
     {
-        if (string.IsNullOrEmpty(_codigoSeleccionado))
-        {
-            MessageBox.Show("Seleccione un cajero de la tabla primero.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return;
-        }
+        if (string.IsNullOrEmpty(_codigoSeleccionado)) return;
 
-        if (MessageBox.Show($"¿Desea habilitar el cajero {_codigoSeleccionado} para que acepte transacciones?", "Habilitar Cajero", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        if (MessageBox.Show($"¿Habilitar el cajero {_codigoSeleccionado}?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes)
         {
-            // El estado "Activo" es el que tu cajero reconoce como encendido
-            bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, "Activo");
-
+            // Usamos el estado exacto de tu SQL
+            bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, "En línea");
             if (exito)
             {
-                MessageBox.Show($"Cajero {_codigoSeleccionado} habilitado. Ya puede recibir clientes.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Cajero habilitado. La pantalla cambiará en unos segundos.");
                 await ActualizarAsync();
-            }
-            else
-            {
-                MessageBox.Show("No se pudo habilitar el cajero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
 
     private async void BtnInhabilitar_Click(object? sender, EventArgs e)
     {
-        if (string.IsNullOrEmpty(_codigoSeleccionado))
-        {
-            MessageBox.Show("Seleccione un cajero de la tabla primero.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return;
-        }
+        if (string.IsNullOrEmpty(_codigoSeleccionado)) return;
 
-        if (MessageBox.Show($"¿Desea inhabilitar el cajero {_codigoSeleccionado}? Seguirá conectado pero no permitirá el acceso.", "Inhabilitar Cajero", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+        if (MessageBox.Show($"¿Inhabilitar el cajero {_codigoSeleccionado}?", "Inhabilitar", MessageBoxButtons.YesNo) == DialogResult.Yes)
         {
-            // Lo pasamos a Inactivo (o "FueraDeServicio" según lo que espere tu servidor)
-            bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, "Inactivo");
-
+            bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, "Fuera de servicio");
             if (exito)
             {
-                MessageBox.Show($"Cajero {_codigoSeleccionado} inhabilitado correctamente. Seguirá conectado pero bloqueado.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Cajero inhabilitado. Se bloqueará en unos segundos.");
                 await ActualizarAsync();
-            }
-            else
-            {
-                MessageBox.Show("No se pudo inhabilitar el cajero.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

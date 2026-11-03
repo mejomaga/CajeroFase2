@@ -165,9 +165,25 @@ namespace ProyectoServidor.Comunicaciones
             // --- 2. HEARTBEAT / ESTADO ---
             if (tipo == "HEARTBEAT" || tipo == "ESTADO_CAJERO")
             {
+
                 _ultimoHeartbeat[idCajero] = DateTime.Now;
-                _bd.ActualizarHeartbeat(idCajero);
-                return "{\"Exito\":true,\"Mensaje\":\"Vivo\",\"Datos\":{\"Estado\":\"Activo\"}}";
+
+                // Consultamos el estado REAL en la base de datos
+                string estadoReal = _bd.ObtenerEstadoCajero(idCajero);
+
+                // Si está "Fuera de servicio", le decimos al cajero que no avance
+                if (estadoReal == "Fuera de servicio")
+                {
+                    return "{\"Exito\":true,\"Mensaje\":\"Bloqueado\",\"Datos\":{\"Estado\":\"Fuera de servicio\"}}";
+                }
+
+                _bd.ActualizarHeartbeat(idCajero); // Si está bien, actualizamos su hora
+                return "{\"Exito\":true,\"Mensaje\":\"Vivo\",\"Datos\":{\"Estado\":\"En línea\"}}";
+
+
+                /* _ultimoHeartbeat[idCajero] = DateTime.Now;
+                 _bd.ActualizarHeartbeat(idCajero);
+                 return "{\"Exito\":true,\"Mensaje\":\"Vivo\",\"Datos\":{\"Estado\":\"Activo\"}}";*/
             }
 
             // --- 3. VALIDAR PIN (LOGIN) ---
@@ -365,9 +381,9 @@ namespace ProyectoServidor.Comunicaciones
             DateTime ahora = DateTime.Now;
             foreach (var kvp in _ultimoHeartbeat)
             {
-                if ((ahora - kvp.Value).TotalSeconds > 10)
+                if ((ahora - kvp.Value).TotalSeconds > 6)
                 {
-                    OnMensajeConsola?.Invoke($"[ALERTA] El cajero {kvp.Key} se ha desconectado (sin heartbeat por 30s).");
+                    OnMensajeConsola?.Invoke($"[ALERTA] El cajero {kvp.Key} se ha desconectado (sin heartbeat por 6s).");
                     _ultimoHeartbeat.TryRemove(kvp.Key, out _);
                     _cajerosConectados.TryRemove(kvp.Key, out _);
                     _tokensOperacionValidados.TryRemove(kvp.Key, out _);

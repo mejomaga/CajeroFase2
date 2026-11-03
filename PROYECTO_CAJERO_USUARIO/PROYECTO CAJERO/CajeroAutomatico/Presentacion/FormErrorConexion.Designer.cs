@@ -42,7 +42,7 @@
             this.lblMensaje.Name = "lblMensaje";
             this.lblMensaje.Size = new System.Drawing.Size(1024, 80);
             this.lblMensaje.TabIndex = 0;
-            this.lblMensaje.Text = "Error de conexión";
+            this.lblMensaje.Text = "Cajero Inhabilitado ";
             this.lblMensaje.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnReintentar

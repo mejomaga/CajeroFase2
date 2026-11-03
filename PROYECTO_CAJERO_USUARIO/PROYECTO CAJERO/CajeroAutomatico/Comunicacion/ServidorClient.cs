@@ -25,7 +25,7 @@ namespace CajeroAutomatico.Comunicacion
         public string Token { get; private set; }
         public string TokenOperacion { get; private set; }
 
-        public string CodigoCajero { get; set; } = "ATM-04";
+        public string CodigoCajero { get; set; } = "ATM-03";
 
         public ServidorClient()
         {

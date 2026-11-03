@@ -17,6 +17,8 @@ namespace CajeroAutomatico.Presentacion
             InitializeComponent();
             lblMensaje.Text = mensaje;
 
+            btnSalir.Visible = false; // Ocultar para que no evadan el bloqueo
+            btnReintentar.Text = "Verificar Habilitación";
         }
 
         private void btnReintentar_Click(object sender, EventArgs e)

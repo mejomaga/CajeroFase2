@@ -664,6 +664,25 @@ namespace ProyectoServidor.Datos
                 return porDefecto;
             }
         }
+
+        // --- NUEVO MÉTODO PARA CONSULTAR EL ESTADO ---
+        public string ObtenerEstadoCajero(string codigoCajero)
+        {
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(_cadenaConexion))
+                {
+                    conexion.Open();
+                    using (SqlCommand comando = new SqlCommand("SELECT Estado FROM Cajero WHERE CodigoCajero = @Cod", conexion))
+                    {
+                        comando.Parameters.AddWithValue("@Cod", codigoCajero);
+                        var resultado = comando.ExecuteScalar();
+                        return resultado != null ? resultado.ToString() : "Desconectado";
+                    }
+                }
+            }
+            catch { return "Desconectado"; }
+        }
     }
 
 }

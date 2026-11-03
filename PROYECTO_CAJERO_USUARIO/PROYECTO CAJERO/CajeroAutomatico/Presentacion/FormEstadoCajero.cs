@@ -7,6 +7,8 @@ namespace CajeroAutomatico.Presentacion
     public partial class FormEstadoCajero : Form
     {
         private bool yaAvanzo = false;
+
+        private Timer _timerEstado;
         public FormEstadoCajero()
         {
             InitializeComponent();
@@ -14,6 +16,11 @@ namespace CajeroAutomatico.Presentacion
             this.Cursor = Cursors.Hand;
             lblEstadoActual.Cursor = Cursors.Hand;
             ActualizarEstado();
+
+            _timerEstado = new Timer();
+            _timerEstado.Interval = 3000; // Revisa cada 3 segundos
+            _timerEstado.Tick += TimerEstado_Tick;
+            _timerEstado.Start();
         }
 
         private void ActualizarEstado()
@@ -21,8 +28,35 @@ namespace CajeroAutomatico.Presentacion
             var respuesta = Program.Servidor.ObtenerEstadoCajero();
             bool activo = respuesta.Exito && string.Equals(respuesta.Texto("Estado"), "Activo", StringComparison.OrdinalIgnoreCase);
 
-            lblEstadoActual.Text = activo ? "Cajero activo" : "Cajero inactivo";
-            lblEstadoActual.ForeColor = activo ? Color.DarkGreen : Color.DarkRed;
+            lblEstadoActual.Text = activo ? "Cajero inactivo" : "Cajero activo";
+            lblEstadoActual.ForeColor = activo ? Color.DarkGreen : Color.DarkGreen;
+        }
+
+        private void TimerEstado_Tick(object sender, EventArgs e)
+        {
+            if (yaAvanzo)
+            {
+                _timerEstado.Stop();
+                return;
+            }
+
+            var respuesta = Program.Servidor.ObtenerEstadoCajero();
+            bool activo = respuesta.Exito && string.Equals(respuesta.Texto("Estado"), "En línea", StringComparison.OrdinalIgnoreCase);
+
+            if (activo)
+            {
+                // ¡El administrador lo habilitó! Avanzamos solos
+                yaAvanzo = true;
+                _timerEstado.Stop();
+                this.Hide();
+                FormInsertarTarjeta siguiente = new FormInsertarTarjeta();
+                siguiente.FormClosed += (s, args) => this.Close();
+                siguiente.Show();
+            }
+            else
+            {
+                ActualizarEstado(); // Si está bloqueado, se queda aquí
+            }
         }
 
         private void FormEstadoCajero_Click(object sender, EventArgs e)
