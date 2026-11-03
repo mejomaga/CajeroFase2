@@ -47,7 +47,7 @@ public class RepositorioSql : IServicioDatos
         using var conexion = new SqlConnection(_cadenaConexion);
         using var comando = new SqlCommand(@"
             SELECT 
-                (SELECT COUNT(*) FROM Cajero WHERE Estado = 'En línea') AS CajerosEnLinea,
+                (SELECT COUNT(*) FROM Cajero WHERE Estado IN ('Activo', 'En línea', 'Efectivo bajo')) AS CajerosEnLinea,
                 (SELECT COUNT(*) FROM Cajero) AS CajerosTotal,
                 ISNULL((SELECT SUM(i.Valor * i.Cantidad) FROM InventarioCajero i), 0) AS EfectivoTotalRed,
                 ISNULL((SELECT SUM(Monto) FROM Transaccion WHERE Tipo = 'RETIRO' AND CodigoRespuesta = '00' AND CAST(Fecha AS DATE) = CAST(GETDATE() AS DATE)), 0) AS TotalRetirado,
@@ -189,14 +189,15 @@ public class RepositorioSql : IServicioDatos
 
     public async Task<bool> InicializarCajeroAsync(string codigoCajero, Dictionary<int, int> desglose)
     {
+        decimal total = desglose.Sum(x => (decimal)x.Key * x.Value);
+
         using var conexion = new SqlConnection(_cadenaConexion);
         using var comando = new SqlCommand("sp_InicializarCajero", conexion) { CommandType = CommandType.StoredProcedure };
 
         comando.Parameters.AddWithValue("@CodigoCajero", codigoCajero);
         comando.Parameters.AddWithValue("@IdAdmin", 1);
-        comando.Parameters.AddWithValue("@Total", 10000.00m);
+        comando.Parameters.AddWithValue("@Total", total);
 
-        // Mandamos los billetes del desglose que recibe el método
         comando.Parameters.AddWithValue("@B200", desglose.ContainsKey(200) ? desglose[200] : 0);
         comando.Parameters.AddWithValue("@B100", desglose.ContainsKey(100) ? desglose[100] : 0);
         comando.Parameters.AddWithValue("@B50", desglose.ContainsKey(50) ? desglose[50] : 0);
@@ -218,12 +219,14 @@ public class RepositorioSql : IServicioDatos
 
     public async Task<bool> AgregarEfectivoCajeroAsync(string codigoCajero, Dictionary<int, int> desglose)
     {
+        decimal total = desglose.Sum(x => (decimal)x.Key * x.Value);
+
         using var conexion = new SqlConnection(_cadenaConexion);
         using var comando = new SqlCommand("sp_AgregarEfectivo", conexion) { CommandType = CommandType.StoredProcedure };
 
         comando.Parameters.AddWithValue("@CodigoCajero", codigoCajero);
         comando.Parameters.AddWithValue("@IdAdmin", 1);
-        comando.Parameters.AddWithValue("@TotalAgregar", 5000.00m);
+        comando.Parameters.AddWithValue("@TotalAgregar", total);
 
         comando.Parameters.AddWithValue("@B200", desglose.ContainsKey(200) ? desglose[200] : 0);
         comando.Parameters.AddWithValue("@B100", desglose.ContainsKey(100) ? desglose[100] : 0);
@@ -244,6 +247,7 @@ public class RepositorioSql : IServicioDatos
         return paramRespuesta.Value?.ToString() == "00";
     }
 
+    
     public async Task<bool> CambiarEstadoCajeroAsync(string codigoCajero, string nuevoEstado)
     {
         using var conexion = new SqlConnection(_cadenaConexion);
@@ -689,7 +693,8 @@ public class RepositorioSql : IServicioDatos
     {
         using var conexion = new SqlConnection(_cadenaConexion);
         // En lugar de borrarlo físicamente, lo marcamos como inactivo/desconectado
-        using var comando = new SqlCommand("UPDATE Cajero SET Estado = 'Desconectado', Inicializado = 0 WHERE CodigoCajero = @Codigo", conexion);
+        using var comando = new SqlCommand(
+     "UPDATE Cajero SET Estado = 'Inactivo', Inicializado = 0 WHERE CodigoCajero = @Codigo", conexion);
         comando.Parameters.AddWithValue("@Codigo", codigoCajero);
 
         await conexion.OpenAsync();

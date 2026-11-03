@@ -38,16 +38,19 @@ public class Cajero
     /// <summary>Se calcula solo a partir del inventario.</summary>
     public decimal EfectivoTotal => Inventario.Sum(p => (decimal)p.Key * p.Value);
 
+
     /// <summary>Convierte el texto de la BD ('En línea', ...) al enum. Tolera problemas de tildes.</summary>
     public static EstadoCajero ParsearEstado(string? texto)
     {
         string t = (texto ?? "").Trim().ToLowerInvariant();
+        if (t == "activo") return EstadoCajero.EnLinea;
         if (t.StartsWith("en l")) return EstadoCajero.EnLinea;
         if (t.StartsWith("fuera")) return EstadoCajero.FueraDeServicio;
         if (t.StartsWith("efectivo")) return EstadoCajero.EfectivoBajo;
         return EstadoCajero.Desconectado;
     }
 
+    public bool EstaActivo => Estado == EstadoCajero.EnLinea || Estado == EstadoCajero.EfectivoBajo;
     /// <summary>Texto para mostrar en pantalla / guardar en la BD.</summary>
     public static string TextoDeEstado(EstadoCajero estado) => estado switch
     {

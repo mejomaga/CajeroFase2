@@ -16,6 +16,7 @@ namespace CajeroAutomatico.Presentacion
     {
 
         private bool _procesando = false;
+        private Timer _timerEstado;
 
         public FormInsertarTarjeta()
         {
@@ -57,19 +58,30 @@ namespace CajeroAutomatico.Presentacion
 
         private void FormInsertarTarjeta_Load(object sender, EventArgs e)
         {
-            VozService.Hablar("Bienvenido. Por favor, inserte su tarjeta o acérquela al lector.");
-            
+            VozService.Hablar("Bienvenido. Por favor, Ingrese el número de su tarjeta.");
+
             // Mensaje visual
             lblMensaje.Text = "Inserte su tarjeta";
             lblEstado.Text = "";
             _procesando = false;
 
-            // Suscribirse al evento del lector
-            //Program.Servicio.TarjetaDetectada += TarjetaDetectada;
-
-            // Empezar a escuchar automáticamente
-            //Program.Servicio.IniciarLector();
             txtNumeroTarjeta.Focus();
+
+            // AQUÍ USAMOS EL TIMER EN LUGAR DE OnComandoRecibido
+            _timerEstado = new Timer();
+            _timerEstado.Interval = 5000; // Consulta cada 5 segundos
+            _timerEstado.Tick += (s, ev) =>
+            {
+                // El cajero le pregunta al servidor si sigue activo
+                bool habilitado = Program.Servidor.VerificarConexion();
+
+                if (!habilitado)
+                {
+                    _timerEstado.Stop(); // Deja de preguntar para no saturar
+                    Program.Navegar(this, new FormErrorConexion("Cajero Inhabilitado Temporalmente por el Administrador."));
+                }
+            };
+            _timerEstado.Start();
         }
 
         private void TarjetaDetectada(string uid)

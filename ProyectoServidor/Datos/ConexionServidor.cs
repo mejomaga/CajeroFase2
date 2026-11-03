@@ -542,7 +542,7 @@ namespace ProyectoServidor.Datos
                 {
                     conexion.Open();
                     using (SqlCommand comando = new SqlCommand(
-                        "UPDATE Cajero SET Estado = 'Desconectado' WHERE CodigoCajero = @Cod AND Estado = 'En línea'", conexion))
+                        "UPDATE Cajero SET Estado = 'Desconectado' WHERE CodigoCajero = @Cod AND Estado IN ('Activo', 'En línea')", conexion))
                     {
                         comando.Parameters.AddWithValue("@Cod", codigoCajero);
                         return comando.ExecuteNonQuery() > 0;
@@ -559,9 +559,12 @@ namespace ProyectoServidor.Datos
                 using (SqlConnection conexion = new SqlConnection(_cadenaConexion))
                 {
                     conexion.Open();
-                    // Cambiamos 'Conectado' o 'Activo' por el valor exacto que exige la BD: 'En línea'
-                    using (SqlCommand comando = new SqlCommand(
-                        "UPDATE Cajero SET UltimoHeartbeat = GETDATE(), Estado = 'En línea' WHERE CodigoCajero = @Codigo", conexion))
+                    using (SqlCommand comando = new SqlCommand(@"
+                UPDATE Cajero
+                SET UltimoHeartbeat = GETDATE(),
+                    Estado = CASE WHEN Estado = 'Desconectado' AND Inicializado = 1
+                                  THEN 'Activo' ELSE Estado END
+                WHERE CodigoCajero = @Codigo", conexion))
                     {
                         comando.Parameters.AddWithValue("@Codigo", codigoCajero);
                         return comando.ExecuteNonQuery() > 0;
@@ -570,7 +573,6 @@ namespace ProyectoServidor.Datos
             }
             catch { return false; }
         }
-
 
         public List<Dictionary<string, object>> ObtenerUltimasTransacciones(int idUsuario, int cantidad = 5)
         {
@@ -691,6 +693,25 @@ namespace ProyectoServidor.Datos
                 }
             }
             catch { return false; }
+        }
+
+        // --- NUEVO MÉTODO PARA CONSULTAR EL ESTADO ---
+        public string ObtenerEstadoCajero(string codigoCajero)
+        {
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(_cadenaConexion))
+                {
+                    conexion.Open();
+                    using (SqlCommand comando = new SqlCommand("SELECT Estado FROM Cajero WHERE CodigoCajero = @Cod", conexion))
+                    {
+                        comando.Parameters.AddWithValue("@Cod", codigoCajero);
+                        var resultado = comando.ExecuteScalar();
+                        return resultado != null ? resultado.ToString() : "Desconectado";
+                    }
+                }
+            }
+            catch { return "Desconectado"; }
         }
     }
 }

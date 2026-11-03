@@ -88,6 +88,7 @@
     <Compile Include="Entidades\Transaccion.cs" />
     <Compile Include="Entidades\Usuario.cs" />
     <Compile Include="Negocio\ArduinoService.cs" />
+    <Compile Include="Negocio\VigilanteEstado.cs" />
     <Compile Include="Negocio\VozService.cs" />
     <Compile Include="Presentacion\FormIngresarDinero.cs">
       <SubType>Form</SubType>

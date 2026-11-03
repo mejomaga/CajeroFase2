@@ -31,7 +31,6 @@
             this.txtNumeroTarjeta = new System.Windows.Forms.TextBox();
             this.lblError = new System.Windows.Forms.Label();
             this.lblEstado = new System.Windows.Forms.Label();
-            this.lblMensaje = new System.Windows.Forms.Label();
             this.btnContinue = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -73,18 +72,6 @@
             this.lblEstado.TabIndex = 4;
             this.lblEstado.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblMensaje
-            // 
-            this.lblMensaje.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lblMensaje.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMensaje.ForeColor = System.Drawing.Color.LightGray;
-            this.lblMensaje.Location = new System.Drawing.Point(0, 187);
-            this.lblMensaje.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblMensaje.Name = "lblMensaje";
-            this.lblMensaje.Size = new System.Drawing.Size(768, 32);
-            this.lblMensaje.TabIndex = 5;
-            this.lblMensaje.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // btnContinue
             // 
             this.btnContinue.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -107,9 +94,9 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(-3, 244);
+            this.label1.Location = new System.Drawing.Point(0, 220);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(768, 37);
+            this.label1.Size = new System.Drawing.Size(768, 51);
             this.label1.TabIndex = 14;
             this.label1.Text = "Inserte su Tarjeta";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -122,7 +109,6 @@
             this.ClientSize = new System.Drawing.Size(768, 624);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnContinue);
-            this.Controls.Add(this.lblMensaje);
             this.Controls.Add(this.lblEstado);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.txtNumeroTarjeta);
@@ -140,7 +126,6 @@
         private System.Windows.Forms.TextBox txtNumeroTarjeta;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Label lblEstado;
-        private System.Windows.Forms.Label lblMensaje;
         private System.Windows.Forms.Button btnContinue;
         private System.Windows.Forms.Label label1;
     }

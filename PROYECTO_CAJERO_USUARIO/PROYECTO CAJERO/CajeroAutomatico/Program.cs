@@ -18,6 +18,7 @@ namespace CajeroAutomatico
         // mantiene local. Lo que hace con esos datos (validarlos) siempre
         // pasa por Servidor.
         public static IArduinoService Lector { get; private set; }
+        public static Form FormularioActual => _contexto?.MainForm;
 
         // Contexto de aplicación para que Windows nunca cierre el hilo de la app
         private static ApplicationContext _contexto;

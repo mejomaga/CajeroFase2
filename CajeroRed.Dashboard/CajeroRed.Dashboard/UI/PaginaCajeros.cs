@@ -192,7 +192,7 @@ public class PaginaCajeros : PaginaBase
 
         // --- TRADUCCIÓN EXACTA SOLICITADA ---
         // Si el estado del enumerador no es Desconectado, se asume Activo.
-        bool esActivo = c.Estado != EstadoCajero.Desconectado;
+        bool esActivo = c.EstaActivo;
         string estadoVisual = esActivo ? "Activo" : "Inactivo";
         Color colorEstado = esActivo ? Tema.Verde : Tema.Rojo;
 
@@ -268,7 +268,7 @@ public class PaginaCajeros : PaginaBase
         if (cajeroActual == null) return;
 
         // VALIDADOR CÓDIGO 91: El cajero debe estar activo y con inicialización previa (Efectivo > 0)
-        bool esActivo = cajeroActual.Estado != EstadoCajero.Desconectado;
+        bool esActivo = cajeroActual.EstaActivo;
 
         if (!esActivo || cajeroActual.EfectivoTotal == 0)
         {
@@ -354,7 +354,36 @@ public class PaginaCajeros : PaginaBase
         }
         return desglose;
     }
+    private async void BtnHabilitar_Click(object? sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(_codigoSeleccionado)) return;
 
+        if (MessageBox.Show($"¿Habilitar el cajero {_codigoSeleccionado}?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+        {
+            // Usamos el estado exacto de tu SQL
+            bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, "En línea");
+            if (exito)
+            {
+                MessageBox.Show("Cajero habilitado. La pantalla cambiará en unos segundos.");
+                await ActualizarAsync();
+            }
+        }
+    }
+
+    private async void BtnInhabilitar_Click(object? sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(_codigoSeleccionado)) return;
+
+        if (MessageBox.Show($"¿Inhabilitar el cajero {_codigoSeleccionado}?", "Inhabilitar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+        {
+            bool exito = await Contexto.Datos.CambiarEstadoCajeroAsync(_codigoSeleccionado, "Fuera de servicio");
+            if (exito)
+            {
+                MessageBox.Show("Cajero inhabilitado. Se bloqueará en unos segundos.");
+                await ActualizarAsync();
+            }
+        }
+    }
     private async void BtnNuevoCajero_Click(object? sender, EventArgs e)
     {
         string codigo = Microsoft.VisualBasic.Interaction.InputBox("Ingrese el CÓDIGO único del nuevo cajero (ej. C04):", "Nuevo Cajero", "");
